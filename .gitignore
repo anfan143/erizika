@@ -1,0 +1,23 @@
+# Node
+node_modules/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# Env (secrets - never commit)
+.env
+.env.local
+.env*.local
+
+# Vercel
+.vercel/
+
+# Claude Code local settings
+.claude/
+
+# Logs / OS
+*.log
+.DS_Store
+Thumbs.db
