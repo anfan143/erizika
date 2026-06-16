@@ -340,3 +340,57 @@
   /* na úzkom displeji necháme len hlavné CTA; prihlásenie je v cenníku aj v pätičke */
   .land .nav-links a[href="/login"]{display:none}
 }
+
+/* ============================================================
+   MODERNÝ VIZUÁL v2 — scroll reveal, animované pozadie, nav
+   Bezpečné: skrýva sa LEN keď beží JS (.fx-ready). Bez JS je
+   všetko normálne viditeľné (failsafe v page.tsx).
+   ============================================================ */
+
+/* --- HERO: čisto-CSS nábeh (vždy dobehne, nezávisí od JS) --- */
+.land .hero h1{animation:heroIn .7s cubic-bezier(.2,.7,.2,1) both}
+.land .hero p.lead{animation:heroIn .7s cubic-bezier(.2,.7,.2,1) .08s both}
+.land .hero-cta{animation:heroIn .7s cubic-bezier(.2,.7,.2,1) .16s both}
+.land .hero .trust{animation:heroIn .7s cubic-bezier(.2,.7,.2,1) .24s both}
+.land .matrix-card{animation:heroIn .8s cubic-bezier(.2,.7,.2,1) .12s both}
+@keyframes heroIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+/* --- SCROLL REVEAL (len sekcie pod záhybom) --- */
+.fx-ready .land :is(.misia blockquote,.misia .body,h2.sec,.pcard,.krok,.demo,.cena,.cta-band){
+  opacity:0;transform:translateY(28px);
+  transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);
+}
+.fx-ready .land .is-visible{opacity:1 !important;transform:none !important}
+/* postupné nabiehanie kariet v mriežkach (stagger) */
+.fx-ready .land .cards3>:nth-child(2),.fx-ready .land .cennik-grid>:nth-child(2){transition-delay:.09s}
+.fx-ready .land .cards3>:nth-child(3),.fx-ready .land .cennik-grid>:nth-child(3){transition-delay:.18s}
+
+/* --- ANIMOVANÉ SVETLO V POZADÍ --- */
+.land .hero{position:relative}
+.land .hero>.wrap{position:relative;z-index:1}
+.land .hero::before{
+  content:"";position:absolute;z-index:0;top:5%;right:5%;
+  width:min(360px,38vw);height:min(360px,38vw);border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(245,183,0,.18),transparent 66%);
+  animation:fxBlob 10s ease-in-out infinite;
+}
+.land .ukazka{position:relative;overflow:hidden}
+.land .ukazka>.wrap{position:relative;z-index:1}
+.land .ukazka::before{
+  content:"";position:absolute;z-index:0;bottom:-12%;left:-8%;
+  width:min(460px,52vw);height:min(460px,52vw);border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(245,183,0,.10),transparent 62%);
+  animation:fxBlob 13s ease-in-out infinite reverse;
+}
+@keyframes fxBlob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-24px) scale(1.07)}}
+
+/* --- NAVIGÁCIA: zmenšenie + tieň po scrollovaní --- */
+.land nav{transition:box-shadow .25s ease,background .25s ease}
+.land nav .nav-in{transition:padding .25s ease}
+.land nav.scrolled .nav-in{padding-top:9px;padding-bottom:9px}
+.land nav.scrolled{box-shadow:0 8px 28px rgba(22,31,42,.10);background:rgba(246,248,250,.97)}
+
+@media (prefers-reduced-motion:reduce){
+  .land .hero::before,.land .ukazka::before{animation:none}
+  .land .hero h1,.land .hero p.lead,.land .hero-cta,.land .hero .trust,.land .matrix-card{animation:none}
+}
