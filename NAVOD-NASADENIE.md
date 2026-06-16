@@ -47,8 +47,8 @@ Celý postup zaberie cca 45 – 60 minút. Potrebujete účty: github.com, supab
 ## 5. Stripe — platby (po schválení účtu) — 25 min
 1. Na dashboard.stripe.com → **Product catalog → Add product**. Vytvorte 5 produktov (mena EUR):
    - `Predplatné mesačné` — Recurring, 19 €, Billing period **Monthly**
-   - `Predplatné 3 mesiace` — Recurring, 51 €, Billing period **Every 3 months**
-   - `Predplatné 6 mesiacov` — Recurring, 90 €, Billing period **Every 6 months**
+   - `Predplatné 3 mesiace` — Recurring, 49 €, Billing period **Every 3 months**
+   - `Predplatné 6 mesiacov` — Recurring, 79 €, Billing period **Every 6 months**
    - `Predplatné ročné` — Recurring, 99 €, Billing period **Yearly**
    - `Jednorazový projekt` — One-off, 15 €
 2. Pri každom produkte otvorte cenu a odkopírujte **Price ID** (začína `price_...`).

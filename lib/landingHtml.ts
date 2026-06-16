@@ -200,9 +200,9 @@ export const LANDING_HTML = `
         <div class="pre">pre tých, ktorí hodnotenia rizík spravujú pravidelne</div>
         <ul><li>Neobmedzené hodnotenia a dokumenty</li><li>História dokumentov všetkých vašich klientov</li><li>Prednostný prístup k novým modulom</li></ul>
         <div class="zlava">
-          <span><b>3 mesiace</b> — 17 € / mes.</span>
-          <span><b>6 mesiacov</b> — 15 € / mes.</span>
-          <span><b>12 mesiacov</b> — 99 € / rok <b style="color:var(--green)">(ušetríte 129 €)</b></span>
+          <span><b>3 mesiace</b> — 49 € <small>(ušetríte 8 €)</small></span>
+          <span><b>6 mesiacov</b> — 79 € <b style="color:var(--green)">(ušetríte 35 €)</b></span>
+          <span><b>12 mesiacov</b> — 99 € <b style="color:var(--green)">(ušetríte 129 €)</b></span>
         </div>
         <a class="btn btn-primary" href="/login">Začať s predplatným</a>
       </div>

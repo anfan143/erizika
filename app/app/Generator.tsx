@@ -48,8 +48,8 @@ export default function Generator({ email, plan, mode, maxCinnosti }: { email: s
       <div className="kupa">
         <button className="btn btn-ghost" onClick={() => kupit("projekt")}>Projekt · 15 €</button>
         <button className="btn btn-ghost" onClick={() => kupit("mesacne")}>Mesačne · 19 €</button>
-        <button className="btn btn-ghost" onClick={() => kupit("stvrtrok")}>3 mesiace · 51 €</button>
-        <button className="btn btn-ghost" onClick={() => kupit("polrok")}>6 mesiacov · 90 €</button>
+        <button className="btn btn-ghost" onClick={() => kupit("stvrtrok")}>3 mesiace · 49 €</button>
+        <button className="btn btn-ghost" onClick={() => kupit("polrok")}>6 mesiacov · 79 €</button>
         <button className="btn btn-primary" onClick={() => kupit("rok")}>Rok · 99 €</button>
       </div>
     </div>
