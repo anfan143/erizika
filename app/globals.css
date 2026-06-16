@@ -249,3 +249,81 @@
 
 @media (max-width:900px){.land .hero-grid,.land .misia-grid{grid-template-columns:1fr;gap:40px}.land .cards3,.land .cennik-grid{grid-template-columns:1fr}.land h1{font-size:33px}.land h2.sec{font-size:27px}.land section{padding:60px 0}.land .nav-links a:not(.btn){display:none}.land .demo-wrap{overflow-x:auto}.land .doc-chip{right:8px}.land .demo-head{flex-wrap:wrap}.land .demo-head .cinnost{font-size:16px}}
 @media (prefers-reduced-motion:reduce){.land .marq-track{animation:none}.land .mx i{animation:none}}
+
+/* ============================================================
+   VIZUÁLNY UPGRADE — interaktivita, jemné animácie, mobil
+   (iba doplnky/override; pôvodné pravidlá ostávajú v platnosti)
+   ============================================================ */
+
+/* plynulé prechody na interaktívnych prvkoch */
+.land .pcard,.land .krok,.land .cena,.land details,.land .demo,.land .matrix-card,.land .btn{
+  transition:transform .18s ease,box-shadow .25s ease,border-color .18s ease,color .15s ease;
+}
+
+/* karty – zdvih a akcent pri prejdení myšou */
+.land .pcard:hover,.land .krok:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(22,31,42,.10);border-color:var(--ink)}
+.land .cena:hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(22,31,42,.14)}
+.land .cena.hl-card:hover{box-shadow:0 22px 52px rgba(245,183,0,.22)}
+
+/* akcentová linka navrchu krokov */
+.land .krok{overflow:hidden}
+.land .krok::after{content:"";position:absolute;left:0;top:0;height:3px;width:0;background:var(--safety);transition:width .3s ease}
+.land .krok:hover::after{width:100%}
+
+/* tlačidlá – jemný zdvih */
+.land .btn-primary:hover,.land .btn-safety:hover,.land .btn-ghost:hover{transform:translateY(-2px)}
+
+/* animovaná linka pod navigačnými odkazmi */
+.land .nav-links a:not(.btn){position:relative}
+.land .nav-links a:not(.btn)::after{content:"";position:absolute;left:0;bottom:-5px;height:2px;width:0;background:var(--safety);transition:width .2s ease}
+.land .nav-links a:not(.btn):hover::after{width:100%}
+
+/* hero „plate" – jemný nábeh */
+@keyframes plateIn{0%{transform:rotate(-1deg) scale(.94);opacity:.3}100%{transform:rotate(-1deg) scale(1);opacity:1}}
+.land h1 .plate{animation:plateIn .55s ease both}
+
+/* FAQ – zvýraznenie otvorenej položky */
+.land details[open]{border-color:var(--ink);box-shadow:0 8px 24px rgba(22,31,42,.06)}
+.land summary:hover{color:var(--safety)}
+
+/* OPRAVA medzery v nadpisoch (efekt „keďto") + čitateľnosť */
+.land h2.sec{letter-spacing:-.3px;word-spacing:.06em}
+.land h1{word-spacing:.04em}
+
+/* matica – aby štítok .doc-chip nikde nepretekal mimo plátna */
+.land .matrix-card{overflow:visible}
+
+/* zvýraznený plán mierne vyzdvihnúť (len desktop) */
+@media (min-width:901px){
+  .land .cena.hl-card{transform:translateY(-8px)}
+  .land .cena.hl-card:hover{transform:translateY(-12px)}
+}
+
+/* ---------- MOBIL / TABLET: doladenie ---------- */
+@media (max-width:900px){
+  .land .nav-in{gap:14px}
+  .land .nav-links{gap:10px}
+  .land .nav-links a:not(.btn){display:none}
+  .land .hero{padding:48px 0 40px}
+  .land .hero p.lead{font-size:15.5px}
+  .land .doc-chip{position:static;transform:none;margin:18px auto 0;width:max-content}
+  .land .matrix-card{box-shadow:0 16px 40px rgba(22,31,42,.18)}
+}
+@media (max-width:680px){
+  .land .wrap{padding:0 16px}
+  .land h1{font-size:30px;letter-spacing:-.6px}
+  .land h2.sec{font-size:24px}
+  .land section{padding:46px 0}
+  .land .hero-cta{gap:10px}
+  .land .hero-cta .btn,.land .cena .btn{width:100%;text-align:center}
+  .land .matrix-card{padding:20px}
+  .land .mx{gap:5px}
+  .land .demo-head{padding:13px 16px}
+  .land .demo-head .cinnost{font-size:15px;padding-left:10px}
+  .land th,.land td{padding:9px 10px}
+  .land .cena{padding:24px 20px}
+  .land .misia blockquote{font-size:21px}
+  .land .cta-band{padding:34px 24px;text-align:center;justify-content:center}
+  .land .cta-band h2{font-size:24px}
+  .land .foot-top{flex-direction:column;align-items:flex-start;gap:10px}
+}

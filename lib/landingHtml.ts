@@ -3,13 +3,14 @@ export const LANDING_HTML = `
 <div class="topbar"></div>
 <nav>
   <div class="nav-in">
-    <a class="logo" href="/login"><span class="logo-mark">HR</span><b>e-rizika.sk</b></a>
+    <a class="logo" href="/"><span class="logo-mark">HR</span><b>e-rizika.sk</b></a>
     <div class="nav-links">
       <a href="#prekoho">Pre koho</a>
       <a href="#funguje">Ako to funguje</a>
       <a href="#ukazka">Ukážka</a>
       <a href="#cennik">Cenník</a>
-      <a href="/login" style="color:var(--ink)">Prihlásiť sa</a>
+      <a href="#otazky">Otázky</a>
+      <a class="btn btn-ghost btn-sm" href="/login">Prihlásiť sa</a>
       <a class="btn btn-safety btn-sm" href="#cennik">Vyskúšať zadarmo</a>
     </div>
   </div>
@@ -209,7 +210,7 @@ export const LANDING_HTML = `
   </div>
 </section>
 
-<section style="padding-top:0">
+<section id="otazky" style="padding-top:0">
   <div class="wrap">
     <div class="mono eyebrow">Časté otázky</div>
     <h2 class="sec">Na rovinu.</h2>
@@ -250,7 +251,7 @@ export const LANDING_HTML = `
   <div class="foot-in">
     <div class="foot-top">
       <span style="font-family:'IBM Plex Mono';font-weight:600;letter-spacing:1px;font-size:12px">e-rizika.sk © 2026</span>
-      <span><a href="/login">Obchodné podmienky</a> · <a href="/login">Ochrana osobných údajov</a> · <a href="/login">Kontakt</a></span>
+      <span><a href="#otazky">Časté otázky</a> · <a href="#cennik">Cenník</a> · <a href="mailto:info@erizika.sk">Kontakt</a></span>
     </div>
     <div class="foot-disc">Dokumenty vytvorené platformou sú podkladom pre posúdenie rizika; pred zaradením do dokumentácie BOZP ich preveruje a schvaľuje odborne spôsobilá osoba v zmysle platnej legislatívy.</div>
   </div>

@@ -101,7 +101,10 @@ export default function Generator({ email, plan, mode, maxCinnosti }: { email: s
     try {
       const r = await fetch(`/api/dokumenty/${id}`);
       const d = await r.json();
-      if (d.payload) { setCtx(d.payload.ctx); setVysledky(d.payload.vysledky); setProgress([]); }
+      if (d.payload) {
+        setCtx(d.payload.ctx); setVysledky(d.payload.vysledky); setProgress([]); setErr("");
+        setTimeout(() => document.getElementById("results")?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
+      }
     } catch {}
   }
 
@@ -154,7 +157,7 @@ export default function Generator({ email, plan, mode, maxCinnosti }: { email: s
       <div className="hazard" />
       <header>
         <div className="head-inner">
-          <div className="logo-mark">HR</div>
+          <a href="/" className="logo-mark" style={{ textDecoration: "none" }} title="Domov">HR</a>
           <div><h1>Rizika</h1><div className="head-sub">Generátor hodnotenia rizík · § 6 zákona č. 124/2006 Z. z. · metodika 5×5</div></div>
           <div className="nav-links">
             <span className="plan-badge">{plan}</span>

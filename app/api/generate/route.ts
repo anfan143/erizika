@@ -91,6 +91,10 @@ Vypracuj hodnotenie rizík pre činnosť: "${cinnost.slice(0, 300)}"${refsBlock(
       const { data: proj } = await admin.from("projects").select("activities_used").eq("id", ent.projectId!).single();
       if (proj) await admin.from("projects").update({ activities_used: Math.max(0, proj.activities_used - 1) }).eq("id", ent.projectId!);
     }
+    if (ent.mode === "free") {
+      const { data: prof } = await admin.from("profiles").select("free_gens").eq("id", user.id).single();
+      if (prof) await admin.from("profiles").update({ free_gens: Math.max(0, prof.free_gens - 1) }).eq("id", user.id);
+    }
     return NextResponse.json({ error: "gen" }, { status: 502 });
   }
   return NextResponse.json({ nebezpecenstva, refs: refs.length, locked: ent.mode === "free" });
