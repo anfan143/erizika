@@ -21,8 +21,8 @@ export async function POST(req: Request) {
       const s = event.data.object as Stripe.Checkout.Session;
       const userId = s.metadata?.user_id;
       if (userId && s.mode === "payment") {
-        // jednorazový projekt: 15 činností / 30 dní
-        const expires = new Date(Date.now() + 30 * 24 * 3600 * 1000).toISOString();
+        // jednorazový projekt: obmedzený počet činností (15) / 14 dní
+        const expires = new Date(Date.now() + 14 * 24 * 3600 * 1000).toISOString();
         await admin.from("projects").insert({
           user_id: userId, activities_limit: 15, activities_used: 0,
           expires_at: expires, stripe_session_id: s.id,

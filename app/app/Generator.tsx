@@ -44,9 +44,9 @@ export default function Generator({ email, plan, mode, maxCinnosti }: { email: s
 
   const KupaPanel = ({ lead }: { lead: string }) => (
     <div className="unlock-note">
-      <strong>{lead}</strong> Jednorazový projekt pokryje až 15 pracovných činností počas 30 dní; predplatné je bez limitov.
+      <strong>{lead}</strong> Jednorazový projekt pokryje obmedzený počet činností (do 15) počas 14 dní; predplatné je bez limitov.
       <div className="kupa">
-        <button className="btn btn-ghost" onClick={() => kupit("projekt")}>Projekt · 49 €</button>
+        <button className="btn btn-ghost" onClick={() => kupit("projekt")}>Projekt · 15 €</button>
         <button className="btn btn-ghost" onClick={() => kupit("mesacne")}>Mesačne · 19 €</button>
         <button className="btn btn-ghost" onClick={() => kupit("stvrtrok")}>3 mesiace · 51 €</button>
         <button className="btn btn-ghost" onClick={() => kupit("polrok")}>6 mesiacov · 90 €</button>

@@ -188,10 +188,10 @@ export const LANDING_HTML = `
       </div>
       <div class="cena">
         <h3>Jednorazový projekt</h3>
-        <div class="suma">49 €</div>
-        <div class="pre">čaká vás nová zákazka alebo projekt?</div>
-        <ul><li>1 kompletný dokument až pre 15 pracovných činností</li><li>Úpravy a opätovný export počas 30 dní</li><li>Vráťte sa kedykoľvek — ďalší projekt, ďalší dokument</li></ul>
-        <a class="btn btn-ghost" href="/login">Kúpiť projekt</a>
+        <div class="suma">15 €</div>
+        <div class="pre">potrebujete jeden dokument bez záväzku?</div>
+        <ul><li>1 kompletný dokument s obmedzeným počtom činností (do 15)</li><li>Úpravy a opätovný export počas 14 dní</li><li>Zaplatíte raz — žiadne predplatné, žiadne rušenie</li></ul>
+        <a class="btn btn-ghost" href="/login">Kúpiť dokument</a>
       </div>
       <div class="cena hl-card">
         <span class="pop">PRE PRAVIDELNÚ PRÁCU</span>
@@ -225,7 +225,7 @@ export const LANDING_HTML = `
       </details>
       <details>
         <summary>Čo presne obsahuje jednorazový projekt?</summary>
-        <p>Jeden kompletný dokument o posúdení rizika až pre 15 pracovných činností. Počas 30 dní ho môžete upravovať, dopĺňať a exportovať bez obmedzenia. Keď príde ďalšia zákazka, jednoducho si kúpite ďalší projekt — vraciate sa presne vtedy, keď to potrebujete.</p>
+        <p>Jeden kompletný dokument o posúdení rizika s obmedzeným počtom pracovných činností (do 15). Počas 14 dní ho môžete upravovať, dopĺňať a exportovať bez obmedzenia. Keď príde ďalšia zákazka, jednoducho si kúpite ďalší — vraciate sa presne vtedy, keď to potrebujete.</p>
       </details>
       <details>
         <summary>Čo pribudne ďalej?</summary>

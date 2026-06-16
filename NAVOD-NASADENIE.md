@@ -50,7 +50,7 @@ Celý postup zaberie cca 45 – 60 minút. Potrebujete účty: github.com, supab
    - `Predplatné 3 mesiace` — Recurring, 51 €, Billing period **Every 3 months**
    - `Predplatné 6 mesiacov` — Recurring, 90 €, Billing period **Every 6 months**
    - `Predplatné ročné` — Recurring, 99 €, Billing period **Yearly**
-   - `Jednorazový projekt` — One-off, 49 €
+   - `Jednorazový projekt` — One-off, 15 €
 2. Pri každom produkte otvorte cenu a odkopírujte **Price ID** (začína `price_...`).
 3. Vo Verceli → projekt → **Settings → Environment Variables** pridajte:
    - `STRIPE_SECRET_KEY` (Developers → API keys → Secret key)
@@ -64,7 +64,7 @@ Celý postup zaberie cca 45 – 60 minút. Potrebujete účty: github.com, supab
 
 ### Ako fungujú balíky (logika v kóde)
 - **Zadarmo**: 1 pracovná činnosť; výsledok viditeľný celý, stĺpec Predpisy a Požadované konanie rozmazané, export zamknutý; max. 3 pokusy generovania.
-- **Jednorazový projekt (49 €)**: 15 pracovných činností, platnosť 30 dní; každá vygenerovaná činnosť odpočíta 1; zostatok vidno v hlavičke aplikácie.
+- **Jednorazový projekt (15 €)**: obmedzený počet činností (15), platnosť 14 dní; každá vygenerovaná činnosť odpočíta 1; zostatok vidno v hlavičke aplikácie.
 - **Predplatné**: bez limitov; platnosť sa predlžuje automaticky pri každej platbe (webhook), pri zrušení dobehne do konca obdobia.
 - Manuálna aktivácia (predaj na faktúru) stále funguje: profiles → `subscription_until` = dátum konca, alebo projects → nový riadok s `expires_at`.
 
