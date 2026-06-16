@@ -327,3 +327,16 @@
   .land .cta-band h2{font-size:24px}
   .land .foot-top{flex-direction:column;align-items:flex-start;gap:10px}
 }
+
+/* ---------- MOBILNÁ HLAVIČKA: kompaktná, bez zalamovania značky ---------- */
+.land .logo b{white-space:nowrap}
+@media (max-width:680px){
+  .land nav .nav-in{padding:11px 16px;gap:10px;flex-wrap:nowrap}
+  .land .logo{gap:9px;flex-shrink:0}
+  .land .logo-mark{width:32px;height:32px;font-size:15px}
+  .land .logo b{font-size:16px}
+  .land .nav-links{margin-left:auto;gap:8px;flex-shrink:0}
+  .land .nav-links .btn-sm{padding:9px 14px;font-size:13px}
+  /* na úzkom displeji necháme len hlavné CTA; prihlásenie je v cenníku aj v pätičke */
+  .land .nav-links a[href="/login"]{display:none}
+}
