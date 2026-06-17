@@ -30,11 +30,14 @@ export async function POST(req: Request) {
       }
       if (userId && s.mode === "subscription" && s.subscription) {
         const sub = await stripe.subscriptions.retrieve(String(s.subscription));
-        const until = new Date(((sub as any).current_period_end as number) * 1000).toISOString();
-        await admin.from("profiles").update({
-          subscription_until: until,
-          stripe_customer_id: String(s.customer ?? ""),
-        }).eq("id", userId);
+        // koniec obdobia: nové aj staršie Stripe API (na úrovni subscription alebo položky)
+        const periodEnd = (sub as any).current_period_end ?? (sub as any).items?.data?.[0]?.current_period_end;
+        if (periodEnd) {
+          await admin.from("profiles").update({
+            subscription_until: new Date(periodEnd * 1000).toISOString(),
+            stripe_customer_id: String(s.customer ?? ""),
+          }).eq("id", userId);
+        }
       }
     }
     if (event.type === "invoice.paid") {

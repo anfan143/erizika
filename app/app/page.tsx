@@ -5,7 +5,7 @@ import Generator from "./Generator";
 
 export const dynamic = "force-dynamic";
 
-export default async function AppPage() {
+export default async function AppPage({ searchParams }: { searchParams: { platba?: string } }) {
   const supabase = supabaseServer();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
@@ -18,6 +18,7 @@ export default async function AppPage() {
       plan={ent.planLabel}
       mode={ent.mode}
       maxCinnosti={ent.maxCinnosti}
+      justPaid={searchParams?.platba === "ok"}
     />
   );
 }

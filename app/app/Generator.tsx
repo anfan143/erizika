@@ -23,7 +23,7 @@ function pozadovaneKonanie(r: number) {
 const clamp = (v: any, d: number) => Math.min(5, Math.max(1, parseInt(v) || d));
 const esc = (s: any) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-export default function Generator({ email, plan, mode, maxCinnosti }: { email: string; plan: string; mode: "sub" | "project" | "free" | "none"; maxCinnosti: number }) {
+export default function Generator({ email, plan, mode, maxCinnosti, justPaid }: { email: string; plan: string; mode: "sub" | "project" | "free" | "none"; maxCinnosti: number; justPaid?: boolean }) {
   const [ctx, setCtx] = useState<Ctx>({ firma: "", odvetvie: ODVETVIA[0], pozicia: "", prostredie: "", vypracoval: "" });
   const [cinnostiText, setCinnostiText] = useState("");
   const [progress, setProgress] = useState<{ c: string; st: "wait" | "run" | "done" | "fail" }[]>([]);
@@ -56,6 +56,19 @@ export default function Generator({ email, plan, mode, maxCinnosti }: { email: s
   );
 
   useEffect(() => { nacitajHistoriu(); }, []);
+
+  // Po platbe sa prístup aktivuje cez webhook (asynchrónne). Kým mode ešte nie je
+  // aktívny, párkrát stránku obnovíme, nech zákazník nevidí „žiadny balík".
+  const aktivny = mode === "sub" || mode === "project";
+  useEffect(() => {
+    if (!justPaid) return;
+    if (aktivny) { sessionStorage.removeItem("platbaRetries"); return; }
+    const n = Number(sessionStorage.getItem("platbaRetries") || "0");
+    if (n >= 5) return;
+    sessionStorage.setItem("platbaRetries", String(n + 1));
+    const t = setTimeout(() => location.reload(), 3500);
+    return () => clearTimeout(t);
+  }, [justPaid, aktivny]);
   async function nacitajHistoriu() {
     try { const r = await fetch("/api/dokumenty"); const d = await r.json(); setHist(d.documents ?? []); } catch {}
   }
@@ -167,6 +180,16 @@ export default function Generator({ email, plan, mode, maxCinnosti }: { email: s
         </div>
       </header>
       <main>
+        {justPaid && aktivny && (
+          <div className="unlock-note" style={{ borderLeftColor: "var(--green)" }}>
+            <strong>Platba prebehla — prístup je aktívny.</strong> Ďakujeme! Môžete generovať.
+          </div>
+        )}
+        {justPaid && !aktivny && (
+          <div className="unlock-note">
+            <strong>Ďakujeme za platbu — aktivujeme váš prístup…</strong> Chvíľu strpenia, stránka sa o sekundu sama obnoví. Ak by sa prístup neaktivoval, obnovte ju ručne (F5).
+          </div>
+        )}
         {mode === "none" && <KupaPanel lead="Vyčerpali ste dostupné hodnotenia." />}
         <div className="card">
           <div className="section-label">Vstupné údaje</div>

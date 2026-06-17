@@ -21,7 +21,7 @@ export async function zistiOpravnenie(supabase: SupabaseClient, userId: string):
 
   const subUntil = profil?.subscription_until ? new Date(profil.subscription_until) : null;
   if (subUntil && subUntil > now) {
-    return { mode: "sub", planLabel: `Predplatné do ${subUntil.toLocaleDateString("sk-SK")}`, maxCinnosti: 8, docsCount, freeGens };
+    return { mode: "sub", planLabel: `Predplatné do ${subUntil.toLocaleDateString("sk-SK")}`, maxCinnosti: 20, docsCount, freeGens };
   }
 
   const { data: projekty } = await supabase
