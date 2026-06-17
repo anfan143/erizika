@@ -42,6 +42,16 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid }: 
     } catch { setErr("Platobnú bránu sa nepodarilo otvoriť. Skúste to o chvíľu."); }
   }
 
+  async function spravujPredplatne() {
+    setErr("");
+    try {
+      const r = await fetch("/api/billing-portal", { method: "POST" });
+      const d = await r.json();
+      if (d.url) window.location.href = d.url;
+      else setErr("Správu predplatného sa nepodarilo otvoriť. Skúste to o chvíľu.");
+    } catch { setErr("Správu predplatného sa nepodarilo otvoriť. Skúste to o chvíľu."); }
+  }
+
   const KupaPanel = ({ lead }: { lead: string }) => (
     <div className="unlock-note">
       <strong>{lead}</strong> Jednorazový projekt pokryje obmedzený počet činností (do 15) počas 14 dní; predplatné je bez limitov.
@@ -175,6 +185,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid }: 
           <div className="nav-links">
             <span className="plan-badge">{plan}</span>
             <span className="user-bar">{email}</span>
+            {mode === "sub" && <button className="btn btn-ghost" style={{ padding: "7px 14px", fontSize: 13 }} onClick={spravujPredplatne}>Spravovať predplatné</button>}
             <button className="btn btn-ghost" style={{ padding: "7px 14px", fontSize: 13 }} onClick={odhlasit}>Odhlásiť</button>
           </div>
         </div>
