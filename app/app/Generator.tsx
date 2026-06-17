@@ -5,6 +5,7 @@ import { createBrowserClient } from "@supabase/ssr";
 type Neb = { nebezpecenstvo: string; ohrozenie: string; P: number; Z: number; opatrenia: string[]; oopp?: string[]; P2?: number; Z2?: number; predpisy?: string[] };
 type Vysledok = { cinnost: string; nebezpecenstva: Neb[]; refs: number };
 type Ctx = { firma: string; odvetvie: string; pozicia: string; prostredie: string; vypracoval: string };
+type Tab = "hodnotenie" | "historia" | "profil";
 
 const ODVETVIA = ["Stavebníctvo","Strojárstvo a kovovýroba","Skladovanie a logistika","Drevospracujúci priemysel","Potravinárstvo","Doprava","Poľnohospodárstvo","Energetika","Administratíva a služby","Zdravotníctvo","Obchod a maloobchod","Iné"];
 
@@ -23,7 +24,8 @@ function pozadovaneKonanie(r: number) {
 const clamp = (v: any, d: number) => Math.min(5, Math.max(1, parseInt(v) || d));
 const esc = (s: any) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-export default function Generator({ email, plan, mode, maxCinnosti, justPaid }: { email: string; plan: string; mode: "sub" | "project" | "free" | "none"; maxCinnosti: number; justPaid?: boolean }) {
+export default function Generator({ email, plan, mode, maxCinnosti, justPaid, hasCustomer }: { email: string; plan: string; mode: "sub" | "project" | "free" | "none"; maxCinnosti: number; justPaid?: boolean; hasCustomer?: boolean }) {
+  const [tab, setTab] = useState<Tab>("hodnotenie");
   const [ctx, setCtx] = useState<Ctx>({ firma: "", odvetvie: ODVETVIA[0], pozicia: "", prostredie: "", vypracoval: "" });
   const [cinnostiText, setCinnostiText] = useState("");
   const [progress, setProgress] = useState<{ c: string; st: "wait" | "run" | "done" | "fail" }[]>([]);
@@ -31,6 +33,9 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid }: 
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [hist, setHist] = useState<{ id: string; title: string; created_at: string }[]>([]);
+  const [newPass, setNewPass] = useState("");
+  const [profilMsg, setProfilMsg] = useState("");
+  const [profilErr, setProfilErr] = useState("");
   const locked = mode === "free";
 
   async function kupit(plan: string) {
@@ -43,13 +48,24 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid }: 
   }
 
   async function spravujPredplatne() {
-    setErr("");
+    setErr(""); setProfilErr("");
     try {
       const r = await fetch("/api/billing-portal", { method: "POST" });
       const d = await r.json();
       if (d.url) window.location.href = d.url;
-      else setErr("Správu predplatného sa nepodarilo otvoriť. Skúste to o chvíľu.");
-    } catch { setErr("Správu predplatného sa nepodarilo otvoriť. Skúste to o chvíľu."); }
+      else setProfilErr("Správu platieb sa nepodarilo otvoriť. Skúste to o chvíľu.");
+    } catch { setProfilErr("Správu platieb sa nepodarilo otvoriť. Skúste to o chvíľu."); }
+  }
+
+  async function zmenHeslo() {
+    setProfilErr(""); setProfilMsg("");
+    if (newPass.length < 6) { setProfilErr("Heslo musí mať aspoň 6 znakov."); return; }
+    try {
+      const supabase = createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+      const { error } = await supabase.auth.updateUser({ password: newPass });
+      if (error) throw error;
+      setNewPass(""); setProfilMsg("Heslo bolo zmenené.");
+    } catch { setProfilErr("Zmena hesla zlyhala. Skúste to znova."); }
   }
 
   const KupaPanel = ({ lead }: { lead: string }) => (
@@ -79,6 +95,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid }: 
     const t = setTimeout(() => location.reload(), 3500);
     return () => clearTimeout(t);
   }, [justPaid, aktivny]);
+
   async function nacitajHistoriu() {
     try { const r = await fetch("/api/dokumenty"); const d = await r.json(); setHist(d.documents ?? []); } catch {}
   }
@@ -126,7 +143,8 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid }: 
       const d = await r.json();
       if (d.payload) {
         setCtx(d.payload.ctx); setVysledky(d.payload.vysledky); setProgress([]); setErr("");
-        setTimeout(() => document.getElementById("results")?.scrollIntoView({ behavior: "smooth", block: "start" }), 60);
+        setTab("hodnotenie");
+        setTimeout(() => document.getElementById("results")?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
       }
     } catch {}
   }
@@ -167,7 +185,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid }: 
     });
     body += `<p style="font-family:Arial;font-size:9pt;color:#555"><i>Tento dokument je podkladom pre posúdenie rizika a pred zaradením do dokumentácie BOZP ho musí preveriť a schváliť odborne spôsobilá osoba v zmysle zákona č. 124/2006 Z. z.</i></p>`;
     const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"></head><body>${body}</body></html>`;
-    const blob = new Blob(["\ufeff" + html], { type: "application/msword" });
+    const blob = new Blob(["﻿" + html], { type: "application/msword" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url; a.download = "hodnotenie-rizik.doc"; a.rel = "noopener"; a.style.display = "none";
@@ -181,15 +199,20 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid }: 
       <header>
         <div className="head-inner">
           <a href="/" className="logo-mark" style={{ textDecoration: "none" }} title="Domov">HR</a>
-          <div><h1>Rizika</h1><div className="head-sub">Generátor hodnotenia rizík · § 6 zákona č. 124/2006 Z. z. · metodika 5×5</div></div>
+          <div><h1>Rizika</h1><div className="head-sub">Vaša pracovná plocha · § 6 zákona č. 124/2006 Z. z. · metodika 5×5</div></div>
           <div className="nav-links">
             <span className="plan-badge">{plan}</span>
             <span className="user-bar">{email}</span>
-            {mode === "sub" && <button className="btn btn-ghost" style={{ padding: "7px 14px", fontSize: 13 }} onClick={spravujPredplatne}>Spravovať predplatné</button>}
             <button className="btn btn-ghost" style={{ padding: "7px 14px", fontSize: 13 }} onClick={odhlasit}>Odhlásiť</button>
           </div>
         </div>
+        <nav className="app-tabs">
+          <button className={"tab" + (tab === "hodnotenie" ? " on" : "")} onClick={() => setTab("hodnotenie")}>Hodnotenie rizík</button>
+          <button className={"tab" + (tab === "historia" ? " on" : "")} onClick={() => setTab("historia")}>História{hist.length > 0 ? ` · ${hist.length}` : ""}</button>
+          <button className={"tab" + (tab === "profil" ? " on" : "")} onClick={() => setTab("profil")}>Profil</button>
+        </nav>
       </header>
+
       <main>
         {justPaid && aktivny && (
           <div className="unlock-note" style={{ borderLeftColor: "var(--green)" }}>
@@ -201,104 +224,147 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid }: 
             <strong>Ďakujeme za platbu — aktivujeme váš prístup…</strong> Chvíľu strpenia, stránka sa o sekundu sama obnoví. Ak by sa prístup neaktivoval, obnovte ju ručne (F5).
           </div>
         )}
-        {mode === "none" && <KupaPanel lead="Vyčerpali ste dostupné hodnotenia." />}
-        <div className="card">
-          <div className="section-label">Vstupné údaje</div>
-          <div className="grid">
-            <div className="field"><label>Názov spoločnosti</label><input value={ctx.firma} onChange={set("firma")} placeholder="napr. STAVMONT s.r.o." /></div>
-            <div className="field"><label>Odvetvie</label><select value={ctx.odvetvie} onChange={set("odvetvie")}>{ODVETVIA.map((o) => <option key={o}>{o}</option>)}</select></div>
-            <div className="field"><label>Pracovná pozícia / profesia</label><input value={ctx.pozicia} onChange={set("pozicia")} placeholder="napr. murár, skladník, zvárač" /></div>
-            <div className="field"><label>Vypracoval <span className="opt">(meno, funkcia)</span></label><input value={ctx.vypracoval} onChange={set("vypracoval")} placeholder="napr. Ing. Ján Novák, ABT" /></div>
-            <div className="field full"><label>Pracovné činnosti <span className="opt">— každá na nový riadok (max. {maxCinnosti})</span></label>
-              <textarea value={cinnostiText} onChange={(e) => setCinnostiText(e.target.value)} placeholder={"práca na lešení vo výške nad 1,5 m\nručná manipulácia s bremenami"} /></div>
-            <div className="field full"><label>Špecifiká pracoviska <span className="opt">(nepovinné)</span></label>
-              <textarea style={{ minHeight: 64 }} value={ctx.prostredie} onChange={set("prostredie")} placeholder="napr. práca v exteriéri, pohyb VZV na pracovisku, nočné zmeny..." /></div>
-          </div>
-          <div className="actions">
-            <button className="btn btn-primary" onClick={generuj} disabled={busy || mode === "none"}>{busy ? "Generujem…" : "Vygenerovať hodnotenie rizík"}</button>
-            {!busy && <span className="hint">Generovanie trvá približne 15 – 60 sekúnd podľa počtu činností. Dokument sa automaticky uloží do histórie.</span>}
-          </div>
-          {progress.length > 0 && (
-            <div id="progress" style={{ display: "block" }}>
-              {progress.map((p, i) => (
-                <div className="prog-row" key={i}><span className={"dot " + (p.st === "run" ? "run" : p.st === "done" ? "done" : p.st === "fail" ? "fail" : "")} /><span>{p.c}</span></div>
-              ))}
-            </div>
-          )}
-          {err && <div className="error-box" style={{ display: "block" }}>{err}</div>}
-        </div>
 
-        {vysledky.length > 0 && (
-          <div id="results" style={{ display: "block" }}>
-            <div className="doc-head">
-              <div>
-                <div className="doc-title">Hodnotenie rizík</div>
-                <div className="doc-meta">{[ctx.firma, ctx.odvetvie, ctx.pozicia && "pozícia: " + ctx.pozicia, "dátum: " + new Date().toLocaleDateString("sk-SK"), ctx.vypracoval && "vypracoval: " + ctx.vypracoval].filter(Boolean).join("  ·  ")}</div>
+        {tab === "hodnotenie" && (
+          <>
+            {mode === "none" && <KupaPanel lead="Vyčerpali ste dostupné hodnotenia." />}
+            <div className="card">
+              <div className="section-label">Vstupné údaje</div>
+              <div className="grid">
+                <div className="field"><label>Názov spoločnosti</label><input value={ctx.firma} onChange={set("firma")} placeholder="napr. STAVMONT s.r.o." /></div>
+                <div className="field"><label>Odvetvie</label><select value={ctx.odvetvie} onChange={set("odvetvie")}>{ODVETVIA.map((o) => <option key={o}>{o}</option>)}</select></div>
+                <div className="field"><label>Pracovná pozícia / profesia</label><input value={ctx.pozicia} onChange={set("pozicia")} placeholder="napr. murár, skladník, zvárač" /></div>
+                <div className="field"><label>Vypracoval <span className="opt">(meno, funkcia)</span></label><input value={ctx.vypracoval} onChange={set("vypracoval")} placeholder="napr. Ing. Ján Novák, ABT" /></div>
+                <div className="field full"><label>Pracovné činnosti <span className="opt">— každá na nový riadok (max. {maxCinnosti})</span></label>
+                  <textarea value={cinnostiText} onChange={(e) => setCinnostiText(e.target.value)} placeholder={"práca na lešení vo výške nad 1,5 m\nručná manipulácia s bremenami"} /></div>
+                <div className="field full"><label>Špecifiká pracoviska <span className="opt">(nepovinné)</span></label>
+                  <textarea style={{ minHeight: 64 }} value={ctx.prostredie} onChange={set("prostredie")} placeholder="napr. práca v exteriéri, pohyb VZV na pracovisku, nočné zmeny..." /></div>
               </div>
-              <div className="actions" style={{ margin: 0 }}>
-                <button className="btn btn-ghost" onClick={exportDoc} disabled={locked} title={locked ? "Export odomknete predplatným alebo jednorazovým projektom" : undefined} style={locked ? { opacity: .55, cursor: "not-allowed" } : undefined}>Stiahnuť ako Word (.doc)</button>
-                <button className="btn btn-ghost" onClick={() => window.print()}>Tlačiť / PDF</button>
+              <div className="actions">
+                <button className="btn btn-primary" onClick={generuj} disabled={busy || mode === "none"}>{busy ? "Generujem…" : "Vygenerovať hodnotenie rizík"}</button>
+                {!busy && <span className="hint">Generovanie trvá približne 15 – 60 sekúnd podľa počtu činností. Dokument sa automaticky uloží do histórie.</span>}
               </div>
-            </div>
-            <div className="legend">
-              <span style={{ background: "var(--green)" }}>R 1–4 · AKCEPTOVATEĽNÉ</span>
-              <span style={{ background: "var(--amber)" }}>R 5–9 · MIERNE</span>
-              <span style={{ background: "var(--orange)" }}>R 10–15 · NEŽIADUCE</span>
-              <span style={{ background: "var(--red)" }}>R 16–25 · NEAKCEPTOVATEĽNÉ</span>
-            </div>
-            {vysledky.map((item, idx) => {
-              let maxR2 = 0;
-              const rows = item.nebezpecenstva.map((n, ri) => {
-                const P = clamp(n.P, 3), Z = clamp(n.Z, 3), R = P * Z, info = riskInfo(R);
-                let P2 = clamp(n.P2, Math.max(1, P - 1)), Z2 = clamp(n.Z2, Z);
-                if (P2 * Z2 > R) { P2 = P; Z2 = Z; }
-                const R2 = P2 * Z2, info2 = riskInfo(R2); if (R2 > maxR2) maxR2 = R2;
-                return (
-                  <tr key={ri}>
-                    <td><strong>{n.nebezpecenstvo}</strong></td>
-                    <td>{n.ohrozenie}</td>
-                    <td style={{ textAlign: "center" }}><div className="pz">{P} × {Z}</div><span className="risk-chip" style={{ background: info.color }}>R {R}</span><div className="chip-sub">{info.label}</div></td>
-                    <td><ul>{(n.opatrenia || []).map((o, i) => <li key={i}>{o}</li>)}</ul></td>
-                    <td><ul>{(n.oopp?.length ? n.oopp : ["—"]).map((o, i) => <li key={i}>{o}</li>)}</ul></td>
-                    <td style={{ textAlign: "center" }}><div className="pz">{P2} × {Z2}</div><span className="risk-chip" style={{ background: info2.color }}>R {R2}</span><div className="chip-sub">{info2.label}</div></td>
-                    <td className={"predpisy" + (locked ? " locked" : "")}>{(n.predpisy || []).map((p, i) => <span key={i}>{p}<br /></span>)}</td>
-                  </tr>
-                );
-              });
-              return (
-                <div className="activity-card" key={idx}>
-                  <div className="activity-head"><span className="num">{String(idx + 1).padStart(2, "0")}</span>{item.cinnost}{item.refs > 0 && <span className="lib-badge" title={`Generované s oporou ${item.refs} overených záznamov z praxe`}>KNIŽNICA · {item.refs}</span>}</div>
-                  <div style={{ overflowX: "auto" }}>
-                    <table>
-                      <thead><tr>
-                        <th style={{ width: "14%" }}>Nebezpečenstvo</th><th style={{ width: "17%" }}>Ohrozenie</th>
-                        <th style={{ width: "10%" }}>Riziko pred opatreniami</th><th style={{ width: "23%" }}>Opatrenia</th>
-                        <th style={{ width: "15%" }}>Požadované OOPP</th><th style={{ width: "10%" }}>Zostatkové riziko</th>
-                        <th style={{ width: "11%" }}>Predpisy</th>
-                      </tr></thead>
-                      <tbody>{rows}</tbody>
-                    </table>
-                  </div>
-                  <div className={"konanie" + (locked ? " locked" : "")}><strong>Požadované konanie</strong> (podľa najvyššieho zostatkového rizika R {maxR2}): {pozadovaneKonanie(maxR2)}</div>
+              {progress.length > 0 && (
+                <div id="progress" style={{ display: "block" }}>
+                  {progress.map((p, i) => (
+                    <div className="prog-row" key={i}><span className={"dot " + (p.st === "run" ? "run" : p.st === "done" ? "done" : p.st === "fail" ? "fail" : "")} /><span>{p.c}</span></div>
+                  ))}
                 </div>
-              );
-            })}
-            <div className="disclaimer"><strong>Upozornenie:</strong> Tento dokument je podkladom pre posúdenie rizika. Pred zaradením do dokumentácie BOZP ho musí preveriť a schváliť odborne spôsobilá osoba (bezpečnostný technik) v zmysle zákona č. 124/2006 Z. z.</div>
-            {locked && <KupaPanel lead="Páči sa vám výsledok? Predpisy, požadované konanie a export do Wordu odomknete jedným z balíkov." />}
+              )}
+              {err && <div className="error-box" style={{ display: "block" }}>{err}</div>}
+            </div>
+
+            {vysledky.length > 0 && (
+              <div id="results" style={{ display: "block" }}>
+                <div className="doc-head">
+                  <div>
+                    <div className="doc-title">Hodnotenie rizík</div>
+                    <div className="doc-meta">{[ctx.firma, ctx.odvetvie, ctx.pozicia && "pozícia: " + ctx.pozicia, "dátum: " + new Date().toLocaleDateString("sk-SK"), ctx.vypracoval && "vypracoval: " + ctx.vypracoval].filter(Boolean).join("  ·  ")}</div>
+                  </div>
+                  <div className="actions" style={{ margin: 0 }}>
+                    <button className="btn btn-ghost" onClick={exportDoc} disabled={locked} title={locked ? "Export odomknete predplatným alebo jednorazovým projektom" : undefined} style={locked ? { opacity: .55, cursor: "not-allowed" } : undefined}>Stiahnuť ako Word (.doc)</button>
+                    <button className="btn btn-ghost" onClick={() => window.print()}>Tlačiť / PDF</button>
+                  </div>
+                </div>
+                <div className="legend">
+                  <span style={{ background: "var(--green)" }}>R 1–4 · AKCEPTOVATEĽNÉ</span>
+                  <span style={{ background: "var(--amber)" }}>R 5–9 · MIERNE</span>
+                  <span style={{ background: "var(--orange)" }}>R 10–15 · NEŽIADUCE</span>
+                  <span style={{ background: "var(--red)" }}>R 16–25 · NEAKCEPTOVATEĽNÉ</span>
+                </div>
+                {vysledky.map((item, idx) => {
+                  let maxR2 = 0;
+                  const rows = item.nebezpecenstva.map((n, ri) => {
+                    const P = clamp(n.P, 3), Z = clamp(n.Z, 3), R = P * Z, info = riskInfo(R);
+                    let P2 = clamp(n.P2, Math.max(1, P - 1)), Z2 = clamp(n.Z2, Z);
+                    if (P2 * Z2 > R) { P2 = P; Z2 = Z; }
+                    const R2 = P2 * Z2, info2 = riskInfo(R2); if (R2 > maxR2) maxR2 = R2;
+                    return (
+                      <tr key={ri}>
+                        <td><strong>{n.nebezpecenstvo}</strong></td>
+                        <td>{n.ohrozenie}</td>
+                        <td style={{ textAlign: "center" }}><div className="pz">{P} × {Z}</div><span className="risk-chip" style={{ background: info.color }}>R {R}</span><div className="chip-sub">{info.label}</div></td>
+                        <td><ul>{(n.opatrenia || []).map((o, i) => <li key={i}>{o}</li>)}</ul></td>
+                        <td><ul>{(n.oopp?.length ? n.oopp : ["—"]).map((o, i) => <li key={i}>{o}</li>)}</ul></td>
+                        <td style={{ textAlign: "center" }}><div className="pz">{P2} × {Z2}</div><span className="risk-chip" style={{ background: info2.color }}>R {R2}</span><div className="chip-sub">{info2.label}</div></td>
+                        <td className={"predpisy" + (locked ? " locked" : "")}>{(n.predpisy || []).map((p, i) => <span key={i}>{p}<br /></span>)}</td>
+                      </tr>
+                    );
+                  });
+                  return (
+                    <div className="activity-card" key={idx}>
+                      <div className="activity-head"><span className="num">{String(idx + 1).padStart(2, "0")}</span>{item.cinnost}{item.refs > 0 && <span className="lib-badge" title={`Generované s oporou ${item.refs} overených záznamov z praxe`}>KNIŽNICA · {item.refs}</span>}</div>
+                      <div style={{ overflowX: "auto" }}>
+                        <table>
+                          <thead><tr>
+                            <th style={{ width: "14%" }}>Nebezpečenstvo</th><th style={{ width: "17%" }}>Ohrozenie</th>
+                            <th style={{ width: "10%" }}>Riziko pred opatreniami</th><th style={{ width: "23%" }}>Opatrenia</th>
+                            <th style={{ width: "15%" }}>Požadované OOPP</th><th style={{ width: "10%" }}>Zostatkové riziko</th>
+                            <th style={{ width: "11%" }}>Predpisy</th>
+                          </tr></thead>
+                          <tbody>{rows}</tbody>
+                        </table>
+                      </div>
+                      <div className={"konanie" + (locked ? " locked" : "")}><strong>Požadované konanie</strong> (podľa najvyššieho zostatkového rizika R {maxR2}): {pozadovaneKonanie(maxR2)}</div>
+                    </div>
+                  );
+                })}
+                <div className="disclaimer"><strong>Upozornenie:</strong> Tento dokument je podkladom pre posúdenie rizika. Pred zaradením do dokumentácie BOZP ho musí preveriť a schváliť odborne spôsobilá osoba (bezpečnostný technik) v zmysle zákona č. 124/2006 Z. z.</div>
+                {locked && <KupaPanel lead="Páči sa vám výsledok? Predpisy, požadované konanie a export do Wordu odomknete jedným z balíkov." />}
+              </div>
+            )}
+          </>
+        )}
+
+        {tab === "historia" && (
+          <div className="card">
+            <div className="section-label">História dokumentov</div>
+            {hist.length === 0 ? (
+              <p className="hint">Zatiaľ nemáte uložené žiadne hodnotenia. Vytvorte prvé v záložke „Hodnotenie rizík" — uloží sa sem automaticky.</p>
+            ) : (
+              hist.map((h) => (
+                <div className="hist-row" key={h.id}>
+                  <span style={{ flex: 1 }}>{h.title}</span>
+                  <span className="user-bar">{new Date(h.created_at).toLocaleDateString("sk-SK")}</span>
+                  <button className="btn btn-ghost" onClick={() => nacitajDokument(h.id)}>Načítať</button>
+                </div>
+              ))
+            )}
           </div>
         )}
 
-        {hist.length > 0 && (
-          <div className="card hist">
-            <div className="section-label">História dokumentov</div>
-            {hist.map((h) => (
-              <div className="hist-row" key={h.id}>
-                <span style={{ flex: 1 }}>{h.title}</span>
-                <span className="user-bar">{new Date(h.created_at).toLocaleDateString("sk-SK")}</span>
-                <button className="btn btn-ghost" onClick={() => nacitajDokument(h.id)}>Načítať</button>
-              </div>
-            ))}
-          </div>
+        {tab === "profil" && (
+          <>
+            <div className="card">
+              <div className="section-label">Účet</div>
+              <div className="field"><label>E-mailová adresa</label><input value={email} disabled style={{ opacity: .7, cursor: "not-allowed" }} /></div>
+              <p style={{ fontSize: 14, margin: "12px 0 0" }}><strong>Stav balíka:</strong> {plan}</p>
+            </div>
+
+            <div className="card" style={{ marginTop: 18 }}>
+              <div className="section-label">Zmena hesla</div>
+              <div className="field"><label htmlFor="np">Nové heslo</label>
+                <input id="np" type="password" autoComplete="new-password" value={newPass} onChange={(e) => setNewPass(e.target.value)} placeholder="aspoň 6 znakov" /></div>
+              <div className="actions"><button className="btn btn-ghost" onClick={zmenHeslo}>Uložiť nové heslo</button></div>
+              {profilMsg && <div style={{ display: "block", marginTop: 14, border: "1px solid var(--green)", borderRadius: 8, padding: "10px 14px", fontSize: 13.5, background: "#F0FAF4", color: "var(--green)" }}>{profilMsg}</div>}
+              {profilErr && <div className="error-box" style={{ display: "block" }}>{profilErr}</div>}
+            </div>
+
+            <div className="card" style={{ marginTop: 18 }}>
+              <div className="section-label">Platby a predplatné</div>
+              {hasCustomer ? (
+                <>
+                  <p style={{ fontSize: 14, color: "var(--ink-soft)", marginBottom: 14 }}>V správe platieb vidíte históriu platieb a faktúry, môžete zmeniť platobnú kartu alebo zrušiť predplatné.</p>
+                  <button className="btn btn-primary" onClick={spravujPredplatne}>Spravovať platby a predplatné</button>
+                </>
+              ) : (
+                <>
+                  <p style={{ fontSize: 14, color: "var(--ink-soft)", marginBottom: 14 }}>Zatiaľ nemáte žiadnu platbu. Vyberte si balík a po prvej platbe tu uvidíte správu platieb, faktúry aj predplatné.</p>
+                  <KupaPanel lead="Vyberte si balík:" />
+                </>
+              )}
+            </div>
+          </>
         )}
       </main>
       <footer>Metodika R = P × Z (5×5) · knižnica overených rizík z praxe · obsah generovaný AI s nastavenými pravidlami</footer>

@@ -11,6 +11,8 @@ export default async function AppPage({ searchParams }: { searchParams: { platba
   if (!user) redirect("/login");
 
   const ent = await zistiOpravnenie(supabase, user.id);
+  const { data: profil } = await supabase
+    .from("profiles").select("stripe_customer_id").eq("id", user.id).single();
 
   return (
     <Generator
@@ -19,6 +21,7 @@ export default async function AppPage({ searchParams }: { searchParams: { platba
       mode={ent.mode}
       maxCinnosti={ent.maxCinnosti}
       justPaid={searchParams?.platba === "ok"}
+      hasCustomer={!!profil?.stripe_customer_id}
     />
   );
 }

@@ -394,3 +394,13 @@
   .land .hero::before,.land .ukazka::before{animation:none}
   .land .hero h1,.land .hero p.lead,.land .hero-cta,.land .hero .trust,.land .matrix-card{animation:none}
 }
+
+/* ===== APP: tabová navigácia v hlavičke ===== */
+.app-tabs{max-width:980px;margin:0 auto;padding:0 24px;display:flex;gap:2px;border-top:1px solid var(--line)}
+.app-tabs .tab{background:transparent;border:none;border-bottom:2px solid transparent;padding:13px 18px;font-family:'Archivo';font-weight:700;font-size:14px;color:var(--ink-soft);cursor:pointer;transition:color .15s ease,border-color .15s ease}
+.app-tabs .tab:hover{color:var(--ink)}
+.app-tabs .tab.on{color:var(--ink);border-bottom-color:var(--safety)}
+@media (max-width:680px){
+  .app-tabs{padding:0 8px;overflow-x:auto}
+  .app-tabs .tab{padding:12px 13px;font-size:13px;white-space:nowrap}
+}
