@@ -36,7 +36,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
   const [newPass, setNewPass] = useState("");
   const [profilMsg, setProfilMsg] = useState("");
   const [profilErr, setProfilErr] = useState("");
-  const locked = mode === "free";
+  const wordLocked = mode === "free";
 
   async function kupit(plan: string) {
     try {
@@ -155,42 +155,98 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
     window.location.href = "/";
   }
 
-  function exportDoc() {
-    if (!vysledky.length) return;
+  // Spoločný obsah dokumentu (meta, tabuľky, podpis, poznámky) — pre Word aj PDF.
+  function docBody() {
     const dnes = new Date(); const dalsie = new Date(dnes); dalsie.setFullYear(dalsie.getFullYear() + 3);
-    const meta = [ctx.firma, ctx.odvetvie, ctx.pozicia && "pozícia: " + ctx.pozicia, "dátum: " + dnes.toLocaleDateString("sk-SK"), ctx.vypracoval && "vypracoval: " + ctx.vypracoval].filter(Boolean).join("  ·  ");
-    let body = `<h1 style="font-family:Arial">HODNOTENIE RIZÍK</h1>
-    <p style="font-family:Arial;font-size:11pt">${esc(meta)}</p>
-    <p style="font-family:Arial;font-size:10pt">Metodika: R = P × Z (5×5), východiskové riziko pred opatreniami a zostatkové riziko R₂ = P₂ × Z₂ po zavedení opatrení a OOPP. Kategórie: 1–4 akceptovateľné, 5–9 mierne, 10–15 nežiaduce, 16–25 neakceptovateľné.</p>
-    <p style="font-family:Arial;font-size:9pt;color:#444"><b>Pojmy:</b> Nebezpečenstvo — stav alebo vlastnosť faktora pracovného procesu a pracovného prostredia, ktoré môžu poškodiť zdravie. Ohrozenie — situácia, v ktorej nemožno vylúčiť poškodenie zdravia. Zostatkové riziko — hodnota rizika po vykonaní opatrení.</p>
-    <p style="font-family:Arial;font-size:9pt;color:#444"><b>Prehodnotenie:</b> Hodnotenie sa aktualizuje operatívne pri každej zmene pracovných podmienok, technológie alebo organizácie práce, po pracovnom úraze alebo závažnej skoronehode; periodicky najneskôr do troch rokov. Dátum ďalšieho periodického prehodnotenia: najneskôr ${dalsie.toLocaleDateString("sk-SK")}.</p>`;
+    const vyprac = esc(ctx.vypracoval) || "______________________";
+    let body = `<h1>HODNOTENIE RIZÍK</h1>
+    <table class="meta">
+      <tr><td class="k">Spoločnosť</td><td>${esc(ctx.firma) || "—"}</td><td class="k">Dátum vyhotovenia</td><td>${dnes.toLocaleDateString("sk-SK")}</td></tr>
+      <tr><td class="k">Odvetvie</td><td>${esc(ctx.odvetvie) || "—"}</td><td class="k">Pracovná pozícia</td><td>${esc(ctx.pozicia) || "—"}</td></tr>
+      ${ctx.prostredie ? `<tr><td class="k">Špecifiká pracoviska</td><td colspan="3">${esc(ctx.prostredie)}</td></tr>` : ""}
+    </table>`;
     vysledky.forEach((item, idx) => {
-      let maxR2 = 0;
-      body += `<h2 style="font-family:Arial;font-size:13pt">${idx + 1}. ${esc(item.cinnost)}</h2>
-      <table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse;font-family:Arial;font-size:9pt;width:100%">
-      <tr style="background:#16212D;color:#fff"><th>Nebezpečenstvo</th><th>Ohrozenie</th><th>P</th><th>Z</th><th>R</th><th>Kategória</th><th>Opatrenia</th><th>Požadované OOPP</th><th>P₂</th><th>Z₂</th><th>R₂</th><th>Zostatkové riziko</th><th>Predpisy</th></tr>`;
+      let maxR2 = 0; let rows = "";
       item.nebezpecenstva.forEach((n) => {
         const P = clamp(n.P, 3), Z = clamp(n.Z, 3), R = P * Z;
         let P2 = clamp(n.P2, Math.max(1, P - 1)), Z2 = clamp(n.Z2, Z);
         if (P2 * Z2 > R) { P2 = P; Z2 = Z; }
         const R2 = P2 * Z2; if (R2 > maxR2) maxR2 = R2;
-        body += `<tr><td>${esc(n.nebezpecenstvo)}</td><td>${esc(n.ohrozenie)}</td>
-        <td align="center">${P}</td><td align="center">${Z}</td><td align="center"><b>${R}</b></td><td>${riskInfo(R).label}</td>
+        rows += `<tr><td><b>${esc(n.nebezpecenstvo)}</b></td><td>${esc(n.ohrozenie)}</td>
+        <td class="c">${P}</td><td class="c">${Z}</td><td class="c b">${R}</td><td>${riskInfo(R).label}</td>
         <td>${(n.opatrenia || []).map((o) => "• " + esc(o)).join("<br>")}</td>
         <td>${(n.oopp?.length ? n.oopp : ["—"]).map((o) => "• " + esc(o)).join("<br>")}</td>
-        <td align="center">${P2}</td><td align="center">${Z2}</td><td align="center"><b>${R2}</b></td><td>${riskInfo(R2).label}</td>
-        <td>${(n.predpisy || []).map(esc).join("<br>")}</td></tr>`;
+        <td class="c">${P2}</td><td class="c">${Z2}</td><td class="c b">${R2}</td><td>${riskInfo(R2).label}</td>
+        <td class="sm">${(n.predpisy || []).map(esc).join("<br>")}</td></tr>`;
       });
-      body += `</table><p style="font-family:Arial;font-size:9.5pt"><b>Požadované konanie</b> (podľa najvyššieho zostatkového rizika R ${maxR2}): ${pozadovaneKonanie(maxR2)}</p>`;
+      body += `<h2>${idx + 1}. ${esc(item.cinnost)}</h2>
+      <table class="rt"><thead><tr>
+        <th>Nebezpečenstvo</th><th>Ohrozenie</th><th class="c">P</th><th class="c">Z</th><th class="c">R</th><th>Kategória</th><th>Opatrenia</th><th>Požadované OOPP</th><th class="c">P₂</th><th class="c">Z₂</th><th class="c">R₂</th><th>Zostatkové riziko</th><th>Predpisy</th>
+      </tr></thead><tbody>${rows}</tbody></table>
+      <p class="konanie"><b>Požadované konanie</b> (podľa najvyššieho zostatkového rizika R ${maxR2}): ${pozadovaneKonanie(maxR2)}</p>`;
     });
-    body += `<p style="font-family:Arial;font-size:9pt;color:#555"><i>Tento dokument je podkladom pre posúdenie rizika a pred zaradením do dokumentácie BOZP ho musí preveriť a schváliť odborne spôsobilá osoba v zmysle zákona č. 124/2006 Z. z.</i></p>`;
-    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"></head><body>${body}</body></html>`;
+    body += `<table class="sign"><tr>
+      <td>Vypracoval: <b>${vyprac}</b></td><td>Dátum: ${dnes.toLocaleDateString("sk-SK")}</td><td>Podpis: ______________________</td>
+    </tr></table>
+    <div class="fine">
+      <p><b>Metodika:</b> R = P × Z (5×5). Východiskové riziko pred opatreniami a zostatkové riziko R₂ = P₂ × Z₂ po zavedení opatrení a OOPP. Kategórie: 1–4 akceptovateľné, 5–9 mierne, 10–15 nežiaduce, 16–25 neakceptovateľné.</p>
+      <p><b>Pojmy:</b> Nebezpečenstvo — stav alebo vlastnosť faktora pracovného procesu a pracovného prostredia, ktoré môžu poškodiť zdravie. Ohrozenie — situácia, v ktorej nemožno vylúčiť poškodenie zdravia. Zostatkové riziko — hodnota rizika po vykonaní opatrení.</p>
+      <p><b>Prehodnotenie:</b> Hodnotenie sa aktualizuje pri každej zmene pracovných podmienok, technológie alebo organizácie práce, po pracovnom úraze alebo závažnej skoronehode; periodicky najneskôr do troch rokov — najneskôr do ${dalsie.toLocaleDateString("sk-SK")}.</p>
+      <p class="disc">Tento dokument je podkladom pre posúdenie rizika; pred zaradením do dokumentácie BOZP ho musí preveriť a schváliť odborne spôsobilá osoba (bezpečnostný technik) v zmysle zákona č. 124/2006 Z. z.</p>
+    </div>`;
+    return body;
+  }
+
+  function exportDoc() {
+    if (!vysledky.length || wordLocked) return;
+    const style = `@page Section1{size:841.95pt 595.35pt;mso-page-orientation:landscape;margin:1.4cm}div.Section1{page:Section1}
+      body{font-family:Calibri,Arial,sans-serif;font-size:9pt;color:#1b1b1b}
+      h1{font-size:17pt;margin:0 0 8pt;letter-spacing:.4pt}
+      h2{font-size:11.5pt;margin:14pt 0 5pt;color:#16212D}
+      table{border-collapse:collapse;width:100%}
+      table.meta td{border:.5pt solid #c8c8c8;padding:4pt 7pt;font-size:9.5pt}
+      table.meta td.k{background:#eef2f6;font-weight:bold;width:14%}
+      table.rt th{background:#16212D;color:#fff;font-size:8pt;padding:4pt 5pt;border:.5pt solid #16212D;text-align:left}
+      table.rt td{border:.5pt solid #b8b8b8;padding:4pt 6pt;vertical-align:top;font-size:8.5pt}
+      td.c{text-align:center}td.b{font-weight:bold}td.sm{font-size:7.5pt;color:#444}
+      .konanie{font-size:9pt;margin:5pt 0 0}
+      table.sign{margin-top:18pt}table.sign td{border:none;padding:6pt 8pt;font-size:9.5pt}
+      .fine{margin-top:14pt;font-size:7.5pt;color:#555}.fine p{margin:0 0 4pt}.disc{font-style:italic}`;
+    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>${style}</style></head><body><div class="Section1">${docBody()}</div></body></html>`;
     const blob = new Blob(["﻿" + html], { type: "application/msword" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url; a.download = "hodnotenie-rizik.doc"; a.rel = "noopener"; a.style.display = "none";
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 60000);
+  }
+
+  function tlacPdf() {
+    if (!vysledky.length) return;
+    const wm = mode === "free";
+    const style = `@page{size:A4 landscape;margin:12mm}
+      *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      body{font-family:'Segoe UI',Arial,sans-serif;font-size:9px;color:#1b1b1b;margin:0}
+      h1{font-size:20px;margin:0 0 8px;letter-spacing:.3px}
+      h2{font-size:13px;margin:14px 0 5px;color:#16212D}
+      table{border-collapse:collapse;width:100%}
+      table.meta td{border:1px solid #c8c8c8;padding:4px 8px;font-size:10px}
+      table.meta td.k{background:#eef2f6;font-weight:bold;width:14%}
+      table.rt th{background:#16212D;color:#fff;font-size:8.5px;padding:5px 6px;text-align:left}
+      table.rt td{border:1px solid #c0c0c0;padding:5px 7px;vertical-align:top;font-size:9px}
+      td.c{text-align:center}td.b{font-weight:bold}td.sm{font-size:8px;color:#444}
+      table.rt tr{page-break-inside:avoid}
+      .konanie{font-size:9.5px;margin:5px 0 0}
+      table.sign{margin-top:20px}table.sign td{border:none;padding:6px 10px;font-size:10px}
+      .fine{margin-top:16px;font-size:8px;color:#555}.fine p{margin:0 0 4px}.disc{font-style:italic}
+      ${wm ? `body::before{content:"www.erizika.sk";position:fixed;top:42%;left:0;right:0;text-align:center;font-size:62px;font-weight:700;color:rgba(20,30,45,.09);transform:rotate(-22deg);letter-spacing:5px;z-index:9999;pointer-events:none}` : ""}`;
+    const html = `<!doctype html><html lang="sk"><head><meta charset="utf-8"><title>Hodnotenie rizík</title><style>${style}</style></head><body>${docBody()}</body></html>`;
+    const w = window.open("", "_blank");
+    if (!w) { setErr("Pre stiahnutie PDF povoľte vyskakovacie okná (pop-up)."); return; }
+    w.document.write(html);
+    w.document.close();
+    w.focus();
+    w.onload = () => setTimeout(() => w.print(), 250);
   }
 
   return (
@@ -262,8 +318,8 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
                     <div className="doc-meta">{[ctx.firma, ctx.odvetvie, ctx.pozicia && "pozícia: " + ctx.pozicia, "dátum: " + new Date().toLocaleDateString("sk-SK"), ctx.vypracoval && "vypracoval: " + ctx.vypracoval].filter(Boolean).join("  ·  ")}</div>
                   </div>
                   <div className="actions" style={{ margin: 0 }}>
-                    <button className="btn btn-ghost" onClick={exportDoc} disabled={locked} title={locked ? "Export odomknete predplatným alebo jednorazovým projektom" : undefined} style={locked ? { opacity: .55, cursor: "not-allowed" } : undefined}>Stiahnuť ako Word (.doc)</button>
-                    <button className="btn btn-ghost" onClick={() => window.print()}>Tlačiť / PDF</button>
+                    <button className="btn btn-primary" onClick={tlacPdf}>Stiahnuť PDF</button>
+                    <button className="btn btn-ghost" onClick={exportDoc} disabled={wordLocked} title={wordLocked ? "Editovateľný Word bez vodoznaku odomknete kúpou balíka" : undefined} style={wordLocked ? { opacity: .55, cursor: "not-allowed" } : undefined}>Stiahnuť Word (.doc){wordLocked ? " 🔒" : ""}</button>
                   </div>
                 </div>
                 <div className="legend">
@@ -287,7 +343,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
                         <td><ul>{(n.opatrenia || []).map((o, i) => <li key={i}>{o}</li>)}</ul></td>
                         <td><ul>{(n.oopp?.length ? n.oopp : ["—"]).map((o, i) => <li key={i}>{o}</li>)}</ul></td>
                         <td style={{ textAlign: "center" }}><div className="pz">{P2} × {Z2}</div><span className="risk-chip" style={{ background: info2.color }}>R {R2}</span><div className="chip-sub">{info2.label}</div></td>
-                        <td className={"predpisy" + (locked ? " locked" : "")}>{(n.predpisy || []).map((p, i) => <span key={i}>{p}<br /></span>)}</td>
+                        <td className="predpisy">{(n.predpisy || []).map((p, i) => <span key={i}>{p}<br /></span>)}</td>
                       </tr>
                     );
                   });
@@ -305,12 +361,12 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
                           <tbody>{rows}</tbody>
                         </table>
                       </div>
-                      <div className={"konanie" + (locked ? " locked" : "")}><strong>Požadované konanie</strong> (podľa najvyššieho zostatkového rizika R {maxR2}): {pozadovaneKonanie(maxR2)}</div>
+                      <div className="konanie"><strong>Požadované konanie</strong> (podľa najvyššieho zostatkového rizika R {maxR2}): {pozadovaneKonanie(maxR2)}</div>
                     </div>
                   );
                 })}
                 <div className="disclaimer"><strong>Upozornenie:</strong> Tento dokument je podkladom pre posúdenie rizika. Pred zaradením do dokumentácie BOZP ho musí preveriť a schváliť odborne spôsobilá osoba (bezpečnostný technik) v zmysle zákona č. 124/2006 Z. z.</div>
-                {locked && <KupaPanel lead="Páči sa vám výsledok? Predpisy, požadované konanie a export do Wordu odomknete jedným z balíkov." />}
+                {mode === "free" && <KupaPanel lead="Páči sa vám výsledok? Stiahnite si ho zadarmo ako PDF (s vodoznakom). Editovateľný Word bez vodoznaku získate kúpou balíka." />}
               </div>
             )}
           </>
