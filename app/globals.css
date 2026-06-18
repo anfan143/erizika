@@ -406,3 +406,41 @@
   .app-tabs{padding:0 8px;overflow-x:auto}
   .app-tabs .tab{padding:12px 13px;font-size:13px;white-space:nowrap}
 }
+
+/* ============================================================
+   VEĽKÉ OBRAZOVKY (monitory ≥1500px): zväčšiť obsah aj text,
+   nech sa stránka nezdá zmenšená (efekt ~110–120 % zoomu).
+   Mobil a notebook (do 1499px) ostávajú nezmenené.
+   ============================================================ */
+@media (min-width:1500px){
+  /* landing */
+  .land{font-size:17.5px}
+  .land .wrap,.land .nav-in{max-width:1280px}
+  .land h1{font-size:52px}
+  .land h2.sec{font-size:39px}
+  .land .hero p.lead{font-size:19px}
+  .land .pcard h3,.land .krok h3{font-size:21px}
+  .land .cena .suma{font-size:42px}
+  .land .btn{font-size:16px;padding:14px 27px}
+  .land .demo-head .cinnost{font-size:21px}
+  /* appka / pracovná plocha */
+  body{font-size:16.5px}
+  .head-inner,main,.app-tabs{max-width:1200px}
+  h1{font-size:23px}
+  .head-sub{font-size:14px}
+  .card{padding:30px}
+  .doc-title{font-size:30px}
+  input,select,textarea{font-size:15.5px}
+  .btn{font-size:16px}
+  table{font-size:14.5px}
+  .app-tabs .tab{font-size:15px;padding:14px 20px}
+}
+/* ešte väčšie monitory (≥1900px) — o niečo viac */
+@media (min-width:1900px){
+  .land{font-size:18.5px}
+  .land .wrap,.land .nav-in{max-width:1380px}
+  .land h1{font-size:58px}
+  .land h2.sec{font-size:43px}
+  body{font-size:17.5px}
+  .head-inner,main,.app-tabs{max-width:1320px}
+}
