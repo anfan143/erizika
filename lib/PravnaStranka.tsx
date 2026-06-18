@@ -44,7 +44,7 @@ export function Prevadzkovatel() {
       Sídlo: {FIRMA.sidlo}
       <br />
       IČO: {FIRMA.ico} &nbsp;·&nbsp; DIČ: {FIRMA.dic}
-      {FIRMA.platcaDPH && FIRMA.icDph ? (
+      {FIRMA.icDph ? (
         <>
           {" "}·&nbsp; IČ DPH: {FIRMA.icDph}
         </>

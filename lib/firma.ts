@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────────
 // FIREMNÉ ÚDAJE PREVÁDZKOVATEĽA
-// Vyplň hodnoty nižšie. Použijú sa v pätičke, VOP, GDPR aj na faktúrach.
-// Polia označené [DOPLŇ: ...] treba nahradiť skutočnými údajmi z OR/ŽR.
+// Použijú sa v pätičke, VOP, GDPR aj na faktúrach.
+// Polia označené [DOPLŇ: ...] treba ešte nahradiť skutočnými údajmi z OR.
 // ───────────────────────────────────────────────────────────────────
 
 type FirmaInfo = {
@@ -9,7 +9,7 @@ type FirmaInfo = {
   sidlo: string;
   ico: string;
   dic: string;
-  platcaDPH: boolean;
+  platcaDPH: boolean; // riadny platiteľ §4 = true; neplatiteľ (aj §7a) = false
   icDph: string;
   zapis: string;
   konatel: string;
@@ -17,24 +17,27 @@ type FirmaInfo = {
   telefon: string;
   web: string;
   dozor: string;
+  iban: string;
+  swift: string;
+  banka: string;
 };
 
 export const FIRMA: FirmaInfo = {
   // Obchodné meno presne ako v Obchodnom registri, vrátane "s. r. o."
-  obchodneMeno: "[DOPLŇ: obchodné meno, napr. ECOPOWER s. r. o.]",
+  obchodneMeno: "HAVCO s. r. o.",
 
   // Sídlo: ulica a číslo, PSČ a mesto
   sidlo: "[DOPLŇ: Ulica 123, 010 01 Mesto]",
 
   // IČO (8-miestne)
-  ico: "[DOPLŇ: IČO]",
+  ico: "57 317 917",
 
   // DIČ (daňové identifikačné číslo)
-  dic: "[DOPLŇ: DIČ]",
+  dic: "2122666898",
 
-  // Neplatiteľ DPH → false. Keď sa staneš platcom, prepni na true a doplň IČ DPH.
+  // Riadny platiteľ DPH §4 → true (ceny s DPH). Neplatiteľ vrátane §7a → false (ceny konečné).
   platcaDPH: false,
-  icDph: "", // vyplň len ak platcaDPH = true (napr. "SK1234567890")
+  icDph: "SK2122666898", // registrácia §7a (len pre zahraničné služby), domáce ceny bez DPH
 
   // Zápis v registri (skopíruj z výpisu z OR)
   zapis: "[DOPLŇ: Obchodný register Mestského súdu …, oddiel Sro, vložka č. …]",
@@ -47,9 +50,14 @@ export const FIRMA: FirmaInfo = {
   telefon: "", // nepovinné, napr. "+421 9xx xxx xxx"
   web: "www.erizika.sk",
 
-  // Orgán dozoru (pre spotrebiteľov) — Slovenská obchodná inšpekcia, miestne príslušný inšpektorát
+  // Orgán dozoru (pre spotrebiteľov) — Slovenská obchodná inšpekcia
   dozor:
     "Slovenská obchodná inšpekcia (SOI), Inšpektorát SOI pre príslušný kraj podľa sídla prevádzkovateľa. www.soi.sk",
+
+  // Bankové spojenie (pre faktúry)
+  iban: "SK28 8330 0000 0022 0339 8433",
+  swift: "FIOZSKBAXXX",
+  banka: "Fio banka",
 };
 
 // Dátum poslednej aktualizácie právnych dokumentov (zobrazí sa na stránkach)
