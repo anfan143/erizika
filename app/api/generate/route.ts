@@ -67,7 +67,7 @@ Vypracuj hodnotenie rizík pre činnosť: "${cinnost.slice(0, 300)}"${refsBlock(
         },
         body: JSON.stringify({
           model: process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6",
-          max_tokens: 1600,
+          max_tokens: 4000,
           temperature: 0.2,
           system: SYSTEM_PROMPT,
           messages: [{ role: "user", content: userMsg }],
