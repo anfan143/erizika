@@ -42,22 +42,22 @@ export const LANDING_HTML = `
         <i style="background:var(--orange);animation-delay:6.0s"></i><i style="background:var(--orange);animation-delay:6.3s"></i><i style="background:var(--red);animation-delay:6.6s"></i><i style="background:var(--red);animation-delay:6.9s"></i><i style="background:var(--red);animation-delay:7.2s"></i>
       </div>
       <div class="mx-axis"><span>PRAVDEPODOBNOSŤ →</span><span>↑ ZÁVAŽNOSŤ</span></div>
-      <div class="doc-chip"><span class="ic">.doc</span><span><b>Hodnotenie rizík</b><span>kompletný dokument</span></span></div>
+      <div class="doc-chip"><span class="ic">.doc<br>.pdf</span><span><b>Hodnotenie rizík</b><span>jednoduchý export</span></span></div>
     </div>
   </div>
 </header>
 
 <div class="marquee" aria-hidden="true">
   <div class="marq-track">
-    <span>Žiadny termín nestojí za život</span>
-    <span>Majte kontrolu nad činnosťami a rizikami svojich zamestnancov</span>
+    <span>Chráňte svojich zamestnancov</span>
+    <span>Majte kontrolu nad rizikami</span>
     <span>Hodnotenie rizík je nevyhnutnou súčasťou vašej firmy</span>
-    <span>OOPP nosíš pre seba, nie pre kontrolu</span>
+    <span>Bohatá databáza a knižnica rizík naprieč všetkými odvetviami</span>
     <span>Bezpečnosť sa stáva prirodzenou súčasťou práce</span>
-    <span>Žiadny termín nestojí za život</span>
-    <span>Majte kontrolu nad činnosťami a rizikami svojich zamestnancov</span>
+    <span>Chráňte svojich zamestnancov</span>
+    <span>Majte kontrolu nad rizikami</span>
     <span>Hodnotenie rizík je nevyhnutnou súčasťou vašej firmy</span>
-    <span>OOPP nosíš pre seba, nie pre kontrolu</span>
+    <span>Bohatá databáza a knižnica rizík naprieč všetkými odvetviami</span>
     <span>Bezpečnosť sa stáva prirodzenou súčasťou práce</span>
   </div>
 </div>
@@ -216,16 +216,20 @@ export const LANDING_HTML = `
     <h2 class="sec">Na rovinu.</h2>
     <div class="faq-list">
       <details>
-        <summary>Obstojí dokument pri kontrole inšpektorátu práce?</summary>
-        <p>Áno. Dokument obsahuje všetko, čo sa pri kontrole očakáva: identifikované nebezpečenstvá a ohrozenia, maticu rizika, opatrenia podľa hierarchie, požadované OOPP, zostatkové riziko aj doložku o prehodnocovaní. Pred zaradením do dokumentácie BOZP ho ešte preverí a schváli odborne spôsobilá osoba — rovnako ako každý iný podklad.</p>
-      </details>
-      <details>
         <summary>Ako funguje vyskúšanie zadarmo?</summary>
-        <p>Po registrácii si necháte posúdiť jednu pracovnú činnosť. Výsledok uvidíte celý a v plnej kvalite, aby ste vedeli, čo kupujete — vybrané detaily a export do Wordu sa odomknú jednorazovým projektom alebo predplatným.</p>
+        <p>Po registrácii si necháte posúdiť jednu pracovnú činnosť — výsledok vidíte celý a v plnej kvalite. Stiahnete si ho ako PDF s diskrétnym vodoznakom. Editovateľný Word bez vodoznaku a viac pracovných činností získate jednorazovým projektom alebo predplatným.</p>
       </details>
       <details>
         <summary>Čo presne obsahuje jednorazový projekt?</summary>
         <p>Jeden kompletný dokument o posúdení rizika s obmedzeným počtom pracovných činností (do 15). Počas 14 dní ho môžete upravovať, dopĺňať a exportovať bez obmedzenia. Keď príde ďalšia zákazka, jednoducho si kúpite ďalší — vraciate sa presne vtedy, keď to potrebujete.</p>
+      </details>
+      <details>
+        <summary>V akom formáte dostanem hodnotenie?</summary>
+        <p>Hotové hodnotenie si stiahnete ako PDF aj ako editovateľný Word (.doc) — oba na šírku a profesionálne naformátované, pripravené na okamžité použitie aj podpis. Vo verzii zadarmo je PDF s vodoznakom; Word a verzia bez vodoznaku sa odomknú jednorazovým projektom alebo predplatným.</p>
+      </details>
+      <details>
+        <summary>Obstojí dokument pri kontrole inšpektorátu práce?</summary>
+        <p>Áno. Dokument obsahuje všetko, čo sa pri kontrole očakáva: identifikované nebezpečenstvá a ohrozenia, maticu rizika, opatrenia podľa hierarchie, požadované OOPP, zostatkové riziko aj doložku o prehodnocovaní. Pred zaradením do dokumentácie BOZP ho ešte preverí a schváli odborne spôsobilá osoba — rovnako ako každý iný podklad.</p>
       </details>
       <details>
         <summary>Čo pribudne ďalej?</summary>

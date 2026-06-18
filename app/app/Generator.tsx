@@ -252,10 +252,18 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
   return (
     <>
       <div className="hazard" />
+      <div className="tool-deco" aria-hidden="true">
+        <svg className="d1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M12 3 L22 20 L2 20 Z" /><path d="M12 9 v5" /><circle cx="12" cy="17.4" r="0.7" fill="currentColor" stroke="none" /></svg>
+        <svg className="d2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M3 17 a9 9 0 0 1 18 0" /><path d="M2 17 h20" /><path d="M10 8 v-2 h4 v2" /></svg>
+        <svg className="d3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M9 3 h6" /><path d="M10 3 v6 L5 19 a1 1 0 0 0 1 1 h12 a1 1 0 0 0 1 -1 L14 9 V3" /><path d="M7.5 15 h9" /></svg>
+        <svg className="d4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M12 2 v3 M12 19 v3 M2 12 h3 M19 12 h3 M5 5 l2 2 M17 17 l2 2 M19 5 l-2 2 M7 17 l-2 2" /></svg>
+        <svg className="d5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 L4 14 h6 l-1 8 L20 10 h-6 Z" /></svg>
+        <svg className="d6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="3" width="12" height="18" rx="2" /><path d="M6 8 h12 M6 16 h12" /></svg>
+      </div>
       <header>
         <div className="head-inner">
           <a href="/" className="logo-mark" style={{ textDecoration: "none" }} title="Domov">HR</a>
-          <div><h1>Rizika</h1><div className="head-sub">Vaša pracovná plocha · § 6 zákona č. 124/2006 Z. z. · metodika 5×5</div></div>
+          <div><h1>e-rizika.sk</h1><div className="head-sub">Vaša pracovná plocha · § 6 zákona č. 124/2006 Z. z. · metodika 5×5</div></div>
           <div className="nav-links">
             <span className="plan-badge">{plan}</span>
             <span className="user-bar">{email}</span>
@@ -423,7 +431,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
           </>
         )}
       </main>
-      <footer>Metodika R = P × Z (5×5) · knižnica overených rizík z praxe · obsah generovaný AI s nastavenými pravidlami</footer>
+      <footer>Metodika R = P × Z (5×5) · knižnica overených rizík z praxe a od profesionálov · nástroj na tvorbu hodnotenia rizík</footer>
     </>
   );
 }

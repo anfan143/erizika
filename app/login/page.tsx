@@ -71,7 +71,7 @@ export default function Login() {
   return (
     <>
       <div className="hazard" />
-      <header><div className="head-inner"><a href="/" className="logo-mark" style={{ textDecoration: "none" }} title="Domov">HR</a><div><h1>Rizika</h1><div className="head-sub">Prihlásenie a registrácia</div></div></div></header>
+      <header><div className="head-inner"><a href="/" className="logo-mark" style={{ textDecoration: "none" }} title="Domov">HR</a><div><h1>e-rizika.sk</h1><div className="head-sub">Prihlásenie a registrácia</div></div></div></header>
       <main style={{ maxWidth: 460 }}>
         <div className="card">
           <div className="section-label">{mode === "register" ? "Registrácia" : "Prihlásenie"}</div>
