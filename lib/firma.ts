@@ -27,7 +27,7 @@ export const FIRMA: FirmaInfo = {
   obchodneMeno: "HAVCO s. r. o.",
 
   // Sídlo: ulica a číslo, PSČ a mesto
-  sidlo: "[DOPLŇ: Ulica 123, 010 01 Mesto]",
+  sidlo: "Papiernická 1789/15, 034 01 Ružomberok",
 
   // IČO (8-miestne)
   ico: "57 317 917",
@@ -39,11 +39,11 @@ export const FIRMA: FirmaInfo = {
   platcaDPH: false,
   icDph: "SK2122666898", // registrácia §7a (len pre zahraničné služby), domáce ceny bez DPH
 
-  // Zápis v registri (skopíruj z výpisu z OR)
-  zapis: "[DOPLŇ: Obchodný register Mestského súdu …, oddiel Sro, vložka č. …]",
+  // Zápis v registri — vložku č. doplň z hlavičky výpisu z orsr.sk ("Vložka číslo: …/L")
+  zapis: "Obchodný register Mestského súdu Žilina, oddiel: Sro, vložka č. [DOPLŇ: …/L]",
 
   // Konateľ / štatutár
-  konatel: "[DOPLŇ: meno a priezvisko konateľa]",
+  konatel: "Mgr. Filip Havčo",
 
   // Kontakt
   email: "info@erizika.sk",

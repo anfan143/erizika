@@ -1,11 +1,6 @@
 <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
   <rect width="64" height="64" rx="14" fill="#111418"/>
-  <rect x="0" y="50" width="64" height="14" rx="0" fill="#F5A524"/>
-  <rect x="0" y="50" width="64" height="14" fill="url(#h)"/>
-  <defs>
-    <pattern id="h" width="12" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
-      <rect width="6" height="14" fill="#111418" opacity="0.18"/>
-    </pattern>
-  </defs>
-  <text x="32" y="40" font-family="Archivo, Arial, sans-serif" font-size="30" font-weight="900" fill="#FFFFFF" text-anchor="middle">HR</text>
+  <text x="32" y="32" font-family="Archivo, Arial, sans-serif" font-size="27" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="-0.5">HR</text>
+  <rect x="17" y="39" width="30" height="2.4" rx="1.2" fill="#F5A524"/>
+  <text x="32" y="52" font-family="Arial, sans-serif" font-size="8.6" font-weight="700" fill="#F5A524" text-anchor="middle" letter-spacing="0.2">e-rizika.sk</text>
 </svg>

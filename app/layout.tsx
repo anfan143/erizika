@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     default: "e-rizika.sk — hodnotenie rizík BOZP za pár minút",
     template: "%s · e-rizika.sk",
   },
-  description: "Hodnotenie rizík podľa zákona č. 124/2006 Z. z. za pár minút. Postavené na knižnici overených rizík z praxe — nebezpečenstvá, opatrenia, OOPP aj zostatkové riziko, export do Wordu a PDF.",
+  description: "Hodnotenie rizík BOZP podľa zákona č. 124/2006 Z. z. za pár minút — nebezpečenstvá, opatrenia, OOPP aj zostatkové riziko, export do Wordu a PDF.",
   applicationName: "e-rizika.sk",
   keywords: ["hodnotenie rizík", "BOZP", "posúdenie rizík", "bezpečnosť práce", "124/2006", "OOPP", "bezpečnostný technik"],
   authors: [{ name: "HAVCO s. r. o." }],

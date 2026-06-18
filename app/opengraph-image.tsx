@@ -9,9 +9,11 @@ export const contentType = "image/png";
 // obrázok sa aj tak vykreslí systémovým fontom — nikdy to nezhodí build.
 async function nacitajFonty() {
   try {
+    // timeout, aby pomalé CDN nikdy nezablokovalo vykreslenie obrázka
+    const opts = { signal: AbortSignal.timeout(3000), cache: "force-cache" as const };
     const [reg, bold] = await Promise.all([
-      fetch("https://cdn.jsdelivr.net/npm/dejavu-fonts-ttf@2.37.3/ttf/DejaVuSans.ttf").then((r) => r.arrayBuffer()),
-      fetch("https://cdn.jsdelivr.net/npm/dejavu-fonts-ttf@2.37.3/ttf/DejaVuSans-Bold.ttf").then((r) => r.arrayBuffer()),
+      fetch("https://cdn.jsdelivr.net/npm/dejavu-fonts-ttf@2.37.3/ttf/DejaVuSans.ttf", opts).then((r) => r.arrayBuffer()),
+      fetch("https://cdn.jsdelivr.net/npm/dejavu-fonts-ttf@2.37.3/ttf/DejaVuSans-Bold.ttf", opts).then((r) => r.arrayBuffer()),
     ]);
     return [
       { name: "DejaVu", data: reg, weight: 400 as const, style: "normal" as const },
