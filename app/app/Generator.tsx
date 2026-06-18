@@ -43,6 +43,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
   const [newPass, setNewPass] = useState("");
   const [profilMsg, setProfilMsg] = useState("");
   const [profilErr, setProfilErr] = useState("");
+  const [pdfBusy, setPdfBusy] = useState(false);
   const wordLocked = mode === "free";
 
   async function kupit(plan: string) {
@@ -240,37 +241,20 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
     setTimeout(() => URL.revokeObjectURL(url), 60000);
   }
 
-  function tlacPdf() {
-    if (!vysledky.length) return;
-    const wm = mode === "free";
-    const style = `@page{size:A4 landscape;margin:11mm}
-      *{-webkit-print-color-adjust:exact;print-color-adjust:exact;box-sizing:border-box}
-      body{font-family:'Segoe UI',Arial,sans-serif;font-size:9.5px;color:#1b1b1b;margin:0}
-      .title{font-size:22px;font-weight:800;color:#16212D;border-bottom:4px solid #F5B700;padding-bottom:6px;margin-bottom:12px;letter-spacing:.5px}
-      table{border-collapse:collapse;width:100%}
-      table.meta{margin-bottom:12px}
-      table.meta td{border:1px solid #d2d2d2;padding:5px 9px;font-size:10.5px}
-      table.meta td.k{background:#eef2f6;font-weight:bold;width:14%;color:#16212D}
-      .legend{margin:0 0 14px}
-      .legend span{display:inline-block;color:#fff;font-weight:bold;font-size:9px;padding:5px 11px;border-radius:5px;margin-right:6px}
-      .act{background:#16212D;color:#fff;font-size:13px;font-weight:bold;padding:7px 12px;margin-top:6px;border-radius:6px 6px 0 0}
-      .actnum{display:inline-block;background:#F5B700;color:#16212D;font-weight:800;padding:1px 8px;border-radius:4px;margin-right:9px}
-      table.rt{table-layout:fixed}
-      table.rt th{background:#243345;color:#fff;font-size:8.5px;padding:6px 6px;text-align:left;border:1px solid #243345}
-      table.rt td{border:1px solid #d0d0d0;padding:5px 7px;vertical-align:top;font-size:9px;word-wrap:break-word;overflow-wrap:break-word}
-      td.c{text-align:center}td.rcell{color:#fff;font-weight:800;text-align:center;font-size:11px}td.cat{font-weight:bold;font-size:8.5px}td.sm{font-size:8px;color:#555}td.haz{border-left:3px solid #F5B700}
-      table.rt tr{page-break-inside:avoid}
-      .konanie{font-size:10px;background:#fbf7ea;border-left:4px solid #F5B700;padding:7px 11px;margin:0 0 4px;border-radius:0 0 6px 6px}
-      table.sign{margin-top:20px}table.sign td{border:none;padding:6px 10px;font-size:10.5px}
-      .fine{margin-top:16px;font-size:8px;color:#666}.fine p{margin:0 0 4px}.disc{font-style:italic}
-      ${wm ? `body::before{content:"www.erizika.sk";position:fixed;top:42%;left:0;right:0;text-align:center;font-size:62px;font-weight:700;color:rgba(20,30,45,.09);transform:rotate(-22deg);letter-spacing:5px;z-index:9999;pointer-events:none}` : ""}`;
-    const html = `<!doctype html><html lang="sk"><head><meta charset="utf-8"><title>Hodnotenie rizík</title><style>${style}</style></head><body>${docBody()}</body></html>`;
-    const w = window.open("", "_blank");
-    if (!w) { setErr("Pre stiahnutie PDF povoľte vyskakovacie okná (pop-up)."); return; }
-    w.document.write(html);
-    w.document.close();
-    w.focus();
-    w.onload = () => setTimeout(() => w.print(), 250);
+  async function stiahniPdf() {
+    if (!vysledky.length || pdfBusy) return;
+    setErr(""); setPdfBusy(true);
+    try {
+      const r = await fetch("/api/pdf", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ctx, vysledky }) });
+      if (!r.ok) { setErr("PDF sa nepodarilo vytvoriť. Skúste to o chvíľu."); return; }
+      const blob = await r.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "hodnotenie-rizik.pdf"; a.rel = "noopener"; a.style.display = "none";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    } catch { setErr("PDF sa nepodarilo vytvoriť. Skúste to o chvíľu."); }
+    finally { setPdfBusy(false); }
   }
 
   return (
@@ -350,7 +334,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
                     <div className="doc-meta">{[ctx.firma, ctx.odvetvie, ctx.pozicia && "pozícia: " + ctx.pozicia, "dátum: " + new Date().toLocaleDateString("sk-SK"), ctx.vypracoval && "vypracoval: " + ctx.vypracoval].filter(Boolean).join("  ·  ")}</div>
                   </div>
                   <div className="actions" style={{ margin: 0 }}>
-                    <button className="btn btn-primary" onClick={tlacPdf}>Stiahnuť PDF</button>
+                    <button className="btn btn-primary" onClick={stiahniPdf} disabled={pdfBusy}>{pdfBusy ? "Pripravujem PDF…" : "Stiahnuť PDF"}</button>
                     <button className="btn btn-ghost" onClick={exportDoc} disabled={wordLocked} title={wordLocked ? "Editovateľný Word bez vodoznaku odomknete kúpou balíka" : undefined} style={wordLocked ? { opacity: .55, cursor: "not-allowed" } : undefined}>Stiahnuť Word (.doc){wordLocked ? " 🔒" : ""}</button>
                   </div>
                 </div>
