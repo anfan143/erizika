@@ -15,6 +15,13 @@ function riskInfo(r: number) {
   if (r <= 15) return { label: "NEŽIADUCE", color: "var(--orange)" };
   return { label: "NEAKCEPTOVATEĽNÉ", color: "var(--red)" };
 }
+// pevné hex farby pre výstupy (PDF/Word) — CSS premenné tam nefungujú
+function riskHex(r: number) {
+  if (r <= 4) return "#1E8E5A";
+  if (r <= 9) return "#E09B00";
+  if (r <= 15) return "#D96B1F";
+  return "#C2382A";
+}
 function pozadovaneKonanie(r: number) {
   if (r <= 4) return "Riziko akceptovať. Prehodnotiť pri zmene podmienok a v rámci periodickej aktualizácie.";
   if (r <= 9) return "Prijať navrhnuté opatrenia. Činnosť popísať v pracovnom postupe a zamestnancov s ním oboznámiť.";
@@ -159,12 +166,18 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
   function docBody() {
     const dnes = new Date(); const dalsie = new Date(dnes); dalsie.setFullYear(dalsie.getFullYear() + 3);
     const vyprac = esc(ctx.vypracoval) || "______________________";
-    let body = `<h1>HODNOTENIE RIZÍK</h1>
+    let body = `<div class="title">HODNOTENIE RIZÍK</div>
     <table class="meta">
       <tr><td class="k">Spoločnosť</td><td>${esc(ctx.firma) || "—"}</td><td class="k">Dátum vyhotovenia</td><td>${dnes.toLocaleDateString("sk-SK")}</td></tr>
       <tr><td class="k">Odvetvie</td><td>${esc(ctx.odvetvie) || "—"}</td><td class="k">Pracovná pozícia</td><td>${esc(ctx.pozicia) || "—"}</td></tr>
       ${ctx.prostredie ? `<tr><td class="k">Špecifiká pracoviska</td><td colspan="3">${esc(ctx.prostredie)}</td></tr>` : ""}
-    </table>`;
+    </table>
+    <div class="legend">
+      <span bgcolor="#1E8E5A" style="background:#1E8E5A">R 1–4 · AKCEPTOVATEĽNÉ</span>
+      <span bgcolor="#E09B00" style="background:#E09B00">R 5–9 · MIERNE</span>
+      <span bgcolor="#D96B1F" style="background:#D96B1F">R 10–15 · NEŽIADUCE</span>
+      <span bgcolor="#C2382A" style="background:#C2382A">R 16–25 · NEAKCEPTOVATEĽNÉ</span>
+    </div>`;
     vysledky.forEach((item, idx) => {
       let maxR2 = 0; let rows = "";
       item.nebezpecenstva.forEach((n) => {
@@ -172,18 +185,20 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
         let P2 = clamp(n.P2, Math.max(1, P - 1)), Z2 = clamp(n.Z2, Z);
         if (P2 * Z2 > R) { P2 = P; Z2 = Z; }
         const R2 = P2 * Z2; if (R2 > maxR2) maxR2 = R2;
-        rows += `<tr><td><b>${esc(n.nebezpecenstvo)}</b></td><td>${esc(n.ohrozenie)}</td>
-        <td class="c">${P}</td><td class="c">${Z}</td><td class="c b">${R}</td><td>${riskInfo(R).label}</td>
+        const cR = riskHex(R), cR2 = riskHex(R2);
+        rows += `<tr><td class="haz"><b>${esc(n.nebezpecenstvo)}</b></td><td>${esc(n.ohrozenie)}</td>
+        <td class="c">${P}</td><td class="c">${Z}</td><td class="c rcell" bgcolor="${cR}" style="background:${cR}">${R}</td><td class="cat" style="color:${cR}">${riskInfo(R).label}</td>
         <td>${(n.opatrenia || []).map((o) => "• " + esc(o)).join("<br>")}</td>
         <td>${(n.oopp?.length ? n.oopp : ["—"]).map((o) => "• " + esc(o)).join("<br>")}</td>
-        <td class="c">${P2}</td><td class="c">${Z2}</td><td class="c b">${R2}</td><td>${riskInfo(R2).label}</td>
+        <td class="c">${P2}</td><td class="c">${Z2}</td><td class="c rcell" bgcolor="${cR2}" style="background:${cR2}">${R2}</td><td class="cat" style="color:${cR2}">${riskInfo(R2).label}</td>
         <td class="sm">${(n.predpisy || []).map(esc).join("<br>")}</td></tr>`;
       });
-      body += `<h2>${idx + 1}. ${esc(item.cinnost)}</h2>
+      const cMax = riskHex(maxR2);
+      body += `<div class="act"><span class="actnum">${idx + 1}</span>${esc(item.cinnost)}</div>
       <table class="rt"><thead><tr>
-        <th>Nebezpečenstvo</th><th>Ohrozenie</th><th class="c">P</th><th class="c">Z</th><th class="c">R</th><th>Kategória</th><th>Opatrenia</th><th>Požadované OOPP</th><th class="c">P₂</th><th class="c">Z₂</th><th class="c">R₂</th><th>Zostatkové riziko</th><th>Predpisy</th>
+        <th style="width:11%">Nebezpečenstvo</th><th style="width:14%">Ohrozenie</th><th class="c" style="width:3%">P</th><th class="c" style="width:3%">Z</th><th class="c" style="width:4%">R</th><th style="width:8%">Kategória</th><th style="width:20%">Opatrenia</th><th style="width:13%">Požadované OOPP</th><th class="c" style="width:3%">P₂</th><th class="c" style="width:3%">Z₂</th><th class="c" style="width:4%">R₂</th><th style="width:8%">Zostatkové riziko</th><th style="width:6%">Predpisy</th>
       </tr></thead><tbody>${rows}</tbody></table>
-      <p class="konanie"><b>Požadované konanie</b> (podľa najvyššieho zostatkového rizika R ${maxR2}): ${pozadovaneKonanie(maxR2)}</p>`;
+      <p class="konanie"><b style="color:${cMax}">Požadované konanie</b> (podľa najvyššieho zostatkového rizika R ${maxR2}): ${pozadovaneKonanie(maxR2)}</p>`;
     });
     body += `<table class="sign"><tr>
       <td>Vypracoval: <b>${vyprac}</b></td><td>Dátum: ${dnes.toLocaleDateString("sk-SK")}</td><td>Podpis: ______________________</td>
@@ -199,19 +214,23 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
 
   function exportDoc() {
     if (!vysledky.length || wordLocked) return;
-    const style = `@page Section1{size:841.95pt 595.35pt;mso-page-orientation:landscape;margin:1.4cm}div.Section1{page:Section1}
+    const style = `@page Section1{size:841.95pt 595.35pt;mso-page-orientation:landscape;margin:1.3cm}div.Section1{page:Section1}
       body{font-family:Calibri,Arial,sans-serif;font-size:9pt;color:#1b1b1b}
-      h1{font-size:17pt;margin:0 0 8pt;letter-spacing:.4pt}
-      h2{font-size:11.5pt;margin:14pt 0 5pt;color:#16212D}
+      .title{font-size:18pt;font-weight:bold;color:#16212D;border-bottom:3pt solid #F5B700;padding-bottom:4pt;margin-bottom:10pt;letter-spacing:.5pt}
       table{border-collapse:collapse;width:100%}
-      table.meta td{border:.5pt solid #c8c8c8;padding:4pt 7pt;font-size:9.5pt}
-      table.meta td.k{background:#eef2f6;font-weight:bold;width:14%}
-      table.rt th{background:#16212D;color:#fff;font-size:8pt;padding:4pt 5pt;border:.5pt solid #16212D;text-align:left}
-      table.rt td{border:.5pt solid #b8b8b8;padding:4pt 6pt;vertical-align:top;font-size:8.5pt}
-      td.c{text-align:center}td.b{font-weight:bold}td.sm{font-size:7.5pt;color:#444}
-      .konanie{font-size:9pt;margin:5pt 0 0}
-      table.sign{margin-top:18pt}table.sign td{border:none;padding:6pt 8pt;font-size:9.5pt}
-      .fine{margin-top:14pt;font-size:7.5pt;color:#555}.fine p{margin:0 0 4pt}.disc{font-style:italic}`;
+      table.meta{margin-bottom:9pt}
+      table.meta td{border:.5pt solid #cfcfcf;padding:4pt 8pt;font-size:9.5pt}
+      table.meta td.k{background:#eef2f6;font-weight:bold;width:14%;color:#16212D}
+      .legend{margin:0 0 11pt}
+      .legend span{color:#fff;font-weight:bold;font-size:8.5pt;padding:3pt 9pt;margin-right:5pt}
+      .act{background:#16212D;color:#fff;font-size:11.5pt;font-weight:bold;padding:5pt 9pt}
+      .actnum{background:#F5B700;color:#16212D;font-weight:bold;padding:1pt 6pt;margin-right:7pt}
+      table.rt th{background:#243345;color:#fff;font-size:8pt;padding:4pt 5pt;border:.5pt solid #243345;text-align:left}
+      table.rt td{border:.5pt solid #c8c8c8;padding:4pt 6pt;vertical-align:top;font-size:8.5pt}
+      td.c{text-align:center}td.rcell{color:#fff;font-weight:bold;text-align:center;font-size:10pt}td.cat{font-weight:bold;font-size:8pt}td.sm{font-size:7.5pt;color:#555}td.haz{border-left:2.5pt solid #F5B700}
+      .konanie{font-size:9pt;background:#fbf7ea;border-left:3pt solid #F5B700;padding:5pt 9pt;margin:0 0 4pt}
+      table.sign{margin-top:16pt}table.sign td{border:none;padding:5pt 8pt;font-size:9.5pt}
+      .fine{margin-top:12pt;font-size:7.5pt;color:#666}.fine p{margin:0 0 3pt}.disc{font-style:italic}`;
     const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>${style}</style></head><body><div class="Section1">${docBody()}</div></body></html>`;
     const blob = new Blob(["﻿" + html], { type: "application/msword" });
     const url = URL.createObjectURL(blob);
@@ -224,21 +243,26 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
   function tlacPdf() {
     if (!vysledky.length) return;
     const wm = mode === "free";
-    const style = `@page{size:A4 landscape;margin:12mm}
-      *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-      body{font-family:'Segoe UI',Arial,sans-serif;font-size:9px;color:#1b1b1b;margin:0}
-      h1{font-size:20px;margin:0 0 8px;letter-spacing:.3px}
-      h2{font-size:13px;margin:14px 0 5px;color:#16212D}
+    const style = `@page{size:A4 landscape;margin:11mm}
+      *{-webkit-print-color-adjust:exact;print-color-adjust:exact;box-sizing:border-box}
+      body{font-family:'Segoe UI',Arial,sans-serif;font-size:9.5px;color:#1b1b1b;margin:0}
+      .title{font-size:22px;font-weight:800;color:#16212D;border-bottom:4px solid #F5B700;padding-bottom:6px;margin-bottom:12px;letter-spacing:.5px}
       table{border-collapse:collapse;width:100%}
-      table.meta td{border:1px solid #c8c8c8;padding:4px 8px;font-size:10px}
-      table.meta td.k{background:#eef2f6;font-weight:bold;width:14%}
-      table.rt th{background:#16212D;color:#fff;font-size:8.5px;padding:5px 6px;text-align:left}
-      table.rt td{border:1px solid #c0c0c0;padding:5px 7px;vertical-align:top;font-size:9px}
-      td.c{text-align:center}td.b{font-weight:bold}td.sm{font-size:8px;color:#444}
+      table.meta{margin-bottom:12px}
+      table.meta td{border:1px solid #d2d2d2;padding:5px 9px;font-size:10.5px}
+      table.meta td.k{background:#eef2f6;font-weight:bold;width:14%;color:#16212D}
+      .legend{margin:0 0 14px}
+      .legend span{display:inline-block;color:#fff;font-weight:bold;font-size:9px;padding:5px 11px;border-radius:5px;margin-right:6px}
+      .act{background:#16212D;color:#fff;font-size:13px;font-weight:bold;padding:7px 12px;margin-top:6px;border-radius:6px 6px 0 0}
+      .actnum{display:inline-block;background:#F5B700;color:#16212D;font-weight:800;padding:1px 8px;border-radius:4px;margin-right:9px}
+      table.rt{table-layout:fixed}
+      table.rt th{background:#243345;color:#fff;font-size:8.5px;padding:6px 6px;text-align:left;border:1px solid #243345}
+      table.rt td{border:1px solid #d0d0d0;padding:5px 7px;vertical-align:top;font-size:9px;word-wrap:break-word;overflow-wrap:break-word}
+      td.c{text-align:center}td.rcell{color:#fff;font-weight:800;text-align:center;font-size:11px}td.cat{font-weight:bold;font-size:8.5px}td.sm{font-size:8px;color:#555}td.haz{border-left:3px solid #F5B700}
       table.rt tr{page-break-inside:avoid}
-      .konanie{font-size:9.5px;margin:5px 0 0}
-      table.sign{margin-top:20px}table.sign td{border:none;padding:6px 10px;font-size:10px}
-      .fine{margin-top:16px;font-size:8px;color:#555}.fine p{margin:0 0 4px}.disc{font-style:italic}
+      .konanie{font-size:10px;background:#fbf7ea;border-left:4px solid #F5B700;padding:7px 11px;margin:0 0 4px;border-radius:0 0 6px 6px}
+      table.sign{margin-top:20px}table.sign td{border:none;padding:6px 10px;font-size:10.5px}
+      .fine{margin-top:16px;font-size:8px;color:#666}.fine p{margin:0 0 4px}.disc{font-style:italic}
       ${wm ? `body::before{content:"www.erizika.sk";position:fixed;top:42%;left:0;right:0;text-align:center;font-size:62px;font-weight:700;color:rgba(20,30,45,.09);transform:rotate(-22deg);letter-spacing:5px;z-index:9999;pointer-events:none}` : ""}`;
     const html = `<!doctype html><html lang="sk"><head><meta charset="utf-8"><title>Hodnotenie rizík</title><style>${style}</style></head><body>${docBody()}</body></html>`;
     const w = window.open("", "_blank");
