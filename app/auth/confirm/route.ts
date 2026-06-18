@@ -10,7 +10,11 @@ export async function GET(request: NextRequest) {
   if (token_hash && type) {
     const supabase = supabaseServer();
     const { error } = await supabase.auth.verifyOtp({ type, token_hash });
-    if (!error) return NextResponse.redirect(new URL("/app", request.url));
+    if (!error) {
+      // pri obnove hesla pošli používateľa nastaviť nové heslo, inak do aplikácie
+      const dest = type === "recovery" ? "/auth/reset" : "/app";
+      return NextResponse.redirect(new URL(dest, request.url));
+    }
   }
   return NextResponse.redirect(new URL("/login", request.url));
 }

@@ -2,8 +2,30 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Rizika — generátor hodnotenia rizík BOZP",
-  description: "Hodnotenie rizík podľa zákona č. 124/2006 Z. z. za pár minút. Postavené na knižnici overených rizík z praxe.",
+  metadataBase: new URL("https://www.erizika.sk"),
+  title: {
+    default: "e-rizika.sk — hodnotenie rizík BOZP za pár minút",
+    template: "%s · e-rizika.sk",
+  },
+  description: "Hodnotenie rizík podľa zákona č. 124/2006 Z. z. za pár minút. Postavené na knižnici overených rizík z praxe — nebezpečenstvá, opatrenia, OOPP aj zostatkové riziko, export do Wordu a PDF.",
+  applicationName: "e-rizika.sk",
+  keywords: ["hodnotenie rizík", "BOZP", "posúdenie rizík", "bezpečnosť práce", "124/2006", "OOPP", "bezpečnostný technik"],
+  authors: [{ name: "HAVCO s. r. o." }],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "sk_SK",
+    url: "https://www.erizika.sk",
+    siteName: "e-rizika.sk",
+    title: "e-rizika.sk — hodnotenie rizík BOZP za pár minút",
+    description: "Kompletný dokument o posúdení rizík k zadaným pracovným činnostiam — za pár minút, s exportom do Wordu a PDF.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "e-rizika.sk — hodnotenie rizík BOZP za pár minút",
+    description: "Kompletný dokument o posúdení rizík k zadaným pracovným činnostiam — za pár minút.",
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

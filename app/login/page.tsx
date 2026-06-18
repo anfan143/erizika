@@ -10,7 +10,7 @@ function sb() {
 }
 
 export default function Login() {
-  const [mode, setMode] = useState<"login" | "register">("login");
+  const [mode, setMode] = useState<"login" | "register" | "forgot">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
@@ -34,6 +34,26 @@ export default function Login() {
   function prepni() {
     setMode(mode === "login" ? "register" : "login");
     setErr(""); setMsg("");
+  }
+
+  function naMode(m: "login" | "register" | "forgot") {
+    setMode(m); setErr(""); setMsg("");
+  }
+
+  async function posliReset() {
+    setErr(""); setMsg("");
+    if (!email.includes("@")) { setErr("Zadajte platný e-mail."); return; }
+    setBusy(true);
+    try {
+      // redirectTo smeruje na callback, ktorý po výmene kódu pošle na /auth/reset
+      await sb().auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/callback?next=/auth/reset`,
+      });
+      // z bezpečnostných dôvodov vždy rovnaká hláška (neprezrádzame, či účet existuje)
+      setMsg("Ak k tomuto e-mailu existuje účet, poslali sme naň odkaz na obnovu hesla. Skontrolujte schránku aj priečinok spam.");
+    } catch {
+      setMsg("Ak k tomuto e-mailu existuje účet, poslali sme naň odkaz na obnovu hesla. Skontrolujte schránku aj priečinok spam.");
+    } finally { setBusy(false); }
   }
 
   async function submit() {
@@ -76,25 +96,41 @@ export default function Login() {
       <header><div className="head-inner"><a href="/" className="logo-mark" style={{ textDecoration: "none" }} title="Domov">HR</a><div><h1>e-rizika.sk</h1><div className="head-sub">Prihlásenie a registrácia</div></div></div></header>
       <main style={{ maxWidth: 460 }}>
         <div className="card">
-          <div className="section-label">{mode === "register" ? "Registrácia" : "Prihlásenie"}</div>
-          <button className="btn btn-google" onClick={google}>
-            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
-              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-            </svg>
-            Pokračovať cez Google
-          </button>
-          <div className="delic"><span>alebo e-mailom</span></div>
+          <div className="section-label">{mode === "register" ? "Registrácia" : mode === "forgot" ? "Obnova hesla" : "Prihlásenie"}</div>
+          {mode === "forgot" && (
+            <p style={{ fontSize: 13.5, color: "var(--ink-soft)", marginTop: -4, marginBottom: 14 }}>
+              Zadajte e-mail, ktorým ste sa registrovali. Pošleme naň odkaz na nastavenie nového hesla.
+            </p>
+          )}
+          {mode !== "forgot" && (
+            <>
+              <button className="btn btn-google" onClick={google}>
+                <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+                  <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                  <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                  <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                  <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                Pokračovať cez Google
+              </button>
+              <div className="delic"><span>alebo e-mailom</span></div>
+            </>
+          )}
           <div className="field">
             <label htmlFor="email">E-mail</label>
-            <input id="email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="vas@email.sk" />
+            <input id="email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="vas@email.sk" onKeyDown={(e) => { if (e.key === "Enter" && mode === "forgot") posliReset(); }} />
           </div>
-          <div className="field">
-            <label htmlFor="password">Heslo</label>
-            <input id="password" type="password" autoComplete={mode === "register" ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="aspoň 6 znakov" onKeyDown={(e) => { if (e.key === "Enter") submit(); }} />
-          </div>
+          {mode !== "forgot" && (
+            <div className="field">
+              <label htmlFor="password">Heslo</label>
+              <input id="password" type="password" autoComplete={mode === "register" ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="aspoň 6 znakov" onKeyDown={(e) => { if (e.key === "Enter") submit(); }} />
+            </div>
+          )}
+          {mode === "login" && (
+            <p style={{ fontSize: 12.5, marginTop: -2, marginBottom: 2 }}>
+              <a onClick={() => naMode("forgot")} style={linkStyle}>Zabudli ste heslo?</a>
+            </p>
+          )}
           {mode === "register" && (
             <label className="suhlas">
               <input type="checkbox" checked={suhlas} onChange={(e) => setSuhlas(e.target.checked)} />
@@ -102,15 +138,27 @@ export default function Login() {
             </label>
           )}
           <div className="actions">
-            <button className="btn btn-primary" onClick={submit} disabled={busy}>{busy ? "Pracujem…" : mode === "register" ? "Vytvoriť účet" : "Prihlásiť sa"}</button>
+            {mode === "forgot" ? (
+              <button className="btn btn-primary" onClick={posliReset} disabled={busy}>{busy ? "Posielam…" : "Poslať odkaz na obnovu"}</button>
+            ) : (
+              <button className="btn btn-primary" onClick={submit} disabled={busy}>{busy ? "Pracujem…" : mode === "register" ? "Vytvoriť účet" : "Prihlásiť sa"}</button>
+            )}
           </div>
-          <p style={{ fontSize: 13, color: "var(--ink-soft)", marginTop: 16 }}>
-            {mode === "login" ? "Nemáte ešte účet? " : "Už máte účet? "}
-            <a onClick={prepni} style={linkStyle}>{mode === "login" ? "Zaregistrujte sa" : "Prihláste sa"}</a>
-          </p>
-          <p style={{ fontSize: 11.5, color: "var(--ink-soft)", marginTop: 10, lineHeight: 1.5 }}>
-            Pokračovaním cez Google súhlasíte s <a href="/podmienky" target="_blank" rel="noopener" style={{ textDecoration: "underline" }}>obchodnými podmienkami</a> a so <a href="/sukromie" target="_blank" rel="noopener" style={{ textDecoration: "underline" }}>spracúvaním osobných údajov</a>.
-          </p>
+          {mode === "forgot" ? (
+            <p style={{ fontSize: 13, color: "var(--ink-soft)", marginTop: 16 }}>
+              Spomenuli ste si? <a onClick={() => naMode("login")} style={linkStyle}>Späť na prihlásenie</a>
+            </p>
+          ) : (
+            <p style={{ fontSize: 13, color: "var(--ink-soft)", marginTop: 16 }}>
+              {mode === "login" ? "Nemáte ešte účet? " : "Už máte účet? "}
+              <a onClick={prepni} style={linkStyle}>{mode === "login" ? "Zaregistrujte sa" : "Prihláste sa"}</a>
+            </p>
+          )}
+          {mode !== "forgot" && (
+            <p style={{ fontSize: 11.5, color: "var(--ink-soft)", marginTop: 10, lineHeight: 1.5 }}>
+              Pokračovaním cez Google súhlasíte s <a href="/podmienky" target="_blank" rel="noopener" style={{ textDecoration: "underline" }}>obchodnými podmienkami</a> a so <a href="/sukromie" target="_blank" rel="noopener" style={{ textDecoration: "underline" }}>spracúvaním osobných údajov</a>.
+            </p>
+          )}
           {msg && <div style={{ display: "block", marginTop: 16, border: "1px solid var(--green)", borderRadius: 8, padding: "12px 16px", fontSize: 13.5, background: "#F0FAF4", color: "var(--green)" }}>{msg}</div>}
           {err && <div className="error-box" style={{ display: "block" }}>{err}</div>}
         </div>
