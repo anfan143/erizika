@@ -44,9 +44,11 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
   const [profilMsg, setProfilMsg] = useState("");
   const [profilErr, setProfilErr] = useState("");
   const [pdfBusy, setPdfBusy] = useState(false);
+  const [platbaSuhlas, setPlatbaSuhlas] = useState(false);
   const wordLocked = mode === "free";
 
   async function kupit(plan: string) {
+    if (!platbaSuhlas) { setErr("Pred platbou potvrďte súhlas s obchodnými podmienkami."); return; }
     try {
       const r = await fetch("/api/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ plan }) });
       const d = await r.json();
@@ -79,12 +81,16 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
   const KupaPanel = ({ lead }: { lead: string }) => (
     <div className="unlock-note">
       <strong>{lead}</strong> Jednorazový projekt pokryje obmedzený počet činností (do 15) počas 14 dní; predplatné je bez limitov.
+      <label className="suhlas">
+        <input type="checkbox" checked={platbaSuhlas} onChange={(e) => setPlatbaSuhlas(e.target.checked)} />
+        <span>Súhlasím s <a href="/podmienky" target="_blank" rel="noopener">obchodnými podmienkami</a> a so začatím poskytovania služby pred uplynutím lehoty na odstúpenie. Beriem na vedomie, že začatím používania <a href="/odstupenie" target="_blank" rel="noopener">strácam právo na odstúpenie od zmluvy</a>.</span>
+      </label>
       <div className="kupa">
-        <button className="btn btn-ghost" onClick={() => kupit("projekt")}>Projekt · 15 €</button>
-        <button className="btn btn-ghost" onClick={() => kupit("mesacne")}>Mesačne · 19 €</button>
-        <button className="btn btn-ghost" onClick={() => kupit("stvrtrok")}>3 mesiace · 49 €</button>
-        <button className="btn btn-ghost" onClick={() => kupit("polrok")}>6 mesiacov · 79 €</button>
-        <button className="btn btn-primary" onClick={() => kupit("rok")}>Rok · 99 €</button>
+        <button className="btn btn-ghost" disabled={!platbaSuhlas} onClick={() => kupit("projekt")}>Projekt · 15 €</button>
+        <button className="btn btn-ghost" disabled={!platbaSuhlas} onClick={() => kupit("mesacne")}>Mesačne · 19 €</button>
+        <button className="btn btn-ghost" disabled={!platbaSuhlas} onClick={() => kupit("stvrtrok")}>3 mesiace · 49 €</button>
+        <button className="btn btn-ghost" disabled={!platbaSuhlas} onClick={() => kupit("polrok")}>6 mesiacov · 79 €</button>
+        <button className="btn btn-primary" disabled={!platbaSuhlas} onClick={() => kupit("rok")}>Rok · 99 €</button>
       </div>
     </div>
   );

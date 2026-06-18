@@ -455,3 +455,16 @@
 .tool-deco .d5{top:47%;right:5%;width:96px;height:96px;transform:rotate(-9deg)}
 .tool-deco .d6{bottom:10%;right:3%;width:120px;height:120px;transform:rotate(7deg)}
 @media (max-width:1180px){.tool-deco{display:none}}
+/* ── Právne stránky (VOP, GDPR, odstúpenie) ── */
+.pravne h2 { font-size: 24px; line-height: 1.25; }
+.pravne h3 { font-size: 16px; margin: 26px 0 8px; color: var(--ink, #111); }
+.pravne p { font-size: 14.5px; line-height: 1.7; color: var(--ink-soft, #374151); margin: 8px 0; }
+.pravne ul { margin: 8px 0 8px 2px; padding-left: 18px; }
+.pravne li { font-size: 14.5px; line-height: 1.65; color: var(--ink-soft, #374151); margin: 4px 0; }
+.pravne a { color: var(--green, #1f7a4d); text-decoration: underline; }
+.pravne address a { color: var(--green, #1f7a4d); }
+
+/* Súhlasy (checkboxy) pri registrácii a platbe */
+.suhlas { display: flex; gap: 9px; align-items: flex-start; margin-top: 12px; font-size: 12.5px; line-height: 1.5; color: var(--ink-soft, #4b5563); cursor: pointer; }
+.suhlas input { margin-top: 2px; width: 15px; height: 15px; flex: 0 0 auto; cursor: pointer; }
+.suhlas a { color: var(--green, #1f7a4d); text-decoration: underline; }

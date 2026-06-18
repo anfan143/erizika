@@ -255,7 +255,7 @@ export const LANDING_HTML = `
   <div class="foot-in">
     <div class="foot-top">
       <span style="font-family:'IBM Plex Mono';font-weight:600;letter-spacing:1px;font-size:12px">e-rizika.sk © 2026</span>
-      <span><a href="#otazky">Časté otázky</a> · <a href="#cennik">Cenník</a> · <a href="mailto:info@erizika.sk">Kontakt</a></span>
+      <span><a href="/podmienky">Obchodné podmienky</a> · <a href="/sukromie">Ochrana osobných údajov</a> · <a href="/odstupenie">Odstúpenie od zmluvy</a> · <a href="mailto:info@erizika.sk">Kontakt</a></span>
     </div>
     <div class="foot-disc">Dokumenty vytvorené platformou sú podkladom pre posúdenie rizika; pred zaradením do dokumentácie BOZP ich preveruje a schvaľuje odborne spôsobilá osoba v zmysle platnej legislatívy.</div>
   </div>

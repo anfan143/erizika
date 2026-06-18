@@ -16,6 +16,7 @@ export default function Login() {
   const [msg, setMsg] = useState("");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
+  const [suhlas, setSuhlas] = useState(false);
 
   async function google() {
     setErr(""); setMsg("");
@@ -39,6 +40,7 @@ export default function Login() {
     setErr(""); setMsg("");
     if (!email.includes("@")) { setErr("Zadajte platný e-mail."); return; }
     if (password.length < 6) { setErr("Heslo musí mať aspoň 6 znakov."); return; }
+    if (mode === "register" && !suhlas) { setErr("Na registráciu je potrebný súhlas s obchodnými podmienkami a spracúvaním osobných údajov."); return; }
     setBusy(true);
     try {
       if (mode === "register") {
@@ -93,12 +95,21 @@ export default function Login() {
             <label htmlFor="password">Heslo</label>
             <input id="password" type="password" autoComplete={mode === "register" ? "new-password" : "current-password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="aspoň 6 znakov" onKeyDown={(e) => { if (e.key === "Enter") submit(); }} />
           </div>
+          {mode === "register" && (
+            <label className="suhlas">
+              <input type="checkbox" checked={suhlas} onChange={(e) => setSuhlas(e.target.checked)} />
+              <span>Súhlasím s <a href="/podmienky" target="_blank" rel="noopener">obchodnými podmienkami</a> a so <a href="/sukromie" target="_blank" rel="noopener">spracúvaním osobných údajov</a>.</span>
+            </label>
+          )}
           <div className="actions">
             <button className="btn btn-primary" onClick={submit} disabled={busy}>{busy ? "Pracujem…" : mode === "register" ? "Vytvoriť účet" : "Prihlásiť sa"}</button>
           </div>
           <p style={{ fontSize: 13, color: "var(--ink-soft)", marginTop: 16 }}>
             {mode === "login" ? "Nemáte ešte účet? " : "Už máte účet? "}
             <a onClick={prepni} style={linkStyle}>{mode === "login" ? "Zaregistrujte sa" : "Prihláste sa"}</a>
+          </p>
+          <p style={{ fontSize: 11.5, color: "var(--ink-soft)", marginTop: 10, lineHeight: 1.5 }}>
+            Pokračovaním cez Google súhlasíte s <a href="/podmienky" target="_blank" rel="noopener" style={{ textDecoration: "underline" }}>obchodnými podmienkami</a> a so <a href="/sukromie" target="_blank" rel="noopener" style={{ textDecoration: "underline" }}>spracúvaním osobných údajov</a>.
           </p>
           {msg && <div style={{ display: "block", marginTop: 16, border: "1px solid var(--green)", borderRadius: 8, padding: "12px 16px", fontSize: 13.5, background: "#F0FAF4", color: "var(--green)" }}>{msg}</div>}
           {err && <div className="error-box" style={{ display: "block" }}>{err}</div>}
