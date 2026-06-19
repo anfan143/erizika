@@ -222,6 +222,141 @@ export const ARTICLES: Article[] = [
 <p class="clanok-disc">Tento článok má informatívny charakter a nenahrádza odborné posúdenie. Rozsah dokumentácie závisí od konkrétnej činnosti firmy a posúdi ho odborne spôsobilá osoba.</p>
 `,
   },
+  {
+    slug: "matica-rizik-ako-pocitat",
+    title: "Matica rizík: ako sa počíta a ako ju čítať",
+    description:
+      "Ako funguje matica rizík R = P × Z — čo znamená pravdepodobnosť a závažnosť, ako sa určujú a ako prečítať výslednú mieru rizika.",
+    date: "2026-06-19",
+    readMins: 6,
+    keywords: ["matica rizík", "ako sa počíta riziko", "miera rizika", "P x Z", "BOZP"],
+    body: `
+<p class="lead">Matica rizík je jadrom každého hodnotenia rizík. V tomto článku si vysvetlíme, ako sa miera rizika počíta a ako jej výsledok správne prečítať.</p>
+
+<h2>Čo je matica rizík</h2>
+<p>Miera rizika sa najčastejšie vyjadruje ako súčin <strong>pravdepodobnosti (P)</strong> a <strong>závažnosti (Z)</strong> možného následku: <strong>R = P × Z</strong>. Pri metodike 5 × 5 dostaneme výsledné riziko v rozsahu 1 až 25, ktoré sa zaradí do farebného pásma:</p>
+<figure class="clanok-matica">
+  <span class="clanok-fig-cap">Matica rizík (R = P × Z, 5 × 5)</span>
+  <div class="matica-grid">
+    <span class="matica-cell" style="background:#E09B00">5</span><span class="matica-cell" style="background:#D96B1F">10</span><span class="matica-cell" style="background:#D96B1F">15</span><span class="matica-cell" style="background:#C2382A">20</span><span class="matica-cell" style="background:#C2382A">25</span>
+    <span class="matica-cell" style="background:#1E8E5A">4</span><span class="matica-cell" style="background:#E09B00">8</span><span class="matica-cell" style="background:#D96B1F">12</span><span class="matica-cell" style="background:#C2382A">16</span><span class="matica-cell" style="background:#C2382A">20</span>
+    <span class="matica-cell" style="background:#1E8E5A">3</span><span class="matica-cell" style="background:#E09B00">6</span><span class="matica-cell" style="background:#E09B00">9</span><span class="matica-cell" style="background:#D96B1F">12</span><span class="matica-cell" style="background:#D96B1F">15</span>
+    <span class="matica-cell" style="background:#1E8E5A">2</span><span class="matica-cell" style="background:#1E8E5A">4</span><span class="matica-cell" style="background:#E09B00">6</span><span class="matica-cell" style="background:#E09B00">8</span><span class="matica-cell" style="background:#D96B1F">10</span>
+    <span class="matica-cell" style="background:#1E8E5A">1</span><span class="matica-cell" style="background:#1E8E5A">2</span><span class="matica-cell" style="background:#1E8E5A">3</span><span class="matica-cell" style="background:#1E8E5A">4</span><span class="matica-cell" style="background:#E09B00">5</span>
+  </div>
+  <div class="matica-axes"><span>↑ Z = závažnosť</span><span>P = pravdepodobnosť →</span></div>
+  <div class="matica-legend"><span style="background:#1E8E5A">1–4 akceptovateľné</span><span style="background:#E09B00">5–9 mierne</span><span style="background:#D96B1F">10–15 nežiaduce</span><span style="background:#C2382A">16–25 neakceptovateľné</span></div>
+</figure>
+
+<h2>Pravdepodobnosť (P)</h2>
+<p>Vyjadruje, ako často môže k poškodeniu zdravia dôjsť:</p>
+<ul class="clanok-check">
+  <li><strong>1</strong> — vysoko nepravdepodobná (len výnimočné prípady v odvetví)</li>
+  <li><strong>2</strong> — nepravdepodobná (existujú funkčné bariéry)</li>
+  <li><strong>3</strong> — možná (za podobných okolností k nej dochádza)</li>
+  <li><strong>4</strong> — pravdepodobná (chýbajú dôležité bariéry)</li>
+  <li><strong>5</strong> — očakávateľná (je súčasťou každodennej práce)</li>
+</ul>
+
+<h2>Závažnosť (Z)</h2>
+<ul class="clanok-check">
+  <li><strong>1</strong> — drobné poranenie bez práceneschopnosti</li>
+  <li><strong>2</strong> — ľahký úraz s krátkou PN</li>
+  <li><strong>3</strong> — závažnejší úraz s dlhšou PN</li>
+  <li><strong>4</strong> — ťažký úraz s trvalými následkami</li>
+  <li><strong>5</strong> — smrteľný úraz</li>
+</ul>
+
+<div class="clanok-box is-tip"><p><strong>Tip:</strong> Hodnoty P a Z najprv určte pre stav <strong>bez opatrení</strong> (východiskové riziko). Po zavedení opatrení riziko prepočítate znova ako zostatkové (P2 × Z2).</p></div>
+
+<h2>Ako prečítať výsledok</h2>
+<p>Výsledná hodnota R určuje, aké rýchle konanie je potrebné — od „riziko akceptovať" pri zelenej až po „činnosť zastaviť" pri červenej. Najvyššie zostatkové riziko v rámci činnosti rozhoduje o požadovanom konaní.</p>
+
+<div class="clanok-cta">
+  <p><strong>Maticu vám vyplníme automaticky — ku každej činnosti.</strong></p>
+  <a class="btn btn-primary" href="/login">Vytvoriť hodnotenie zadarmo</a>
+  <a class="btn btn-ghost" href="/blog/ako-vypracovat-hodnotenie-rizik">Celý postup — návod</a>
+</div>
+
+<p class="clanok-disc">Konkrétne hranice pásiem a metodika sa môžu líšiť podľa internej smernice firmy. Dokument posudzuje odborne spôsobilá osoba.</p>
+`,
+  },
+  {
+    slug: "oopp-osobne-ochranne-pracovne-prostriedky",
+    title: "OOPP: osobné ochranné pracovné prostriedky — prehľad",
+    description:
+      "Čo sú OOPP, kedy sú povinné a aké druhy existujú podľa časti tela — prilba, okuliare, chrániče sluchu, rukavice, obuv aj ochrana proti pádu.",
+    date: "2026-06-19",
+    readMins: 5,
+    keywords: ["OOPP", "osobné ochranné pracovné prostriedky", "ochranné pomôcky", "BOZP"],
+    body: `
+<p class="lead">Osobné ochranné pracovné prostriedky (OOPP) sú poslednou líniou ochrany zamestnanca. Tu je prehľad, kedy sú povinné a aké druhy existujú.</p>
+
+<h2>Kedy sú OOPP povinné</h2>
+<p>OOPP sa prideľujú vtedy, keď riziko <strong>nemožno odstrániť ani dostatočne znížiť</strong> technickými ani organizačnými opatreniami. Sú teda doplnkom, nie náhradou ostatných opatrení. Potrebu konkrétnych OOPP určuje práve <strong>posúdenie rizík</strong>.</p>
+
+<h2>Najčastejšie OOPP podľa časti tela</h2>
+<div class="clanok-docs">
+  <div class="doc-chip"><span class="ic">⛑️</span><div><b>Hlava</b><span class="t">Ochranná prilba (napr. EN 397) na stavbách a v prevádzkach.</span></div></div>
+  <div class="doc-chip"><span class="ic">🥽</span><div><b>Zrak</b><span class="t">Ochranné okuliare a štíty proti odletujúcim časticiam a žiareniu.</span></div></div>
+  <div class="doc-chip"><span class="ic">🎧</span><div><b>Sluch</b><span class="t">Chrániče sluchu pri nadmernom hluku.</span></div></div>
+  <div class="doc-chip"><span class="ic">😷</span><div><b>Dýchanie</b><span class="t">Respirátory a polmasky proti prachu a dymom (napr. FFP2/FFP3).</span></div></div>
+  <div class="doc-chip"><span class="ic">🧤</span><div><b>Ruky</b><span class="t">Ochranné rukavice podľa rizika — mechanické, tepelné, chemické.</span></div></div>
+  <div class="doc-chip"><span class="ic">🥾</span><div><b>Nohy</b><span class="t">Pracovná obuv s ochrannou špicou a protišmykovou podrážkou.</span></div></div>
+  <div class="doc-chip"><span class="ic">🦺</span><div><b>Telo</b><span class="t">Reflexný a ochranný odev podľa prostredia.</span></div></div>
+  <div class="doc-chip"><span class="ic">🪢</span><div><b>Pád z výšky</b><span class="t">Zachytávací postroj a istiace prostriedky (napr. EN 361).</span></div></div>
+</div>
+
+<div class="clanok-box is-tip"><p><strong>Tip:</strong> OOPP majú spĺňať príslušnú <strong>EN normu</strong>. Normu uvádzajte v dokumentácii len vtedy, keď ňou ste si istí — nesprávne číslo je horšie ako žiadne.</p></div>
+
+<div class="clanok-box is-warn"><p><strong>⚠️ Povinnosti zamestnávateľa:</strong> OOPP musíte poskytnúť <strong>bezplatne</strong>, udržiavať ich funkčné a viesť <strong>záznam o ich prevzatí</strong>. Zamestnanec je povinný ich používať.</p></div>
+
+<div class="clanok-cta">
+  <p><strong>Ku každej činnosti vám navrhneme aj požadované OOPP.</strong></p>
+  <a class="btn btn-primary" href="/login">Vytvoriť hodnotenie zadarmo</a>
+  <a class="btn btn-ghost" href="/api/ukazka" target="_blank" rel="noopener">Pozrieť ukážkové PDF</a>
+</div>
+
+<p class="clanok-disc">Konkrétne OOPP a normy závisia od činnosti a posúdi ich odborne spôsobilá osoba. Článok má informatívny charakter.</p>
+`,
+  },
+  {
+    slug: "pracovny-uraz-co-robit",
+    title: "Pracovný úraz: čo robiť a ako ho nahlásiť",
+    description:
+      "Čo robiť pri pracovnom úraze krok za krokom — prvá pomoc, zabezpečenie miesta, nahlásenie, evidencia aj kedy sa úraz hlási inšpektorátu práce.",
+    date: "2026-06-19",
+    readMins: 6,
+    keywords: ["pracovný úraz", "čo robiť pri pracovnom úraze", "registrovaný pracovný úraz", "nahlásenie úrazu", "BOZP"],
+    body: `
+<p class="lead">Keď na pracovisku dôjde k úrazu, rozhoduje rýchle a správne konanie. Tu je prehľad, čo robiť a ako úraz nahlásiť.</p>
+
+<h2>Prvé kroky po úraze</h2>
+<ul class="clanok-kroky">
+  <li>Poskytnite <strong>prvú pomoc</strong> a v prípade potreby privolajte záchranku (112 / 155).</li>
+  <li>Zabezpečte <strong>miesto úrazu</strong>, aby nedošlo k ďalšiemu ohrozeniu.</li>
+  <li>Úraz <strong>bezodkladne nahláste</strong> nadriadenému / zamestnávateľovi.</li>
+  <li>Ak je to možné, <strong>nemeňte stav</strong> miesta až do zistenia príčin (okrem záchrany života).</li>
+  <li><strong>Zaznamenajte</strong> okolnosti, svedkov a príčiny úrazu.</li>
+</ul>
+
+<h2>Kedy a komu sa úraz hlási</h2>
+<p>Zamestnávateľ je povinný úraz vyšetriť, spísať <strong>záznam o registrovanom pracovnom úraze</strong> a viesť jeho evidenciu. Registrovaný pracovný úraz je spravidla úraz s <strong>práceneschopnosťou nad tri dni</strong>.</p>
+
+<div class="clanok-box is-warn"><p><strong>⚠️ Bezodkladne nahláste inšpektorátu práce</strong> smrteľný a ťažký pracovný úraz (aj závažné nebezpečné udalosti). Pri týchto prípadoch sa miesto nesmie meniť, kým to inšpektorát nepovolí — okrem záchrany života a zdravia.</p></div>
+
+<h2>Evidencia a prevencia</h2>
+<p>Po úraze treba <strong>prehodnotiť riziká</strong> danej činnosti a doplniť opatrenia, aby sa situácia neopakovala. Úraz je často signál, že posúdenie rizík treba aktualizovať.</p>
+
+<div class="clanok-cta">
+  <p><strong>Po úraze prehodnoťte riziká — pripravíme vám aktualizáciu.</strong></p>
+  <a class="btn btn-primary" href="/login">Vytvoriť hodnotenie zadarmo</a>
+  <a class="btn btn-ghost" href="/blog/ako-vypracovat-hodnotenie-rizik">Ako vypracovať hodnotenie</a>
+</div>
+
+<p class="clanok-disc">Postup a lehoty sa riadia platnou legislatívou (najmä zákon č. 124/2006 Z. z.). Článok má informatívny charakter a nenahrádza odborné usmernenie.</p>
+`,
+  },
 ];
 
 export function getArticle(slug: string): Article | undefined {
