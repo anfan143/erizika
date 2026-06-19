@@ -544,3 +544,21 @@
 
 .clanok-pyramida { display: flex; flex-direction: column; align-items: center; gap: 5px; margin: 16px 0 24px; }
 .pyr-row { color: #fff; font-weight: 600; font-size: 13.5px; padding: 9px 14px; border-radius: 6px; text-align: center; }
+
+/* ── Blog: ďalšie vizuálne prvky ── */
+.clanok-check { list-style: none; padding-left: 0; margin: 14px 0 22px; }
+.clanok-check li { position: relative; padding-left: 30px; margin: 9px 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.clanok-check li::before { content: "✓"; position: absolute; left: 0; top: 1px; width: 20px; height: 20px; background: var(--green, #1E8E5A); color: #fff; border-radius: 5px; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+.clanok-vzor { margin: 18px 0 24px; overflow-x: auto; }
+.clanok-vzor table { border-collapse: collapse; width: 100%; min-width: 580px; font-size: 12px; }
+.clanok-vzor th { background: #243345; color: #fff; padding: 7px 8px; text-align: left; font-size: 10.5px; font-weight: 700; }
+.clanok-vzor td { border: 1px solid #e0e3e8; padding: 7px 8px; vertical-align: top; color: var(--ink-soft); }
+.clanok-vzor .r-cell { color: #fff; font-weight: 700; text-align: center; }
+
+.clanok-docs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 18px 0 24px; }
+.doc-chip { display: flex; gap: 11px; align-items: flex-start; border: 1px solid var(--line, #e7e9ee); border-left: 3px solid var(--green, #1E8E5A); border-radius: 8px; padding: 12px 14px; }
+.doc-chip .ic { font-size: 19px; line-height: 1.1; }
+.doc-chip b { font-size: 14px; color: var(--ink, #16212D); display: block; margin-bottom: 2px; }
+.doc-chip span.t { font-size: 12.5px; color: var(--ink-soft); line-height: 1.45; display: block; }
+@media (max-width: 560px) { .clanok-docs { grid-template-columns: 1fr; } }

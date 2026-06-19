@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ARTICLES, getArticle } from "@/lib/blog";
+import { ARTICLES, getArticle, BLOG_HERO } from "@/lib/blog";
 
 export function generateStaticParams() {
   return ARTICLES.map((a) => ({ slug: a.slug }));
@@ -83,6 +83,7 @@ export default function ClanokPage({ params }: { params: { slug: string } }) {
           <p className="clanok-meta">
             {new Date(a.date).toLocaleDateString("sk-SK")} · {a.readMins} min čítania
           </p>
+          <div dangerouslySetInnerHTML={{ __html: BLOG_HERO }} />
           <div dangerouslySetInnerHTML={{ __html: a.body }} />
           <hr className="clanok-hr" />
           <p style={{ fontSize: 13, color: "var(--ink-soft)" }}>
