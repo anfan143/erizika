@@ -583,3 +583,7 @@
 .lm-msg.ok { color: #8fe3b4; }
 .lm-msg.err { color: #ff9d9d; }
 .lm-note { flex-basis: 100%; font-size: 11px; color: #8090a0; margin: 2px 0 0; }
+
+/* ── Onboarding navedenie (aktivácia) ── */
+.onboard-hint { background: #EFF6FF; border: 1px solid #bfdbfe; border-left: 4px solid #2563eb; border-radius: 10px; padding: 13px 16px; margin-bottom: 16px; font-size: 14px; line-height: 1.6; color: #1e3a5f; }
+.onboard-hint strong { color: #16212D; }

@@ -130,6 +130,19 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
 
   const set = (k: keyof Ctx) => (e: any) => setCtx({ ...ctx, [k]: e.target.value });
 
+  function vyplnPriklad() {
+    setCtx({
+      ...ctx,
+      firma: ctx.firma || "Ukážková firma s. r. o.",
+      odvetvie: "Stavebníctvo",
+      pozicia: "Murár",
+      prostredie: "Práca na stavenisku, lešenie, pohyb mechanizmov a vozidiel.",
+    });
+    setCinnostiText("Murárske práce na lešení vo výške nad 1,5 m\nRučná manipulácia s bremenami\nPráca s ručným elektrickým náradím");
+    setErr("");
+    track("priklad_vyplneny");
+  }
+
   async function generuj() {
     setErr("");
     const cinnosti = cinnostiText.split("\n").map((s) => s.trim()).filter(Boolean).slice(0, Math.max(1, maxCinnosti));
@@ -325,8 +338,10 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
             <div className="dash-hero card">
               <div className="dash-hero-in">
                 <div className="section-label">Vaša pracovná plocha</div>
-                <h2 className="dash-title">Vitajte späť 👋</h2>
-                <p className="dash-sub">Aktuálny balík: <strong>{plan}</strong>{mode === "free" ? " — prvé hodnotenie máte zadarmo." : ""}</p>
+                <h2 className="dash-title">{hist.length === 0 ? "Vitajte v e-rizika.sk 👋" : "Vitajte späť 👋"}</h2>
+                <p className="dash-sub">{hist.length === 0
+                  ? "Vytvorte svoje prvé hodnotenie rizík — stačí zadať pracovné činnosti, dokument pripravíme my."
+                  : <>Aktuálny balík: <strong>{plan}</strong>{mode === "free" ? " — prvé hodnotenie máte zadarmo." : ""}</>}</p>
                 <div className="dash-cta">
                   <button className="btn btn-primary" onClick={() => setTab("hodnotenie")}>+ Vytvoriť nové hodnotenie rizík</button>
                   {(mode === "free" || mode === "none") && (
@@ -382,8 +397,16 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
         {tab === "hodnotenie" && (
           <>
             {mode === "none" && <KupaPanel lead="Vyčerpali ste dostupné hodnotenia." />}
+            {hist.length === 0 && mode !== "none" && (
+              <div className="onboard-hint">
+                <strong>Ako na to:</strong> zadajte aspoň jednu pracovnú činnosť (každú na nový riadok) a stlačte <em>Vygenerovať</em>. Stačí činnosti — ostatné polia sú nepovinné. Neviete kde začať? Kliknite na <strong>„Vyplniť ukážkový príklad"</strong>.
+              </div>
+            )}
             <div className="card">
-              <div className="section-label">Vstupné údaje</div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                <div className="section-label" style={{ marginBottom: 0 }}>Vstupné údaje</div>
+                <button className="btn btn-ghost" style={{ padding: "7px 13px", fontSize: 12.5 }} onClick={vyplnPriklad}>✨ Vyplniť ukážkový príklad</button>
+              </div>
               <div className="grid">
                 <div className="field"><label>Názov spoločnosti</label><input value={ctx.firma} onChange={set("firma")} placeholder="napr. STAVMONT s.r.o." /></div>
                 <div className="field"><label>Odvetvie</label><select value={ctx.odvetvie} onChange={set("odvetvie")}>{ODVETVIA.map((o) => <option key={o}>{o}</option>)}</select></div>
