@@ -39,8 +39,8 @@ export const FIRMA: FirmaInfo = {
   platcaDPH: false,
   icDph: "SK2122666898", // registrácia §7a (len pre zahraničné služby), domáce ceny bez DPH
 
-  // Zápis v registri — vložku č. doplň z hlavičky výpisu z orsr.sk ("Vložka číslo: …/L")
-  zapis: "Obchodný register Mestského súdu Žilina, oddiel: Sro, vložka č. [DOPLŇ: …/L]",
+  // Zápis v registri (presne podľa výpisu z orsr.sk)
+  zapis: "Obchodný register Okresného súdu Žilina, oddiel: Sro, vložka č. 89300/L",
 
   // Konateľ / štatutár
   konatel: "Mgr. Filip Havčo",
