@@ -85,6 +85,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
   const KupaPanel = ({ lead }: { lead: string }) => (
     <div className="unlock-note">
       <strong>{lead}</strong> Jednorazový projekt pokryje obmedzený počet činností (do 15) počas 14 dní; predplatné je bez limitov.
+      <div className="kupa-value">Odomknete export do <strong>Wordu bez vodoznaku</strong> a viac pracovných činností v jednom dokumente.</div>
       <label className={"suhlas" + (suhlasChyba ? " suhlas-chyba" : "")}>
         <input type="checkbox" checked={platbaSuhlas} onChange={(e) => { setPlatbaSuhlas(e.target.checked); if (e.target.checked) setSuhlasChyba(false); }} />
         <span>Súhlasím s <a href="/podmienky" target="_blank" rel="noopener">obchodnými podmienkami</a> a so začatím poskytovania služby pred uplynutím lehoty na odstúpenie. Beriem na vedomie, že začatím používania <a href="/odstupenie" target="_blank" rel="noopener">strácam právo na odstúpenie od zmluvy</a>.</span>
@@ -99,6 +100,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
         <button className="btn btn-ghost" onClick={() => kupit("polrok")}>6 mesiacov · 79 €</button>
         <button className="btn btn-primary" onClick={() => kupit("rok")}>Rok · 99 €</button>
       </div>
+      <div className="kupa-trust">🔒 Bezpečná platba cez Stripe · 🧾 Faktúra na e-mail · ✅ Zrušíte kedykoľvek</div>
     </div>
   );
 

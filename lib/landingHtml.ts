@@ -211,6 +211,12 @@ export const LANDING_HTML = `
         <a class="btn btn-primary" href="/login">Začať s predplatným</a>
       </div>
     </div>
+    <div class="trust-row">
+      <span>🔒 Bezpečná platba cez Stripe</span>
+      <span>🧾 Faktúra automaticky na e-mail</span>
+      <span>✅ Predplatné zrušíte kedykoľvek</span>
+      <span>🛡️ Bez skrytých poplatkov</span>
+    </div>
   </div>
 </section>
 
