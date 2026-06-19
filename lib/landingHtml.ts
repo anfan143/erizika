@@ -171,6 +171,10 @@ export const LANDING_HTML = `
       </div>
       <div class="demo-foot"><strong>Požadované konanie</strong> (podľa najvyššieho zostatkového rizika R 8): Prijať navrhnuté opatrenia. Činnosť popísať v pracovnom postupe a zamestnancov s ním oboznámiť.</div>
     </div>
+    <div class="ukazka-cta">
+      <a class="btn btn-primary" href="/api/ukazka" target="_blank" rel="noopener">Pozrieť celé ukážkové PDF</a>
+      <span class="ukazka-note">Otvorí sa reálny dokument (.pdf) na šírku, v plnej kvalite — presne to, čo dostanete.</span>
+    </div>
   </div>
 </section>
 
