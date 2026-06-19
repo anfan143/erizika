@@ -12,40 +12,61 @@ Font.register({
 const INK = "#16212D", SAFETY = "#F5B700", GREEN = "#1E8E5A";
 
 const SECTIONS: { t: string; items: string[] }[] = [
-  { t: "Základné dokumenty", items: [
-    "Posúdenie (hodnotenie) rizík pre všetky pracovné činnosti",
-    "Pracovné a technologické postupy pre rizikové činnosti",
-    "Koncepcia / politika BOZP",
-    "Vnútorný predpis (smernica) o BOZP",
+  { t: "1. Riadenie a organizácia BOZP", items: [
+    "Vnútorný predpis (smernica) o riadení BOZP",
+    "Koncepcia politiky BOZP vrátane cieľov (najmä pri vyššom počte zamestnancov)",
+    "Vymedzenie zodpovedností a právomocí vedúcich zamestnancov v BOZP",
+    "Zabezpečenie bezpečnostnotechnickej služby (BT/ABT) — poverenie alebo zmluva",
+    "Zmluva o pracovnej zdravotnej službe (PZS)",
   ] },
-  { t: "Školenia a oboznamovanie", items: [
-    "Oboznámenie zamestnancov pri nástupe do práce",
-    "Periodické školenia BOZP (vrátane vedúcich zamestnancov)",
-    "Záznamy o školeniach a oboznámení s podpismi",
-    "Osnova a tematický plán školení",
+  { t: "2. Posúdenie rizík", items: [
+    "Posúdenie rizík pre všetky pracoviská a pracovné činnosti",
+    "Plán opatrení na odstránenie a zníženie rizík (s termínmi a zodpovednosťou)",
+    "Posúdenie rizík pre tehotné, dojčiace a mladistvých (ak sa vzťahuje)",
+    "Zoznam prác a pracovísk zakázaných pre vybrané skupiny zamestnancov",
   ] },
-  { t: "Osobné ochranné pracovné prostriedky (OOPP)", items: [
-    "Zoznam poskytovaných OOPP podľa pracovných činností",
-    "Záznamy o prevzatí OOPP zamestnancami",
+  { t: "3. Pracovné postupy a prevádzkové predpisy", items: [
+    "Bezpečné pracovné postupy pre rizikové činnosti",
+    "Prevádzkové poriadky podľa rizík (chemické faktory, hluk a pod.)",
+    "Pokyny na bezpečnú obsluhu strojov a zariadení",
   ] },
-  { t: "Zdravotná starostlivosť", items: [
-    "Posudzovanie zdravotnej spôsobilosti na prácu",
-    "Záznamy o lekárskych preventívnych prehliadkach",
-    "Kategorizácia prác (ak sa vzťahuje)",
+  { t: "4. Školenia a oboznamovanie", items: [
+    "Oboznámenie pri nástupe, preradení a pri zmene pracovných podmienok",
+    "Periodické školenia BOZP vrátane vedúcich zamestnancov",
+    "Osnovy školení a overenie vedomostí zamestnancov",
+    "Záznamy o školeniach s dátumom a podpismi",
   ] },
-  { t: "Pracovné úrazy", items: [
-    "Evidencia pracovných úrazov a nebezpečných udalostí",
-    "Záznam o registrovanom pracovnom úraze",
-    "Postup hlásenia a vyšetrovania úrazu",
+  { t: "5. Osobné ochranné pracovné prostriedky (OOPP)", items: [
+    "Posúdenie a zoznam OOPP podľa rizík (smernica o OOPP)",
+    "Evidencia prideľovania a prevzatia OOPP (podpisy)",
+    "Kontrola používania a technického stavu OOPP",
   ] },
-  { t: "Prevádzka, stroje a zariadenia", items: [
-    "Revízie a odborné prehliadky (elektro, tlak, zdvíhacie, plyn)",
-    "Sprievodná dokumentácia a návody na obsluhu strojov",
-    "Prevádzkové poriadky rizikových pracovísk",
+  { t: "6. Zdravie pri práci", items: [
+    "Dohľad pracovnej zdravotnej služby nad podmienkami práce",
+    "Lekárske preventívne prehliadky (vstupné, periodické, výstupné)",
+    "Posudky o zdravotnej spôsobilosti na prácu",
+    "Kategorizácia prác a meranie faktorov prostredia (ak sa vzťahuje)",
   ] },
-  { t: "Ochrana pred požiarmi (súvisiaca dokumentácia)", items: [
-    "Požiarne poplachové smernice a evakuačný plán",
-    "Doklady o školení a kontrolách (ak sa vzťahuje)",
+  { t: "7. Stroje, zariadenia a revízie (VTZ)", items: [
+    "Revízie vyhradených technických zariadení (elektro, tlak, plyn, zdvíhacie)",
+    "Termíny odborných prehliadok a odborných skúšok",
+    "Sprievodná dokumentácia, návody a vyhlásenia o zhode",
+    "Evidencia a kontrola rebríkov, regálov a viazacích prostriedkov",
+  ] },
+  { t: "8. Pracovné úrazy a mimoriadne udalosti", items: [
+    "Evidencia (kniha) úrazov a nebezpečných udalostí",
+    "Záznam o registrovanom pracovnom úraze a jeho nahlásenie",
+    "Analýza príčin úrazov a prijaté opatrenia",
+  ] },
+  { t: "9. Prvá pomoc a havarijná pripravenosť", items: [
+    "Lekárničky — umiestnenie, obsah a pravidelná kontrola",
+    "Určení zamestnanci a školenie poskytovania prvej pomoci",
+    "Postupy pre mimoriadne udalosti a evakuáciu",
+  ] },
+  { t: "10. Ochrana pred požiarmi (súvisiaca dokumentácia)", items: [
+    "Požiarne poplachové smernice a požiarny evakuačný plán",
+    "Určenie technika PO / preventivára a vedenie požiarnej knihy",
+    "Školenia a protipožiarne cvičenia",
   ] },
 ];
 
