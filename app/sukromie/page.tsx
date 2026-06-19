@@ -68,6 +68,10 @@ export default function Sukromie() {
       <h3>7. Cookies</h3>
       <p>Používame iba <strong>nevyhnutné</strong> cookies potrebné na prihlásenie a fungovanie
         služby. Bez nich by sa nedalo bezpečne používať konto. Nepoužívame reklamné cookies.</p>
+      <p>Na meranie návštevnosti používame <strong>Vercel Web Analytics</strong>, ktoré pracuje
+        <strong> bez cookies</strong> a zbiera len anonymizované, agregované údaje (napr. počet
+        návštev, navštívené stránky, typ zariadenia). Tieto údaje neumožňujú identifikáciu
+        konkrétnej osoby.</p>
 
       <h3>8. Zmeny</h3>
       <p>Tieto zásady môžeme aktualizovať. Aktuálne znenie je vždy dostupné na tejto stránke.</p>
