@@ -5,7 +5,7 @@ import { createBrowserClient } from "@supabase/ssr";
 type Neb = { nebezpecenstvo: string; ohrozenie: string; P: number; Z: number; opatrenia: string[]; oopp?: string[]; P2?: number; Z2?: number; predpisy?: string[] };
 type Vysledok = { cinnost: string; nebezpecenstva: Neb[]; refs: number };
 type Ctx = { firma: string; odvetvie: string; pozicia: string; prostredie: string; vypracoval: string };
-type Tab = "hodnotenie" | "historia" | "profil";
+type Tab = "prehlad" | "hodnotenie" | "historia" | "profil";
 
 const ODVETVIA = ["Stavebníctvo","Strojárstvo a kovovýroba","Skladovanie a logistika","Drevospracujúci priemysel","Potravinárstvo","Doprava","Poľnohospodárstvo","Energetika","Administratíva a služby","Zdravotníctvo","Obchod a maloobchod","Iné"];
 
@@ -32,7 +32,7 @@ const clamp = (v: any, d: number) => Math.min(5, Math.max(1, parseInt(v) || d));
 const esc = (s: any) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 export default function Generator({ email, plan, mode, maxCinnosti, justPaid, hasCustomer }: { email: string; plan: string; mode: "sub" | "project" | "free" | "none"; maxCinnosti: number; justPaid?: boolean; hasCustomer?: boolean }) {
-  const [tab, setTab] = useState<Tab>("hodnotenie");
+  const [tab, setTab] = useState<Tab>("prehlad");
   const [ctx, setCtx] = useState<Ctx>({ firma: "", odvetvie: ODVETVIA[0], pozicia: "", prostredie: "", vypracoval: "" });
   const [cinnostiText, setCinnostiText] = useState("");
   const [progress, setProgress] = useState<{ c: string; st: "wait" | "run" | "done" | "fail" }[]>([]);
@@ -45,10 +45,12 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
   const [profilErr, setProfilErr] = useState("");
   const [pdfBusy, setPdfBusy] = useState(false);
   const [platbaSuhlas, setPlatbaSuhlas] = useState(false);
+  const [suhlasChyba, setSuhlasChyba] = useState(false);
   const wordLocked = mode === "free";
 
   async function kupit(plan: string) {
-    if (!platbaSuhlas) { setErr("Pred platbou potvrďte súhlas s obchodnými podmienkami."); return; }
+    if (!platbaSuhlas) { setSuhlasChyba(true); return; }
+    setSuhlasChyba(false);
     try {
       const r = await fetch("/api/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ plan }) });
       const d = await r.json();
@@ -81,16 +83,19 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
   const KupaPanel = ({ lead }: { lead: string }) => (
     <div className="unlock-note">
       <strong>{lead}</strong> Jednorazový projekt pokryje obmedzený počet činností (do 15) počas 14 dní; predplatné je bez limitov.
-      <label className="suhlas">
-        <input type="checkbox" checked={platbaSuhlas} onChange={(e) => setPlatbaSuhlas(e.target.checked)} />
+      <label className={"suhlas" + (suhlasChyba ? " suhlas-chyba" : "")}>
+        <input type="checkbox" checked={platbaSuhlas} onChange={(e) => { setPlatbaSuhlas(e.target.checked); if (e.target.checked) setSuhlasChyba(false); }} />
         <span>Súhlasím s <a href="/podmienky" target="_blank" rel="noopener">obchodnými podmienkami</a> a so začatím poskytovania služby pred uplynutím lehoty na odstúpenie. Beriem na vedomie, že začatím používania <a href="/odstupenie" target="_blank" rel="noopener">strácam právo na odstúpenie od zmluvy</a>.</span>
       </label>
+      {suhlasChyba && (
+        <div className="suhlas-hint">↑ Najprv zaškrtnite súhlas s podmienkami, potom môžete pokračovať k platbe.</div>
+      )}
       <div className="kupa">
-        <button className="btn btn-ghost" disabled={!platbaSuhlas} onClick={() => kupit("projekt")}>Projekt · 15 €</button>
-        <button className="btn btn-ghost" disabled={!platbaSuhlas} onClick={() => kupit("mesacne")}>Mesačne · 19 €</button>
-        <button className="btn btn-ghost" disabled={!platbaSuhlas} onClick={() => kupit("stvrtrok")}>3 mesiace · 49 €</button>
-        <button className="btn btn-ghost" disabled={!platbaSuhlas} onClick={() => kupit("polrok")}>6 mesiacov · 79 €</button>
-        <button className="btn btn-primary" disabled={!platbaSuhlas} onClick={() => kupit("rok")}>Rok · 99 €</button>
+        <button className="btn btn-ghost" onClick={() => kupit("projekt")}>Projekt · 15 €</button>
+        <button className="btn btn-ghost" onClick={() => kupit("mesacne")}>Mesačne · 19 €</button>
+        <button className="btn btn-ghost" onClick={() => kupit("stvrtrok")}>3 mesiace · 49 €</button>
+        <button className="btn btn-ghost" onClick={() => kupit("polrok")}>6 mesiacov · 79 €</button>
+        <button className="btn btn-primary" onClick={() => kupit("rok")}>Rok · 99 €</button>
       </div>
     </div>
   );
@@ -276,7 +281,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
       </div>
       <header>
         <div className="head-inner">
-          <a href="/" className="logo-mark" style={{ textDecoration: "none" }} title="Domov">HR</a>
+          <button onClick={() => setTab("prehlad")} className="logo-mark" style={{ border: "none", cursor: "pointer" }} title="Domov">HR</button>
           <div><h1>e-rizika.sk</h1><div className="head-sub">Vaša pracovná plocha · § 6 zákona č. 124/2006 Z. z. · metodika 5×5</div></div>
           <div className="nav-links">
             <span className="plan-badge">{plan}</span>
@@ -285,6 +290,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
           </div>
         </div>
         <nav className="app-tabs">
+          <button className={"tab" + (tab === "prehlad" ? " on" : "")} onClick={() => setTab("prehlad")}>Domov</button>
           <button className={"tab" + (tab === "hodnotenie" ? " on" : "")} onClick={() => setTab("hodnotenie")}>Hodnotenie rizík</button>
           <button className={"tab" + (tab === "historia" ? " on" : "")} onClick={() => setTab("historia")}>História{hist.length > 0 ? ` · ${hist.length}` : ""}</button>
           <button className={"tab" + (tab === "profil" ? " on" : "")} onClick={() => setTab("profil")}>Profil</button>
@@ -301,6 +307,65 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
           <div className="unlock-note">
             <strong>Ďakujeme za platbu — aktivujeme váš prístup…</strong> Chvíľu strpenia, stránka sa o sekundu sama obnoví. Ak by sa prístup neaktivoval, obnovte ju ručne (F5).
           </div>
+        )}
+
+        {tab === "prehlad" && (
+          <>
+            <div className="dash-hero card">
+              <div className="dash-hero-in">
+                <div className="section-label">Vaša pracovná plocha</div>
+                <h2 className="dash-title">Vitajte späť 👋</h2>
+                <p className="dash-sub">Aktuálny balík: <strong>{plan}</strong>{mode === "free" ? " — prvé hodnotenie máte zadarmo." : ""}</p>
+                <div className="dash-cta">
+                  <button className="btn btn-primary" onClick={() => setTab("hodnotenie")}>+ Vytvoriť nové hodnotenie rizík</button>
+                  {(mode === "free" || mode === "none") && (
+                    <button className="btn btn-ghost" onClick={() => setTab("hodnotenie")}>Pozrieť balíky</button>
+                  )}
+                </div>
+              </div>
+              <div className="dash-mx" aria-hidden="true">
+                {[5, 4, 3, 2, 1].flatMap((z) => [1, 2, 3, 4, 5].map((p) => (
+                  <i key={`${z}-${p}`} style={{ background: riskHex(p * z) }} />
+                )))}
+                <div className="dash-mx-cap">Matica rizík · R = P × Z</div>
+              </div>
+            </div>
+
+            <div className="dash-stats">
+              <div className="stat-card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6 M8 13h8 M8 17h8" /></svg>
+                <div><b>{hist.length}</b><span>vytvorených dokumentov</span></div>
+              </div>
+              <div className="stat-card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a5 5 0 0 0-5 5v3H5a8 8 0 0 1 14 0h-2V7a5 5 0 0 0-5-5z M3 13h18v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg>
+                <div><b>{plan}</b><span>aktuálny balík</span></div>
+              </div>
+              <div className="stat-card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="m9 12 2 2 4-4" /></svg>
+                <div><b>{maxCinnosti}</b><span>činností na dokument</span></div>
+              </div>
+            </div>
+
+            <div className="card dash-recent">
+              <div className="section-label">Posledné dokumenty</div>
+              {hist.length === 0 ? (
+                <p className="hint">Zatiaľ nemáte žiadne hodnotenia. Kliknite na <strong>„Vytvoriť nové hodnotenie rizík"</strong> a prvý dokument sa uloží sem.</p>
+              ) : (
+                <>
+                  {hist.slice(0, 5).map((h) => (
+                    <div className="hist-row" key={h.id}>
+                      <span style={{ flex: 1 }}>{h.title}</span>
+                      <span className="user-bar">{new Date(h.created_at).toLocaleDateString("sk-SK")}</span>
+                      <button className="btn btn-ghost" onClick={() => nacitajDokument(h.id)}>Načítať</button>
+                    </div>
+                  ))}
+                  {hist.length > 5 && (
+                    <button className="btn btn-ghost" style={{ marginTop: 12 }} onClick={() => setTab("historia")}>Zobraziť celú históriu ({hist.length}) →</button>
+                  )}
+                </>
+              )}
+            </div>
+          </>
         )}
 
         {tab === "hodnotenie" && (
