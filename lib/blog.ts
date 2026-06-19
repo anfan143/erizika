@@ -22,6 +22,20 @@ export const ARTICLES: Article[] = [
     readMins: 8,
     keywords: ["ako vypracovať hodnotenie rizík", "hodnotenie rizík", "posúdenie rizík", "BOZP", "124/2006"],
     body: `
+<div class="clanok-hero">
+<svg viewBox="0 0 760 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="BOZP — hodnotenie rizík">
+  <rect width="760" height="140" rx="12" fill="#16212D"/>
+  <rect x="0" y="128" width="760" height="12" fill="#F5A524"/>
+  <g stroke="#F5C24B" stroke-width="3" fill="none" stroke-linejoin="round" stroke-linecap="round"><path d="M150 38 L194 114 L106 114 Z"/><path d="M150 66 v22"/></g>
+  <circle cx="150" cy="102" r="3" fill="#F5C24B"/>
+  <g stroke="#E6ECF2" stroke-width="3" fill="none" stroke-linecap="round"><rect x="300" y="36" width="64" height="78" rx="7"/><path d="M315 60 h34 M315 78 h34 M315 96 h20"/></g>
+  <rect x="319" y="29" width="26" height="14" rx="4" fill="#F5A524"/>
+  <text x="600" y="34" font-family="monospace" font-size="12" fill="#9FB0C2">R = P × Z</text>
+  <rect x="600" y="44" width="18" height="18" rx="3" fill="#E09B00"/><rect x="622" y="44" width="18" height="18" rx="3" fill="#D96B1F"/><rect x="644" y="44" width="18" height="18" rx="3" fill="#C2382A"/>
+  <rect x="600" y="66" width="18" height="18" rx="3" fill="#1E8E5A"/><rect x="622" y="66" width="18" height="18" rx="3" fill="#E09B00"/><rect x="644" y="66" width="18" height="18" rx="3" fill="#D96B1F"/>
+  <rect x="600" y="88" width="18" height="18" rx="3" fill="#1E8E5A"/><rect x="622" y="88" width="18" height="18" rx="3" fill="#1E8E5A"/><rect x="644" y="88" width="18" height="18" rx="3" fill="#E09B00"/>
+</svg>
+</div>
 <p class="lead">Hodnotenie rizík je zákonná povinnosť každého zamestnávateľa na Slovensku. V tomto návode si krok po kroku ukážeme, ako ho vypracovať správne — od identifikácie nebezpečenstiev cez maticu rizika až po opatrenia a zostatkové riziko.</p>
 
 <h2>Čo je hodnotenie rizík a prečo je povinné</h2>
@@ -40,7 +54,7 @@ export const ARTICLES: Article[] = [
   <li>pošmyknutie a zakopnutie, doprava a manipulačné vozíky,</li>
   <li>uzavretý priestor, poveternostné podmienky, psychosociálne faktory.</li>
 </ul>
-<p>Pri každej činnosti sa pýtajte: <em>„Čo sa môže pokaziť a komu to môže ublížiť?"</em></p>
+<div class="clanok-box is-tip"><p><strong>Tip:</strong> Pri každej činnosti sa pýtajte: <em>„Čo sa môže pokaziť a komu to môže ublížiť?"</em> Otázku si zopakujte pre každú fázu práce.</p></div>
 
 <h2>Krok 2: Posúďte mieru rizika (matica P × Z)</h2>
 <p>Riziko sa najčastejšie vyjadruje ako súčin <strong>pravdepodobnosti (P)</strong> a <strong>závažnosti (Z)</strong> možného následku: <strong>R = P × Z</strong>. Pri metodike 5 × 5 sa obe veličiny hodnotia na škále 1 až 5:</p>
@@ -49,16 +63,29 @@ export const ARTICLES: Article[] = [
   <li><strong>Závažnosť Z:</strong> 1 = drobné poranenie bez práceneschopnosti, … 5 = smrteľný úraz.</li>
 </ul>
 <p>Hodnoty P a Z určujete pre stav <strong>bez prijatých opatrení</strong> (východiskové riziko). Výsledné R potom zaradíte do pásma — napríklad: R 1–4 akceptovateľné, R 5–9 mierne, R 10–15 nežiaduce, R 16–25 neakceptovateľné.</p>
+<figure class="clanok-matica">
+  <span class="clanok-fig-cap">Príklad — matica rizík (R = P × Z, 5 × 5)</span>
+  <div class="matica-grid">
+    <span class="matica-cell" style="background:#E09B00">5</span><span class="matica-cell" style="background:#D96B1F">10</span><span class="matica-cell" style="background:#D96B1F">15</span><span class="matica-cell" style="background:#C2382A">20</span><span class="matica-cell" style="background:#C2382A">25</span>
+    <span class="matica-cell" style="background:#1E8E5A">4</span><span class="matica-cell" style="background:#E09B00">8</span><span class="matica-cell" style="background:#D96B1F">12</span><span class="matica-cell" style="background:#C2382A">16</span><span class="matica-cell" style="background:#C2382A">20</span>
+    <span class="matica-cell" style="background:#1E8E5A">3</span><span class="matica-cell" style="background:#E09B00">6</span><span class="matica-cell" style="background:#E09B00">9</span><span class="matica-cell" style="background:#D96B1F">12</span><span class="matica-cell" style="background:#D96B1F">15</span>
+    <span class="matica-cell" style="background:#1E8E5A">2</span><span class="matica-cell" style="background:#1E8E5A">4</span><span class="matica-cell" style="background:#E09B00">6</span><span class="matica-cell" style="background:#E09B00">8</span><span class="matica-cell" style="background:#D96B1F">10</span>
+    <span class="matica-cell" style="background:#1E8E5A">1</span><span class="matica-cell" style="background:#1E8E5A">2</span><span class="matica-cell" style="background:#1E8E5A">3</span><span class="matica-cell" style="background:#1E8E5A">4</span><span class="matica-cell" style="background:#E09B00">5</span>
+  </div>
+  <div class="matica-axes"><span>↑ Z = závažnosť</span><span>P = pravdepodobnosť →</span></div>
+  <div class="matica-legend"><span style="background:#1E8E5A">1–4 akceptovateľné</span><span style="background:#E09B00">5–9 mierne</span><span style="background:#D96B1F">10–15 nežiaduce</span><span style="background:#C2382A">16–25 neakceptovateľné</span></div>
+</figure>
 
 <h2>Krok 3: Navrhnite opatrenia podľa hierarchie</h2>
 <p>Ku každému nebezpečenstvu navrhnete opatrenia na zníženie rizika. Dôležité je dodržať <strong>hierarchiu opatrení</strong> — od najúčinnejších po najmenej:</p>
-<ol>
-  <li><strong>Odstránenie</strong> nebezpečenstva (úplne ho vylúčiť),</li>
-  <li><strong>Nahradenie</strong> menej nebezpečným riešením,</li>
-  <li><strong>Technické</strong> opatrenia (kryty, zábradlia, odsávanie),</li>
-  <li><strong>Organizačné</strong> opatrenia (postupy, školenia, striedanie),</li>
-  <li><strong>Osobné ochranné pracovné prostriedky (OOPP)</strong> ako posledná línia.</li>
-</ol>
+<div class="clanok-pyramida">
+  <div class="pyr-row" style="background:#1E8E5A;width:100%">1 · Odstránenie nebezpečenstva</div>
+  <div class="pyr-row" style="background:#2E9E68;width:90%">2 · Nahradenie menej nebezpečným</div>
+  <div class="pyr-row" style="background:#E09B00;width:80%">3 · Technické opatrenia (kryty, odsávanie)</div>
+  <div class="pyr-row" style="background:#D96B1F;width:70%">4 · Organizačné opatrenia (postupy, školenia)</div>
+  <div class="pyr-row" style="background:#8A93A0;width:60%">5 · OOPP — posledná línia ochrany</div>
+</div>
+<p style="font-size:13.5px;color:var(--ink-soft);margin-top:-6px">Najúčinnejšie opatrenia sú hore. K OOPP siahnite až vtedy, keď riziko nevieš znížiť inak.</p>
 <p>Opatrenia formulujte konkrétne a kontrolovateľne — nie „dbať na bezpečnosť", ale napríklad „inštalovať dvojtyčové zábradlie so zarážkou pri podlahe".</p>
 
 <h2>Krok 4: Určte zostatkové riziko</h2>
@@ -68,12 +95,15 @@ export const ARTICLES: Article[] = [
 <p>Výsledok zapíšete do <strong>dokumentu o posúdení rizika</strong>, ktorý obsahuje identifikované nebezpečenstvá, ohrozenia, maticu rizika, opatrenia, požadované OOPP, zostatkové riziko a doložku o prehodnocovaní. Hodnotenie nie je jednorazové — <strong>prehodnocuje sa</strong> pri zmene podmienok (nový stroj, technológia, úraz) a v rámci periodickej aktualizácie.</p>
 
 <h2>Najčastejšie chyby</h2>
-<ul>
-  <li>Príliš všeobecné nebezpečenstvá bez väzby na konkrétnu činnosť.</li>
-  <li>Opatrenia formulované ako fráza, ktorá sa nedá skontrolovať.</li>
-  <li>Vymyslené čísla predpisov — uvádzajte len tie, ktorými ste si istí.</li>
-  <li>Dokument, ktorý vznikol „od stola" a nezodpovedá realite pracoviska.</li>
-</ul>
+<div class="clanok-box is-warn">
+  <p><strong>⚠️ Čomu sa vyhnúť:</strong></p>
+  <ul>
+    <li>Príliš všeobecné nebezpečenstvá bez väzby na konkrétnu činnosť.</li>
+    <li>Opatrenia formulované ako fráza, ktorá sa nedá skontrolovať.</li>
+    <li>Vymyslené čísla predpisov — uvádzajte len tie, ktorými ste si istí.</li>
+    <li>Dokument, ktorý vznikol „od stola" a nezodpovedá realite pracoviska.</li>
+  </ul>
+</div>
 
 <h2>Ako to zvládnuť rýchlejšie</h2>
 <p>Vypracovať kvalitné hodnotenie ručne zaberie hodiny. Náš nástroj <strong>e-rizika.sk</strong> vám ku každej zadanej činnosti pripraví kompletný návrh — nebezpečenstvá, maticu P × Z, opatrenia podľa hierarchie, OOPP aj zostatkové riziko — postavený na databáze overených rizík z praxe. Výstup si stiahnete ako Word a PDF a pred zaradením do dokumentácie ho preverí odborne spôsobilá osoba.</p>

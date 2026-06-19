@@ -522,3 +522,25 @@
 .clanok-cta a + a { margin-left: 8px; }
 .clanok-disc { font-size: 12.5px !important; color: #8a93a0 !important; margin-top: 22px !important; }
 .clanok-hr { border: none; border-top: 1px solid var(--line, #e7e9ee); margin: 24px 0 14px; }
+
+/* ── Blog: vizuálne prvky v článku ── */
+.clanok-hero { display: block; width: 100%; margin: 0 0 22px; }
+.clanok-hero svg { display: block; width: 100%; height: auto; border-radius: 12px; }
+.clanok h2 { border-left: 4px solid var(--safety, #F5B700); padding-left: 12px; }
+
+.clanok-box { border-radius: 10px; padding: 14px 16px; margin: 18px 0; border-left: 4px solid; }
+.clanok-box p { margin: 0; font-size: 14.5px; line-height: 1.65; }
+.clanok-box ul { margin: 4px 0 0; }
+.clanok-box.is-tip { background: #F0FAF4; border-color: var(--green, #1E8E5A); }
+.clanok-box.is-warn { background: #FFF7ED; border-color: var(--orange, #D96B1F); }
+
+.clanok-matica { margin: 18px 0 24px; }
+.clanok-fig-cap { display: block; font-family: 'IBM Plex Mono'; font-size: 11px; letter-spacing: .5px; color: var(--ink-soft); margin-bottom: 8px; text-transform: uppercase; }
+.matica-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; max-width: 300px; }
+.matica-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 13px; border-radius: 5px; }
+.matica-axes { display: flex; justify-content: space-between; max-width: 300px; margin-top: 6px; font-family: 'IBM Plex Mono'; font-size: 10.5px; color: var(--ink-soft); }
+.matica-legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.matica-legend span { color: #fff; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 4px; }
+
+.clanok-pyramida { display: flex; flex-direction: column; align-items: center; gap: 5px; margin: 16px 0 24px; }
+.pyr-row { color: #fff; font-weight: 600; font-size: 13.5px; padding: 9px 14px; border-radius: 6px; text-align: center; }
