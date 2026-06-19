@@ -1,6 +1,7 @@
 "use client";
 import { useState, type CSSProperties } from "react";
 import { createBrowserClient } from "@supabase/ssr";
+import { track } from "@vercel/analytics";
 
 function sb() {
   return createBrowserClient(
@@ -20,6 +21,7 @@ export default function Login() {
 
   async function google() {
     setErr(""); setMsg("");
+    track("google_login_klik");
     try {
       const { error } = await sb().auth.signInWithOAuth({
         provider: "google",
@@ -70,6 +72,7 @@ export default function Login() {
           options: { emailRedirectTo: `${window.location.origin}/auth/confirm` },
         });
         if (error) throw error;
+        track("registracia", { metoda: "email" });
         if (data.session) { window.location.href = "/app"; return; }
         setMsg("Účet sme vytvorili. Ak vám prišiel potvrdzovací e-mail, kliknite naň a potom sa prihláste.");
         setMode("login");

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
+import { track } from "@vercel/analytics";
 
 type Neb = { nebezpecenstvo: string; ohrozenie: string; P: number; Z: number; opatrenia: string[]; oopp?: string[]; P2?: number; Z2?: number; predpisy?: string[] };
 type Vysledok = { cinnost: string; nebezpecenstva: Neb[]; refs: number };
@@ -51,6 +52,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
   async function kupit(plan: string) {
     if (!platbaSuhlas) { setSuhlasChyba(true); return; }
     setSuhlasChyba(false);
+    track("platba_klik", { plan });
     try {
       const r = await fetch("/api/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ plan }) });
       const d = await r.json();
@@ -105,6 +107,13 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
   // Po platbe sa prístup aktivuje cez webhook (asynchrónne). Kým mode ešte nie je
   // aktívny, párkrát stránku obnovíme, nech zákazník nevidí „žiadny balík".
   const aktivny = mode === "sub" || mode === "project";
+  // Úspešnú platbu zaznamenáme len raz (stránka sa počas aktivácie párkrát obnoví).
+  useEffect(() => {
+    if (justPaid && !sessionStorage.getItem("platbaTracked")) {
+      sessionStorage.setItem("platbaTracked", "1");
+      track("platba_ok", { plan });
+    }
+  }, [justPaid, plan]);
   useEffect(() => {
     if (!justPaid) return;
     if (aktivny) { sessionStorage.removeItem("platbaRetries"); return; }
@@ -136,6 +145,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
         const r = await fetch("/api/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cinnost: cinnosti[i], ctx }) });
         if (r.status === 402) {
           const d402 = await r.json().catch(() => ({} as any));
+          track("paywall", { dovod: d402?.error || "limit" });
           setErr(d402?.error === "project_limit"
             ? "V projekte už nie sú voľné činnosti. Kúpte si ďalší projekt alebo prejdite na predplatné."
             : "Vyčerpali ste dostupné hodnotenia. Vyberte si balík nižšie.");
@@ -149,6 +159,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
     }
     setBusy(false);
     if (out.length) {
+      track("generovanie", { pocet: out.length });
       try {
         await fetch("/api/dokumenty", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title: `${ctx.firma || "Hodnotenie rizík"} — ${ctx.pozicia || out[0].cinnost}`, payload: { ctx, vysledky: out } }) });
         nacitajHistoriu();
