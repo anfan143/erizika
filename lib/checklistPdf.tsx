@@ -33,19 +33,21 @@ const SECTIONS: { t: string; items: string[] }[] = [
   { t: "4. Školenia a oboznamovanie", items: [
     "Oboznámenie pri nástupe, preradení a pri zmene pracovných podmienok",
     "Periodické školenia BOZP vrátane vedúcich zamestnancov",
+    "Výchova a vzdelávanie zabezpečené oprávnenou osobou (ak sa vyžaduje)",
     "Osnovy školení a overenie vedomostí zamestnancov",
-    "Záznamy o školeniach s dátumom a podpismi",
+    "Vedenie záznamov o školeniach (vrátane elektronických) s dátumom, obsahom a podpismi",
   ] },
   { t: "5. Osobné ochranné pracovné prostriedky (OOPP)", items: [
     "Posúdenie a zoznam OOPP podľa rizík (smernica o OOPP)",
     "Evidencia prideľovania a prevzatia OOPP (podpisy)",
     "Kontrola používania a technického stavu OOPP",
   ] },
-  { t: "6. Zdravie pri práci", items: [
-    "Dohľad pracovnej zdravotnej služby nad podmienkami práce",
-    "Lekárske preventívne prehliadky (vstupné, periodické, výstupné)",
+  { t: "6. Zdravie pri práci (zákon č. 355/2007 Z. z.)", items: [
+    "Zabezpečenie pracovnej zdravotnej služby (povinné pre každého zamestnávateľa)",
+    "Posudok o riziku a kategorizácia prác v spolupráci s PZS",
+    "Lekárske preventívne prehliadky vo vzťahu k práci (podľa kategórie a rizík)",
     "Posudky o zdravotnej spôsobilosti na prácu",
-    "Kategorizácia prác a meranie faktorov prostredia (ak sa vzťahuje)",
+    "Meranie faktorov pracovného prostredia (ak sa vzťahuje)",
   ] },
   { t: "7. Stroje, zariadenia a revízie (VTZ)", items: [
     "Revízie vyhradených technických zariadení (elektro, tlak, plyn, zdvíhacie)",
@@ -93,8 +95,9 @@ function ChecklistDoc({ watermark }: { watermark: boolean }) {
         <Text style={st.title}>Checklist BOZP dokumentácie</Text>
         <Text style={st.intro}>
           Prehľad dokumentov, ktoré by mal mať zamestnávateľ v rámci bezpečnosti a ochrany zdravia pri práci.
-          Rozsah sa líši podľa činnosti firmy — zoznam berte ako orientačnú pomôcku a konzultujte ho s odborne
-          spôsobilou osobou. Odškrtnite si, čo už máte spracované.
+          Zostavené podľa právnych predpisov platných v SR k 06/2026 (najmä zákon č. 124/2006 Z. z. o BOZP
+          a zákon č. 355/2007 Z. z. o ochrane zdravia). Rozsah sa líši podľa činnosti firmy — zoznam berte ako
+          orientačnú pomôcku a konzultujte ho s odborne spôsobilou osobou. Odškrtnite si, čo už máte spracované.
         </Text>
 
         {SECTIONS.map((s, i) => (
@@ -112,7 +115,7 @@ function ChecklistDoc({ watermark }: { watermark: boolean }) {
         <Text style={st.fine}>
           Tento checklist má informatívny charakter a nenahrádza odborné posúdenie. Konkrétny rozsah dokumentácie
           a jej náležitosti posudzuje odborne spôsobilá osoba (bezpečnostný technik / autorizovaný bezpečnostný
-          technik) v zmysle zákona č. 124/2006 Z. z.
+          technik) v zmysle zákona č. 124/2006 Z. z. a zákona č. 355/2007 Z. z. Stav k 06/2026.
         </Text>
         <Text style={st.foot} fixed>© e-rizika.sk · www.erizika.sk · Hodnotenie rizík BOZP za pár minút</Text>
       </Page>
