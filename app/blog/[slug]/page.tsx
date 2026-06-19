@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ARTICLES, getArticle, BLOG_HERO } from "@/lib/blog";
+import LeadForm from "@/app/LeadForm";
 
 export function generateStaticParams() {
   return ARTICLES.map((a) => ({ slug: a.slug }));
@@ -90,6 +91,7 @@ export default function ClanokPage({ params }: { params: { slug: string } }) {
             <a href="/blog">← Všetky články</a>
           </p>
         </article>
+        <LeadForm source="blog" />
       </main>
     </>
   );

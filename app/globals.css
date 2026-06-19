@@ -567,3 +567,19 @@
 .clanok-kroky { list-style: none; padding-left: 0; counter-reset: krok; margin: 14px 0 22px; }
 .clanok-kroky li { position: relative; padding-left: 42px; margin: 12px 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
 .clanok-kroky li::before { counter-increment: krok; content: counter(krok); position: absolute; left: 0; top: -1px; width: 28px; height: 28px; background: var(--ink, #16212D); color: #fff; border-radius: 50%; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+
+/* ── Lead magnet (zber e-mailov) ── */
+.lead-magnet { background: var(--ink, #16212D); color: #fff; border-radius: 16px; padding: 28px 30px; display: flex; gap: 26px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin: 26px 0; }
+.lead-magnet .lm-text { flex: 1 1 300px; }
+.lead-magnet h2, .lead-magnet h3 { font-family: 'Archivo'; font-weight: 900; color: #fff; margin: 4px 0 8px; border: none; padding: 0; }
+.lead-magnet h2 { font-size: 24px; }
+.lead-magnet h3 { font-size: 20px; }
+.lead-magnet p { color: #c5cfdb; font-size: 14px; margin: 0; max-width: 470px; line-height: 1.55; }
+.lm-form { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; flex: 1 1 290px; }
+.lm-form input { flex: 1 1 190px; min-width: 0; padding: 12px 14px; border-radius: 10px; border: 1px solid #3a4556; background: #0f1620; color: #fff; font-size: 14px; }
+.lm-form input::placeholder { color: #7e8a99; }
+.lm-form .btn { white-space: nowrap; }
+.lm-msg { flex-basis: 100%; font-size: 12.5px; min-height: 16px; margin: 0; }
+.lm-msg.ok { color: #8fe3b4; }
+.lm-msg.err { color: #ff9d9d; }
+.lm-note { flex-basis: 100%; font-size: 11px; color: #8090a0; margin: 2px 0 0; }

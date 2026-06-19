@@ -243,6 +243,24 @@ export const LANDING_HTML = `
   </div>
 </section>
 
+<section id="checklist">
+  <div class="wrap">
+    <div class="lead-magnet">
+      <div class="lm-text">
+        <div class="mono eyebrow">Zadarmo na stiahnutie</div>
+        <h2>Checklist BOZP dokumentácie</h2>
+        <p>Prehľad dokumentov, ktoré by mala mať každá firma. Nechajte e-mail a checklist vám hneď zobrazíme ako PDF.</p>
+      </div>
+      <form id="lead-form" class="lm-form" novalidate>
+        <input id="lead-email" type="email" placeholder="vas@email.sk" autocomplete="email" aria-label="E-mail" required />
+        <button type="submit" class="btn btn-primary">Získať checklist</button>
+        <div id="lead-msg" class="lm-msg" role="status"></div>
+        <div class="lm-note">Pošleme vám len užitočné tipy k BOZP. Odhlásiť sa môžete kedykoľvek.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
 <section style="padding-top:0;padding-bottom:0">
   <div class="wrap">
     <div class="cta-band">
