@@ -34,6 +34,7 @@ const esc = (s: any) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&l
 
 export default function Generator({ email, plan, mode, maxCinnosti, justPaid, hasCustomer }: { email: string; plan: string; mode: "sub" | "project" | "free" | "none"; maxCinnosti: number; justPaid?: boolean; hasCustomer?: boolean }) {
   const [tab, setTab] = useState<Tab>("prehlad");
+  const [menuOpen, setMenuOpen] = useState(false);
   const [ctx, setCtx] = useState<Ctx>({ firma: "", odvetvie: ODVETVIA[0], pozicia: "", prostredie: "", vypracoval: "" });
   const [cinnostiText, setCinnostiText] = useState("");
   const [progress, setProgress] = useState<{ c: string; st: "wait" | "run" | "done" | "fail" }[]>([]);
@@ -314,6 +315,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
             <span className="user-bar">{email}</span>
             <button className="btn btn-ghost" style={{ padding: "7px 14px", fontSize: 13 }} onClick={odhlasit}>Odhlásiť</button>
           </div>
+          <button className="burger" onClick={() => setMenuOpen(true)} aria-label="Otvoriť menu">☰</button>
         </div>
         <nav className="app-tabs">
           <button className={"tab" + (tab === "prehlad" ? " on" : "")} onClick={() => setTab("prehlad")}>Domov</button>
@@ -322,6 +324,26 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
           <button className={"tab" + (tab === "profil" ? " on" : "")} onClick={() => setTab("profil")}>Profil</button>
         </nav>
       </header>
+
+      {menuOpen && (
+        <div className="drawer-ov" onClick={() => setMenuOpen(false)}>
+          <nav className="drawer" onClick={(e) => e.stopPropagation()}>
+            <div className="drawer-head">
+              <span style={{ fontFamily: "'Archivo'", fontWeight: 900, fontSize: 17 }}>Menu</span>
+              <button className="drawer-x" onClick={() => setMenuOpen(false)} aria-label="Zavrieť menu">✕</button>
+            </div>
+            <button className={"drawer-item" + (tab === "prehlad" ? " on" : "")} onClick={() => { setTab("prehlad"); setMenuOpen(false); }}>Domov</button>
+            <button className={"drawer-item" + (tab === "hodnotenie" ? " on" : "")} onClick={() => { setTab("hodnotenie"); setMenuOpen(false); }}>Hodnotenie rizík</button>
+            <button className={"drawer-item" + (tab === "historia" ? " on" : "")} onClick={() => { setTab("historia"); setMenuOpen(false); }}>História{hist.length > 0 ? ` · ${hist.length}` : ""}</button>
+            <button className={"drawer-item" + (tab === "profil" ? " on" : "")} onClick={() => { setTab("profil"); setMenuOpen(false); }}>Profil</button>
+            <div className="drawer-acc">
+              <span className="plan-badge">{plan}</span>
+              <span className="user-bar" style={{ wordBreak: "break-all" }}>{email}</span>
+              <button className="btn btn-ghost" onClick={odhlasit}>Odhlásiť</button>
+            </div>
+          </nav>
+        </div>
+      )}
 
       <main>
         {justPaid && aktivny && (
