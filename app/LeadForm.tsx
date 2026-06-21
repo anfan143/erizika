@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 
 export default function LeadForm({ source = "blog" }: { source?: string }) {
   const [email, setEmail] = useState("");
+  const [hp, setHp] = useState("");
   const [msg, setMsg] = useState("");
   const [stav, setStav] = useState<"" | "ok" | "err">("");
   const [busy, setBusy] = useState(false);
@@ -15,7 +16,7 @@ export default function LeadForm({ source = "blog" }: { source?: string }) {
     const w = window.open("", "_blank");
     setBusy(true); setMsg("Posielam…");
     try {
-      const r = await fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email.trim(), source }) });
+      const r = await fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email.trim(), source, website: hp }) });
       const d = await r.json();
       if (r.ok && d.pdf) {
         if (w) w.location.href = d.pdf;
@@ -32,6 +33,7 @@ export default function LeadForm({ source = "blog" }: { source?: string }) {
         <p>Prehľad dokumentov, ktoré by mala mať každá firma. Nechajte e-mail a hneď vám ho zobrazíme ako PDF.</p>
       </div>
       <form className="lm-form" onSubmit={odosli} noValidate>
+        <input type="text" name="website" className="hp-field" tabIndex={-1} autoComplete="off" aria-hidden="true" value={hp} onChange={(e) => setHp(e.target.value)} />
         <input type="email" placeholder="vas@email.sk" autoComplete="email" aria-label="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} required />
         <button type="submit" className="btn btn-primary" disabled={busy}>{busy ? "Posielam…" : "Získať checklist"}</button>
         <div className={"lm-msg" + (stav ? " " + stav : "")} role="status">

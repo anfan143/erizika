@@ -7,11 +7,36 @@ export const runtime = "nodejs";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Jednoduchý rate-limit na IP (best-effort, v pamäti inštancie). Pri Vercel to
+// zachytí rýchle dávky z jednej IP; nie je to náhrada za Redis, ale výrazne zvýši
+// latku proti zneužitiu verejného endpointu.
+const HITS = new Map<string, number[]>();
+function rateOk(ip: string, max = 6, windowMs = 10 * 60 * 1000): boolean {
+  const now = Date.now();
+  const arr = (HITS.get(ip) || []).filter((t) => now - t < windowMs);
+  if (arr.length >= max) { HITS.set(ip, arr); return false; }
+  arr.push(now);
+  HITS.set(ip, arr);
+  if (HITS.size > 5000) HITS.clear();
+  return true;
+}
+
 export async function POST(req: Request) {
   let body: any = {};
   try { body = await req.json(); } catch {}
   const email = String(body?.email || "").trim().toLowerCase();
   const source = String(body?.source || "neznamy").slice(0, 60);
+
+  // Honeypot: skryté pole „website" vyplnia len boti → tichá akceptácia, nič neukladáme.
+  if (String(body?.website || "").trim() !== "") {
+    return NextResponse.json({ ok: true, pdf: "/api/checklist" });
+  }
+
+  // Rate-limit na IP.
+  const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown";
+  if (!rateOk(ip)) {
+    return NextResponse.json({ error: "Príliš veľa pokusov. Skúste to o chvíľu." }, { status: 429 });
+  }
 
   if (!EMAIL_RE.test(email)) {
     return NextResponse.json({ error: "Zadajte platný e-mail." }, { status: 400 });

@@ -676,3 +676,6 @@
 .plan-card .btn { margin-top: auto; text-align: center; width: 100%; }
 @media (max-width: 620px) { .pricing-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 380px) { .pricing-grid { grid-template-columns: 1fr; } }
+
+/* Honeypot — skryté pole proti botom (off-screen, nie display:none) */
+.hp-field { position: absolute !important; left: -9999px !important; top: auto; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }

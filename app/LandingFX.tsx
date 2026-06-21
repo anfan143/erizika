@@ -58,7 +58,8 @@ export default function LandingFX() {
       const w = window.open("", "_blank");
       msg.textContent = "Posielam…";
       try {
-        const r = await fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, source: "uvodka" }) });
+        const hp = (document.getElementById("lead-website") as HTMLInputElement | null)?.value || "";
+        const r = await fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, source: "uvodka", website: hp }) });
         const d = await r.json();
         if (r.ok && d.pdf) {
           if (w) w.location.href = d.pdf;

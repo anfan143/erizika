@@ -259,6 +259,7 @@ export const LANDING_HTML = `
         <p>Prehľad dokumentov, ktoré by mala mať každá firma. Nechajte e-mail a checklist vám hneď zobrazíme ako PDF.</p>
       </div>
       <form id="lead-form" class="lm-form" novalidate>
+        <input id="lead-website" name="website" type="text" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <input id="lead-email" type="email" placeholder="vas@email.sk" autocomplete="email" aria-label="E-mail" required />
         <button type="submit" class="btn btn-primary">Získať checklist</button>
         <div id="lead-msg" class="lm-msg" role="status"></div>
