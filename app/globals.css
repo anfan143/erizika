@@ -652,3 +652,6 @@
 /* Riadky dokumentov — jemný hover (premium pocit) */
 .hist-row { transition: background .15s ease; border-radius: 8px; }
 .hist-row:hover { background: #FAFBFC; }
+
+/* Pätička úvodky — vycentrovaný disclaimer */
+.land footer .foot-disc { text-align: center; margin: 8px auto 0; max-width: 780px; }
