@@ -593,3 +593,8 @@
 .land .trust-row span { font-size: 13px; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 6px; }
 .kupa-trust { margin-top: 12px; font-size: 12.5px; color: var(--ink-soft); }
 .kupa-value { font-size: 13.5px; color: var(--ink-soft); margin: 2px 0 8px; }
+
+/* ── Blog: súvisiace články ── */
+.clanok-suvisiace { margin-top: 30px; padding-top: 8px; }
+.suvis-row { display: block; border: 1px solid var(--line, #e7e9ee); border-radius: 10px; padding: 13px 16px; margin-top: 10px; text-decoration: none; color: var(--ink, #16212D); font-weight: 600; font-size: 14.5px; transition: border-color .15s; }
+.suvis-row:hover { border-color: var(--green, #1E8E5A); }

@@ -357,6 +357,152 @@ export const ARTICLES: Article[] = [
 <p class="clanok-disc">Postup a lehoty sa riadia platnou legislatívou (najmä zákon č. 124/2006 Z. z.). Článok má informatívny charakter a nenahrádza odborné usmernenie.</p>
 `,
   },
+  {
+    slug: "praca-vo-vyske-rizika-opatrenia",
+    title: "Práca vo výške: riziká a opatrenia podľa zákona",
+    description:
+      "Aké sú riziká práce vo výške nad 1,5 m a aké opatrenia vyžaduje zákon — lešenie, rebrík, plošina, kolektívne istenie aj OOPP proti pádu.",
+    date: "2026-06-19",
+    readMins: 6,
+    keywords: ["práca vo výške", "riziká práce vo výške", "pád z výšky", "BOZP", "392/2006"],
+    body: `
+<p class="lead">Práca vo výške patrí medzi najrizikovejšie činnosti — pád z výšky je jednou z najčastejších príčin smrteľných pracovných úrazov. Tu je prehľad rizík a opatrení, ktoré vyžaduje legislatíva.</p>
+
+<h2>Čo sa považuje za prácu vo výške</h2>
+<p>Za prácu vo výške sa spravidla považuje práca vo <strong>výške nad 1,5 m</strong> nad okolitou úrovňou, prípadne práca nad voľnou hĺbkou. Požiadavky upravuje najmä <strong>NV SR č. 392/2006 Z. z.</strong>, pri stavebných prácach aj <strong>vyhláška MPSVR SR č. 147/2013 Z. z.</strong></p>
+
+<h2>Hlavné riziká</h2>
+<ul class="clanok-check">
+  <li>Pád z nezaisteného okraja podlahy alebo strechy</li>
+  <li>Pád pri montáži a demontáži lešenia</li>
+  <li>Prevrátenie rebríka alebo pojazdnej plošiny</li>
+  <li>Pád náradia a materiálu na osoby pod miestom práce</li>
+  <li>Pošmyknutie na podlahe lešenia (blato, námraza)</li>
+  <li>Nepriaznivé počasie — vietor, dážď, námraza</li>
+</ul>
+
+<h2>Opatrenia: kolektívna ochrana pred osobnou</h2>
+<p>Pri práci vo výške platí jasná hierarchia — najprv sa snažíme prácu vo výške <strong>odstrániť</strong> alebo zaistiť <strong>kolektívne</strong>, a až potom siahame po osobných prostriedkoch:</p>
+<div class="clanok-pyramida">
+  <div class="pyr-row" style="background:#1E8E5A;width:100%">1 · Vykonať prácu zo zeme (ak sa dá)</div>
+  <div class="pyr-row" style="background:#2E9E68;width:90%">2 · Kolektívne istenie — zábradlie, ohradenie, siete</div>
+  <div class="pyr-row" style="background:#E09B00;width:80%">3 · Pracovná plošina alebo lešenie podľa návodu</div>
+  <div class="pyr-row" style="background:#D96B1F;width:70%">4 · Osobné istenie — postroj a kotvenie</div>
+  <div class="pyr-row" style="background:#8A93A0;width:60%">5 · Organizačné — postup, dohľad, sledovanie počasia</div>
+</div>
+
+<div class="clanok-box is-tip"><p><strong>Tip:</strong> Rebrík používajte len na krátke a jednoduché práce. Pri náročnejšej činnosti vo výške nie je rebrík vhodný — použite plošinu alebo lešenie.</p></div>
+
+<h2>Požadované OOPP</h2>
+<p>Tam, kde nestačí kolektívna ochrana, sú nevyhnutné osobné ochranné prostriedky: <strong>zachytávací postroj (EN 361)</strong> s tlmičom pádu a kotviacim bodom a <strong>ochranná prilba s podbradným pásikom (EN 397)</strong>. Viac v článku o <a href="/blog/oopp-osobne-ochranne-pracovne-prostriedky">OOPP</a>.</p>
+
+<div class="clanok-box is-warn">
+  <p><strong>⚠️ Najčastejšie chyby:</strong></p>
+  <ul>
+    <li>Chýbajúce zábradlie alebo zarážka pri podlahe lešenia.</li>
+    <li>Nesprávne nasadený postroj alebo chýbajúci kotviaci bod.</li>
+    <li>Lešenie používané bez odovzdávacieho protokolu a prehliadok.</li>
+    <li>Práca vo výške za silného vetra alebo námrazy.</li>
+  </ul>
+</div>
+
+<div class="clanok-cta">
+  <p><strong>Pripravíme vám hodnotenie rizík pre prácu vo výške.</strong></p>
+  <a class="btn btn-primary" href="/login">Vytvoriť hodnotenie zadarmo</a>
+  <a class="btn btn-ghost" href="/blog/ako-vypracovat-hodnotenie-rizik">Ako vypracovať hodnotenie</a>
+</div>
+
+<p class="clanok-disc">Konkrétne opatrenia závisia od pracoviska a posúdi ich odborne spôsobilá osoba. Článok má informatívny charakter.</p>
+`,
+  },
+  {
+    slug: "skolenie-bozp-kedy-ako-casto",
+    title: "Školenie BOZP: kto, kedy a ako často",
+    description:
+      "Kto musí absolvovať školenie BOZP, kedy (pri nástupe, preradení, zmene) a ako často sa opakuje — vrátane záznamov a overenia vedomostí.",
+    date: "2026-06-19",
+    readMins: 5,
+    keywords: ["školenie bozp", "ako často školenie bozp", "oboznamovanie zamestnancov", "BOZP", "124/2006"],
+    body: `
+<p class="lead">Oboznamovanie zamestnancov o bezpečnosti a ochrane zdravia pri práci je zákonná povinnosť zamestnávateľa. Tu je prehľad, kto sa školí, kedy a ako často.</p>
+
+<h2>Kto sa musí školiť</h2>
+<p>Oboznámenie sa týka <strong>všetkých zamestnancov</strong> — vrátane vedúcich zamestnancov, brigádnikov aj agentúrnych zamestnancov. Povinnosť vyplýva z <strong>§ 7 zákona č. 124/2006 Z. z.</strong></p>
+
+<h2>Kedy sa školí</h2>
+<ul class="clanok-kroky">
+  <li>Pri <strong>nástupe</strong> do práce (vstupné oboznámenie).</li>
+  <li>Pri <strong>preradení</strong> na inú prácu alebo pracovisko.</li>
+  <li>Pri zavedení <strong>novej technológie</strong> alebo pracovného postupu.</li>
+  <li>Po <strong>pracovnom úraze</strong> alebo zmene rizík.</li>
+  <li><strong>Periodicky</strong> — v pravidelnom intervale.</li>
+</ul>
+
+<h2>Ako často sa opakuje</h2>
+<p>Periodické oboznamovanie sa vykonáva v intervale, ktorý <strong>určí zamestnávateľ</strong> podľa miery rizika na pracovisku. V praxi sa zaužívalo opakovanie <strong>najmenej raz za dva roky</strong>; pri niektorých činnostiach platia osobitné, kratšie intervaly.</p>
+
+<div class="clanok-box is-tip"><p><strong>Tip:</strong> Oboznámenie má byť <strong>konkrétne k pracovisku</strong> a zrozumiteľné — nie všeobecná prezentácia. Súčasťou je overenie vedomostí.</p></div>
+
+<h2>Záznamy o školení</h2>
+<p>O každom oboznámení veďte <strong>záznam</strong> — dátum, obsah, meno školiteľa a <strong>podpisy</strong> zúčastnených (ideálne aj v elektronickej podobe). Záznam je jedným z prvých dokladov, ktoré žiada inšpektorát práce.</p>
+
+<div class="clanok-box is-warn"><p><strong>⚠️ Najčastejšia chyba pri kontrole:</strong> chýbajúce alebo nepodpísané záznamy o školení. Bez dokladu sa školenie považuje za nevykonané.</p></div>
+
+<div class="clanok-cta">
+  <p><strong>Hodnotenie rizík je základ školenia — pripravíme vám ho.</strong></p>
+  <a class="btn btn-primary" href="/login">Vytvoriť hodnotenie zadarmo</a>
+  <a class="btn btn-ghost" href="/blog/bozp-dokumentacia-firmy">BOZP dokumentácia firmy</a>
+</div>
+
+<p class="clanok-disc">Konkrétne intervaly a obsah školení posudzuje odborne spôsobilá osoba podľa rizík pracoviska. Článok má informatívny charakter.</p>
+`,
+  },
+  {
+    slug: "pracovna-zdravotna-sluzba-pzs",
+    title: "Pracovná zdravotná služba (PZS): povinnosti zamestnávateľa",
+    description:
+      "Čo je pracovná zdravotná služba, kto ju musí mať a aké povinnosti z nej vyplývajú — kategorizácia prác aj lekárske preventívne prehliadky.",
+    date: "2026-06-19",
+    readMins: 6,
+    keywords: ["pracovná zdravotná služba", "PZS", "kategorizácia prác", "lekárske preventívne prehliadky", "355/2007"],
+    body: `
+<p class="lead">Pracovná zdravotná služba (PZS) je zákonná povinnosť každého zamestnávateľa. Tu je prehľad, čo zahŕňa a aké povinnosti z nej vyplývajú.</p>
+
+<h2>Čo je PZS a kto ju musí mať</h2>
+<p>Pracovná zdravotná služba zabezpečuje <strong>zdravotný dohľad</strong> nad podmienkami práce a ochranu zdravia zamestnancov. Je <strong>povinná pre každého zamestnávateľa</strong> — aj pri jednom zamestnancovi. Upravuje ju <strong>zákon č. 355/2007 Z. z.</strong> o ochrane, podpore a rozvoji verejného zdravia.</p>
+
+<h2>Kategorizácia prác</h2>
+<p>Zamestnávateľ v spolupráci s PZS zaradí práce do <strong>kategórií podľa zdravotného rizika</strong>:</p>
+<ul class="clanok-check">
+  <li><strong>Kategória 1</strong> — najnižšie riziko</li>
+  <li><strong>Kategória 2</strong> — nízke riziko (často aj administratíva)</li>
+  <li><strong>Kategória 3</strong> — zvýšené riziko</li>
+  <li><strong>Kategória 4</strong> — najvyššie riziko</li>
+</ul>
+
+<h2>Lekárske preventívne prehliadky (LPP)</h2>
+<p>Potreba prehliadok vo vzťahu k práci závisí od <strong>kategórie a posúdenia rizík</strong>. Pri vyšších kategóriách (3 a 4) sú LPP povinné a vykonávajú sa periodicky; pri nižších kategóriách podľa posúdenia. Konkrétny rozsah určí PZS.</p>
+
+<div class="clanok-box is-tip"><p><strong>Tip:</strong> Aj „len administratíva" spadá pod PZS — spravidla do kategórie 2. Povinnosť zabezpečiť PZS sa nevyhýba ani malým firmám.</p></div>
+
+<h2>Povinnosti zamestnávateľa v skratke</h2>
+<ul class="clanok-check">
+  <li>Zabezpečiť pracovnú zdravotnú službu</li>
+  <li>Posúdiť zdravotné riziká a vypracovať posudok o riziku</li>
+  <li>Zaradiť práce do kategórií</li>
+  <li>Zabezpečiť lekárske preventívne prehliadky podľa kategórie</li>
+  <li>Viesť príslušnú dokumentáciu</li>
+</ul>
+
+<div class="clanok-cta">
+  <p><strong>PZS aj hodnotenie rizík patria do dokumentácie BOZP — začnite hodnotením.</strong></p>
+  <a class="btn btn-primary" href="/login">Vytvoriť hodnotenie zadarmo</a>
+  <a class="btn btn-ghost" href="/blog/bozp-dokumentacia-firmy">Celá BOZP dokumentácia</a>
+</div>
+
+<p class="clanok-disc">Rozsah PZS a prehliadok určuje odborne spôsobilá osoba / poskytovateľ PZS podľa zákona č. 355/2007 Z. z. Stav k 06/2026. Článok má informatívny charakter.</p>
+`,
+  },
 ];
 
 export function getArticle(slug: string): Article | undefined {

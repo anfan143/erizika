@@ -86,6 +86,17 @@ export default function ClanokPage({ params }: { params: { slug: string } }) {
           </p>
           <div dangerouslySetInnerHTML={{ __html: BLOG_HERO }} />
           <div dangerouslySetInnerHTML={{ __html: a.body }} />
+          {(() => {
+            const dalsie = ARTICLES.filter((x) => x.slug !== a.slug).slice(0, 3);
+            return (
+              <div className="clanok-suvisiace">
+                <div className="section-label">Mohlo by vás zaujímať</div>
+                {dalsie.map((x) => (
+                  <a key={x.slug} href={`/blog/${x.slug}`} className="suvis-row">{x.title}</a>
+                ))}
+              </div>
+            );
+          })()}
           <hr className="clanok-hr" />
           <p style={{ fontSize: 13, color: "var(--ink-soft)" }}>
             <a href="/blog">← Všetky články</a>
