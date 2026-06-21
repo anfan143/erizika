@@ -31,15 +31,15 @@ export async function GET() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#16212D",
+          backgroundImage: "linear-gradient(135deg, #1B2A3D 0%, #16212D 55%, #0F1822 100%)",
           fontFamily: ff,
         }}
       >
-        <div style={{ display: "flex", fontSize: 210, fontWeight: 700, color: "#ffffff", letterSpacing: -6, lineHeight: 1 }}>HR</div>
-        <div style={{ display: "flex", width: 156, height: 9, background: "#F5A524", borderRadius: 5, margin: "20px 0 16px" }} />
-        <div style={{ display: "flex", fontSize: 48, fontWeight: 700, color: "#F5A524", letterSpacing: 1 }}>e-rizika.sk</div>
+        <div style={{ display: "flex", fontSize: 420, fontWeight: 700, color: "#ffffff", letterSpacing: -12, lineHeight: 1 }}>HR</div>
+        <div style={{ display: "flex", width: 312, height: 18, background: "#F5A524", borderRadius: 9, margin: "40px 0 32px" }} />
+        <div style={{ display: "flex", fontSize: 96, fontWeight: 700, color: "#F5A524", letterSpacing: 2 }}>e-rizika.sk</div>
       </div>
     ),
-    { width: 512, height: 512, fonts }
+    { width: 1024, height: 1024, fonts }
   );
 }
