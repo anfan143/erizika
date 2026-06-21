@@ -655,3 +655,24 @@
 
 /* Pätička úvodky — vycentrovaný disclaimer */
 .land footer .foot-disc { text-align: center; margin: 8px auto 0; max-width: 780px; }
+
+/* Klikateľné stat karty na Domove */
+.stat-card { cursor: pointer; font: inherit; text-align: left; width: 100%; }
+.stat-card .stat-arrow { margin-left: auto; color: var(--ink-soft); font-size: 16px; opacity: 0; transition: opacity .15s ease, transform .15s ease; }
+.stat-card:hover .stat-arrow { opacity: 1; transform: translateX(2px); }
+
+/* Cenníkové karty — tab Predplatné */
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 14px; margin-top: 14px; }
+.plan-card { position: relative; background: #fff; border: 1px solid var(--line, #D9E0E8); border-radius: 14px; padding: 22px 18px 18px; display: flex; flex-direction: column; gap: 9px; box-shadow: 0 1px 2px rgba(22,31,42,.04), 0 8px 24px rgba(22,31,42,.05); }
+.plan-card.is-best { border: 2px solid var(--ink, #16212D); }
+.plan-best { position: absolute; top: -11px; left: 16px; background: var(--safety, #F5B700); color: var(--ink, #16212D); font-family: 'IBM Plex Mono'; font-size: 9.5px; font-weight: 600; letter-spacing: .5px; padding: 3px 10px; border-radius: 99px; }
+.plan-name { font-family: 'Archivo'; font-weight: 700; font-size: 15px; color: var(--ink, #16212D); }
+.plan-price { font-family: 'Archivo'; font-weight: 900; font-size: 28px; letter-spacing: -1px; color: var(--ink, #16212D); line-height: 1; }
+.plan-price small { font-size: 12.5px; font-weight: 500; color: var(--ink-soft); letter-spacing: 0; }
+.plan-save { align-self: flex-start; font-family: 'IBM Plex Mono'; font-size: 10px; font-weight: 700; color: var(--green, #1E8E5A); background: #EAF7F0; border: 1px solid #bfe6cf; padding: 2px 9px; border-radius: 99px; }
+.plan-feats { list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: var(--ink-soft); margin: 2px 0 6px; padding: 0; }
+.plan-feats li { display: flex; gap: 7px; line-height: 1.4; }
+.plan-feats li::before { content: "✓"; color: var(--green, #1E8E5A); font-weight: 700; flex: 0 0 auto; }
+.plan-card .btn { margin-top: auto; text-align: center; width: 100%; }
+@media (max-width: 620px) { .pricing-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 380px) { .pricing-grid { grid-template-columns: 1fr; } }

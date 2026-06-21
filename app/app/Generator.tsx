@@ -6,7 +6,15 @@ import { track } from "@vercel/analytics";
 type Neb = { nebezpecenstvo: string; ohrozenie: string; P: number; Z: number; opatrenia: string[]; oopp?: string[]; P2?: number; Z2?: number; predpisy?: string[] };
 type Vysledok = { cinnost: string; nebezpecenstva: Neb[]; refs: number };
 type Ctx = { firma: string; odvetvie: string; pozicia: string; prostredie: string; vypracoval: string };
-type Tab = "prehlad" | "hodnotenie" | "historia" | "profil";
+type Tab = "prehlad" | "hodnotenie" | "historia" | "predplatne" | "profil";
+
+const PREDPLATNE_INFO: { key: string; nazov: string; cena: string; obdobie: string; body: string[]; uspora?: string; best?: boolean }[] = [
+  { key: "projekt", nazov: "Jednorazový projekt", cena: "15 €", obdobie: "jednorazovo", body: ["1 kompletný dokument", "do 15 pracovných činností", "úpravy a export počas 14 dní", "Word + PDF bez vodoznaku"] },
+  { key: "mesacne", nazov: "Mesačné", cena: "19 €", obdobie: "/ mesiac", body: ["neobmedzené hodnotenia a dokumenty", "Word + PDF bez vodoznaku", "história všetkých dokumentov", "až 20 činností na dokument"] },
+  { key: "stvrtrok", nazov: "3 mesiace", cena: "49 €", obdobie: "/ 3 mesiace", body: ["všetko z mesačného balíka", "výhodnejšia cena"], uspora: "ušetríte 8 €" },
+  { key: "polrok", nazov: "6 mesiacov", cena: "79 €", obdobie: "/ 6 mesiacov", body: ["všetko z mesačného balíka", "ešte výhodnejšia cena"], uspora: "ušetríte 35 €" },
+  { key: "rok", nazov: "12 mesiacov", cena: "99 €", obdobie: "/ rok", body: ["všetko z mesačného balíka", "najlepšia cena za rok"], uspora: "ušetríte 129 €", best: true },
+];
 
 const ODVETVIA = ["Stavebníctvo","Strojárstvo a kovovýroba","Skladovanie a logistika","Drevospracujúci priemysel","Potravinárstvo","Doprava","Poľnohospodárstvo","Energetika","Administratíva a služby","Zdravotníctvo","Obchod a maloobchod","Iné"];
 
@@ -321,6 +329,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
           <button className={"tab" + (tab === "prehlad" ? " on" : "")} onClick={() => setTab("prehlad")}>Domov</button>
           <button className={"tab" + (tab === "hodnotenie" ? " on" : "")} onClick={() => setTab("hodnotenie")}>Hodnotenie rizík</button>
           <button className={"tab" + (tab === "historia" ? " on" : "")} onClick={() => setTab("historia")}>História{hist.length > 0 ? ` · ${hist.length}` : ""}</button>
+          <button className={"tab" + (tab === "predplatne" ? " on" : "")} onClick={() => setTab("predplatne")}>Predplatné</button>
           <button className={"tab" + (tab === "profil" ? " on" : "")} onClick={() => setTab("profil")}>Profil</button>
         </nav>
       </header>
@@ -335,6 +344,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
             <button className={"drawer-item" + (tab === "prehlad" ? " on" : "")} onClick={() => { setTab("prehlad"); setMenuOpen(false); }}>Domov</button>
             <button className={"drawer-item" + (tab === "hodnotenie" ? " on" : "")} onClick={() => { setTab("hodnotenie"); setMenuOpen(false); }}>Hodnotenie rizík</button>
             <button className={"drawer-item" + (tab === "historia" ? " on" : "")} onClick={() => { setTab("historia"); setMenuOpen(false); }}>História{hist.length > 0 ? ` · ${hist.length}` : ""}</button>
+            <button className={"drawer-item" + (tab === "predplatne" ? " on" : "")} onClick={() => { setTab("predplatne"); setMenuOpen(false); }}>Predplatné</button>
             <button className={"drawer-item" + (tab === "profil" ? " on" : "")} onClick={() => { setTab("profil"); setMenuOpen(false); }}>Profil</button>
             <div className="drawer-acc">
               <span className="plan-badge">{plan}</span>
@@ -384,18 +394,21 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
             </div>
 
             <div className="dash-stats">
-              <div className="stat-card">
+              <button className="stat-card" onClick={() => setTab("historia")} title="Zobraziť históriu">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6 M8 13h8 M8 17h8" /></svg>
                 <div><b>{hist.length}</b><span>vytvorených dokumentov</span></div>
-              </div>
-              <div className="stat-card">
+                <span className="stat-arrow" aria-hidden="true">→</span>
+              </button>
+              <button className="stat-card" onClick={() => setTab("predplatne")} title="Zobraziť predplatné">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a5 5 0 0 0-5 5v3H5a8 8 0 0 1 14 0h-2V7a5 5 0 0 0-5-5z M3 13h18v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg>
                 <div><b>{plan}</b><span>aktuálny balík</span></div>
-              </div>
-              <div className="stat-card">
+                <span className="stat-arrow" aria-hidden="true">→</span>
+              </button>
+              <button className="stat-card" onClick={() => setTab("hodnotenie")} title="Vytvoriť hodnotenie">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="m9 12 2 2 4-4" /></svg>
                 <div><b>{maxCinnosti}</b><span>činností na dokument</span></div>
-              </div>
+                <span className="stat-arrow" aria-hidden="true">→</span>
+              </button>
             </div>
 
             <div className="card dash-recent">
@@ -433,18 +446,22 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
                 <div className="section-label" style={{ marginBottom: 0 }}>Vstupné údaje</div>
                 <button className="btn btn-ghost" style={{ padding: "7px 13px", fontSize: 12.5 }} onClick={vyplnPriklad}>✨ Vyplniť ukážkový príklad</button>
               </div>
+              <p style={{ fontSize: 13, color: "var(--ink-soft)", margin: "8px 0 16px", maxWidth: 620 }}>Zadajte pracovné činnosti — ostatné polia sú nepovinné. Ku každej činnosti pripravíme nebezpečenstvá, maticu rizika, opatrenia, OOPP aj zostatkové riziko.</p>
               <div className="grid">
                 <div className="field"><label>Názov spoločnosti</label><input value={ctx.firma} onChange={set("firma")} placeholder="napr. STAVMONT s.r.o." /></div>
                 <div className="field"><label>Odvetvie</label><select value={ctx.odvetvie} onChange={set("odvetvie")}>{ODVETVIA.map((o) => <option key={o}>{o}</option>)}</select></div>
                 <div className="field"><label>Pracovná pozícia / profesia</label><input value={ctx.pozicia} onChange={set("pozicia")} placeholder="napr. murár, skladník, zvárač" /></div>
                 <div className="field"><label>Vypracoval <span className="opt">(meno, funkcia)</span></label><input value={ctx.vypracoval} onChange={set("vypracoval")} placeholder="napr. Ing. Ján Novák, ABT" /></div>
-                <div className="field full"><label>Pracovné činnosti <span className="opt">— každá na nový riadok (max. {maxCinnosti})</span></label>
+                <div className="field full"><label>Pracovné činnosti <span className="opt">— každá na nový riadok{maxCinnosti > 0 ? ` (max. ${maxCinnosti})` : ""}</span></label>
                   <textarea value={cinnostiText} onChange={(e) => setCinnostiText(e.target.value)} placeholder={"práca na lešení vo výške nad 1,5 m\nručná manipulácia s bremenami"} /></div>
                 <div className="field full"><label>Špecifiká pracoviska <span className="opt">(nepovinné)</span></label>
                   <textarea style={{ minHeight: 64 }} value={ctx.prostredie} onChange={set("prostredie")} placeholder="napr. práca v exteriéri, pohyb VZV na pracovisku, nočné zmeny..." /></div>
               </div>
               <div className="actions">
-                <button className="btn btn-primary" onClick={generuj} disabled={busy || mode === "none"}>{busy ? "Generujem…" : "Vygenerovať hodnotenie rizík"}</button>
+                <button className="btn btn-primary" onClick={generuj} disabled={busy || mode === "none"} style={{ display: "inline-flex", alignItems: "center", gap: 9, fontSize: 15.5, padding: "14px 30px" }}>
+                  {!busy && <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 L4 14 h6 l-1 8 L20 10 h-6 Z" /></svg>}
+                  {busy ? "Generujem…" : "Vygenerovať hodnotenie rizík"}
+                </button>
                 {!busy && <span className="hint">Generovanie trvá približne 15 – 60 sekúnd podľa počtu činností. Dokument sa automaticky uloží do histórie.</span>}
               </div>
               {progress.length > 0 && (
@@ -548,6 +565,54 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
               ))
             )}
           </div>
+        )}
+
+        {tab === "predplatne" && (
+          <>
+            <div className="card">
+              <div className="section-label">Vaše predplatné</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                <span style={{ fontSize: 14, fontWeight: 600 }}>Aktuálny stav:</span>
+                <span className={"stav-balik " + (mode === "none" ? "is-none" : mode === "free" ? "is-free" : "is-active")}>{plan}</span>
+              </div>
+              {hasCustomer && (
+                <div style={{ marginTop: 16 }}>
+                  <button className="btn btn-ghost" onClick={spravujPredplatne}>Spravovať platby a predplatné</button>
+                  {profilErr && <div className="error-box" style={{ display: "block" }}>{profilErr}</div>}
+                </div>
+              )}
+            </div>
+
+            {mode === "sub" ? (
+              <div className="onboard-hint" style={{ marginTop: 22 }}>
+                Máte <strong>aktívne predplatné</strong>. Ak chcete zmeniť plán alebo predplatné zrušiť, použite tlačidlo <strong>„Spravovať platby a predplatné"</strong> vyššie — zmena plánu prebehne bezpečne cez Stripe.
+              </div>
+            ) : (
+              <>
+                <div className="section-label" style={{ margin: "28px 0 6px" }}>Vyberte si balík</div>
+                <label className={"suhlas" + (suhlasChyba ? " suhlas-chyba" : "")}>
+                  <input type="checkbox" checked={platbaSuhlas} onChange={(e) => { setPlatbaSuhlas(e.target.checked); if (e.target.checked) setSuhlasChyba(false); }} />
+                  <span>Súhlasím s <a href="/podmienky" target="_blank" rel="noopener">obchodnými podmienkami</a> a so začatím poskytovania služby pred uplynutím lehoty na odstúpenie. Beriem na vedomie, že začatím používania <a href="/odstupenie" target="_blank" rel="noopener">strácam právo na odstúpenie od zmluvy</a>.</span>
+                </label>
+                {suhlasChyba && <div className="suhlas-hint">↑ Najprv zaškrtnite súhlas s podmienkami, potom môžete pokračovať k platbe.</div>}
+
+                <div className="pricing-grid">
+                  {PREDPLATNE_INFO.map((p) => (
+                    <div className={"plan-card" + (p.best ? " is-best" : "")} key={p.key}>
+                      {p.best && <span className="plan-best">Najvýhodnejšie</span>}
+                      <div className="plan-name">{p.nazov}</div>
+                      <div className="plan-price">{p.cena} <small>{p.obdobie}</small></div>
+                      {p.uspora && <span className="plan-save">{p.uspora}</span>}
+                      <ul className="plan-feats">{p.body.map((b, i) => <li key={i}>{b}</li>)}</ul>
+                      <button className={"btn " + (p.best ? "btn-primary" : "btn-ghost")} onClick={() => kupit(p.key)}>Kúpiť</button>
+                    </div>
+                  ))}
+                </div>
+                <div className="kupa-trust">🔒 Bezpečná platba cez Stripe · 🧾 Faktúra na e-mail · ✅ Zrušíte kedykoľvek</div>
+                {err && <div className="error-box" style={{ display: "block" }}>{err}</div>}
+              </>
+            )}
+          </>
         )}
 
         {tab === "profil" && (
