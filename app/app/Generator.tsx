@@ -337,7 +337,7 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
 
         {tab === "prehlad" && (
           <>
-            <div className="dash-hero card">
+            <div className="dash-hero">
               <div className="dash-hero-in">
                 <div className="section-label">Vaša pracovná plocha</div>
                 <h2 className="dash-title">{hist.length === 0 ? "Vitajte v e-rizika.sk 👋" : "Vitajte späť 👋"}</h2>
