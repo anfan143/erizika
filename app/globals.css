@@ -500,12 +500,17 @@
 .land .ukazka-note { font-size: 13px; color: var(--ink-soft); }
 
 /* ── Blog ── */
-.blog-list { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
-.blog-card { display: block; border: 1px solid var(--line, #e7e9ee); border-radius: var(--radius, 12px); padding: 18px 20px; text-decoration: none; color: inherit; transition: border-color .15s, transform .15s; }
-.blog-card:hover { border-color: var(--green, #1E8E5A); transform: translateY(-1px); }
-.blog-card h3 { margin: 0 0 6px; font-family: 'Archivo'; font-weight: 700; font-size: 18px; color: var(--ink, #16212D); }
-.blog-card p { margin: 0 0 10px; font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
-.blog-meta { font-family: 'IBM Plex Mono'; font-size: 11.5px; letter-spacing: .3px; color: var(--ink-soft); }
+.blog-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 22px; }
+.blog-card { position: relative; display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line, #D9E0E8); border-radius: 14px; padding: 22px 22px 18px 26px; text-decoration: none; color: inherit; overflow: hidden; transition: border-color .18s, transform .18s, box-shadow .18s; }
+.blog-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--safety, #F5B700); opacity: .85; }
+.blog-card:hover { border-color: var(--green, #1E8E5A); transform: translateY(-3px); box-shadow: 0 14px 34px rgba(22,31,42,.10); }
+.blog-card h3 { margin: 0 0 8px; font-family: 'Archivo'; font-weight: 900; font-size: 19px; letter-spacing: -.3px; color: var(--ink, #16212D); line-height: 1.25; }
+.blog-card p { margin: 0 0 16px; font-size: 14px; color: var(--ink-soft); line-height: 1.6; flex: 1; }
+.blog-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; }
+.blog-meta { font-family: 'IBM Plex Mono'; font-size: 11px; letter-spacing: .3px; color: var(--ink-soft); }
+.blog-read { font-family: 'Archivo'; font-weight: 700; font-size: 13.5px; color: var(--green, #1E8E5A); white-space: nowrap; }
+.blog-card:hover .blog-read { color: var(--ink, #16212D); }
+@media (max-width: 640px) { .blog-list { grid-template-columns: 1fr; } }
 
 .clanok-breadcrumb { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 10px; }
 .clanok-breadcrumb a { color: var(--green, #1E8E5A); }
@@ -611,3 +616,7 @@
 .land .zlava .zlava-head { font-family: 'IBM Plex Mono'; font-size: 10px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 2px; display: block; }
 .land .zlava span { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .land .zlava .zlava-save { margin-left: auto; font-family: 'IBM Plex Mono'; font-size: 10.5px; font-weight: 700; color: var(--green); background: #EAF7F0; border: 1px solid #bfe6cf; padding: 2px 9px; border-radius: 99px; white-space: nowrap; }
+
+/* Úvodka — kompaktnejší a kompaktný spodok: FAQ → checklist → CTA spolu */
+.land #otazky { padding-bottom: 44px; }
+.land #checklist { padding: 10px 0 40px; }

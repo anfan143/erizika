@@ -41,9 +41,10 @@ export default function BlogIndex() {
               <a key={a.slug} href={`/blog/${a.slug}`} className="blog-card">
                 <h3>{a.title}</h3>
                 <p>{a.description}</p>
-                <span className="blog-meta">
-                  {new Date(a.date).toLocaleDateString("sk-SK")} · {a.readMins} min čítania
-                </span>
+                <div className="blog-card-foot">
+                  <span className="blog-meta">{new Date(a.date).toLocaleDateString("sk-SK")} · {a.readMins} min</span>
+                  <span className="blog-read">Čítať →</span>
+                </div>
               </a>
             ))}
           </div>

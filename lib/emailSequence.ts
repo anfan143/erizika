@@ -5,21 +5,39 @@ function btn(href: string, label: string) {
   return `<a href="${href}" style="display:inline-block;background:#1E8E5A;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:12px 22px;border-radius:8px">${label}</a>`;
 }
 
+function matica() {
+  const farby = ["#2BB673", "#2BB673", "#E09B00", "#E09B00", "#D96B1F", "#D96B1F", "#C2382A"];
+  const bunky = farby
+    .map((c, i) => `<td width="24" height="14" style="background:${c};border-radius:3px;font-size:0;line-height:14px">&nbsp;</td>${i < farby.length - 1 ? '<td width="5" style="font-size:0">&nbsp;</td>' : ""}`)
+    .join("");
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>${bunky}</tr></table>`;
+}
+
 function layout(inner: string, unsubUrl: string) {
-  return `<!DOCTYPE html><html lang="sk"><body style="margin:0;background:#f3f5f7;font-family:Arial,Helvetica,sans-serif;color:#1b2430">
-<div style="max-width:560px;margin:0 auto;padding:24px 16px">
-  <div style="background:#16212D;border-radius:12px 12px 0 0;padding:18px 24px">
-    <span style="color:#fff;font-weight:800;font-size:18px;letter-spacing:.3px">e-rizika.sk</span>
-  </div>
-  <div style="background:#ffffff;border-radius:0 0 12px 12px;padding:26px 24px;font-size:15px;line-height:1.6;color:#243345">
-    ${inner}
-  </div>
-  <div style="text-align:center;color:#8a93a0;font-size:11.5px;line-height:1.6;padding:16px 8px">
-    HAVCO s. r. o. · Papiernická 1789/15, 034 01 Ružomberok · <a href="${BASE}" style="color:#8a93a0">www.erizika.sk</a><br>
-    Tento e-mail ste dostali, lebo ste si stiahli checklist na e-rizika.sk.
-    <a href="${unsubUrl}" style="color:#8a93a0;text-decoration:underline">Odhlásiť sa</a>.
-  </div>
-</div>
+  return `<!DOCTYPE html><html lang="sk"><body style="margin:0;padding:0;background:#f3f5f7;font-family:Arial,Helvetica,sans-serif;color:#1b2430">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f3f5f7"><tr><td align="center" style="padding:24px 12px">
+  <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%">
+    <tr><td style="background:#16212D;border-radius:14px 14px 0 0;padding:22px 26px 16px">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td style="padding-right:14px;vertical-align:middle"><img src="${BASE}/api/logo" width="46" height="46" alt="" style="display:block;border-radius:10px"></td>
+        <td style="vertical-align:middle">
+          <a href="${BASE}" style="color:#ffffff;text-decoration:none;font-weight:700;font-size:20px;letter-spacing:.3px">e-rizika.sk</a>
+          <div style="color:#9FB0C2;font-size:12px;margin-top:2px">Hodnotenie rizík BOZP</div>
+        </td>
+      </tr></table>
+      <div style="height:14px;line-height:14px;font-size:0">&nbsp;</div>
+      ${matica()}
+    </td></tr>
+    <tr><td style="background:#F5B700;height:5px;line-height:5px;font-size:0">&nbsp;</td></tr>
+    <tr><td style="background:#ffffff;border-radius:0 0 14px 14px;padding:28px 26px;font-size:15px;line-height:1.6;color:#243345">
+      ${inner}
+    </td></tr>
+    <tr><td style="text-align:center;color:#8a93a0;font-size:11.5px;line-height:1.6;padding:18px 10px">
+      HAVCO s. r. o. · Papiernická 1789/15, 034 01 Ružomberok<br>
+      <a href="${BASE}" style="color:#8a93a0">www.erizika.sk</a> &nbsp;·&nbsp; <a href="${unsubUrl}" style="color:#8a93a0;text-decoration:underline">Odhlásiť sa</a>
+    </td></tr>
+  </table>
+</td></tr></table>
 </body></html>`;
 }
 
