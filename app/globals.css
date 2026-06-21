@@ -52,7 +52,8 @@
 
   .card{
     background:var(--card);border:1px solid var(--line);
-    border-radius:var(--radius);padding:26px;
+    border-radius:14px;padding:26px;
+    box-shadow:0 1px 2px rgba(22,31,42,.04), 0 10px 30px rgba(22,31,42,.05);
   }
   .section-label{
     font-family:'IBM Plex Mono';font-size:11px;font-weight:600;
@@ -647,3 +648,7 @@
 .drawer-item.on { background: #F0F4F8; color: var(--ink); box-shadow: inset 3px 0 0 var(--safety); }
 .drawer-acc { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
 .drawer-acc .btn { width: 100%; text-align: center; }
+
+/* Riadky dokumentov — jemný hover (premium pocit) */
+.hist-row { transition: background .15s ease; border-radius: 8px; }
+.hist-row:hover { background: #FAFBFC; }
