@@ -605,3 +605,9 @@
 .stav-balik.is-none { background: #FEF2F2; color: var(--red, #C2382A); border: 1px solid #f3c2c2; }
 .stav-balik.is-free { background: #FFF7ED; color: var(--orange, #D96B1F); border: 1px solid #f5d2ac; }
 .stav-balik.is-active { background: #F0FAF4; color: var(--green, #1E8E5A); border: 1px solid #b6e3c8; }
+
+/* Cenník — zvýraznenie dlhších predplatných a úspory */
+.land .zlava { gap: 7px; }
+.land .zlava .zlava-head { font-family: 'IBM Plex Mono'; font-size: 10px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 2px; display: block; }
+.land .zlava span { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.land .zlava .zlava-save { margin-left: auto; font-family: 'IBM Plex Mono'; font-size: 10.5px; font-weight: 700; color: var(--green); background: #EAF7F0; border: 1px solid #bfe6cf; padding: 2px 9px; border-radius: 99px; white-space: nowrap; }
