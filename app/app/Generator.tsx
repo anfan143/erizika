@@ -351,10 +351,12 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
                   )}
                 </div>
               </div>
-              <div className="dash-mx" aria-hidden="true">
-                {[5, 4, 3, 2, 1].flatMap((z) => [1, 2, 3, 4, 5].map((p) => (
-                  <i key={`${z}-${p}`} style={{ background: riskHex(p * z) }} />
-                )))}
+              <div className="dash-mx-wrap" aria-hidden="true">
+                <div className="dash-mx">
+                  {[5, 4, 3, 2, 1].flatMap((z) => [1, 2, 3, 4, 5].map((p) => (
+                    <i key={`${z}-${p}`} style={{ background: riskHex(p * z) }} />
+                  )))}
+                </div>
                 <div className="dash-mx-cap">Matica rizík · R = P × Z</div>
               </div>
             </div>
@@ -441,8 +443,22 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
                     <div className="doc-meta">{[ctx.firma, ctx.odvetvie, ctx.pozicia && "pozícia: " + ctx.pozicia, "dátum: " + new Date().toLocaleDateString("sk-SK"), ctx.vypracoval && "vypracoval: " + ctx.vypracoval].filter(Boolean).join("  ·  ")}</div>
                   </div>
                   <div className="actions" style={{ margin: 0 }}>
-                    <button className="btn btn-primary" onClick={stiahniPdf} disabled={pdfBusy}>{pdfBusy ? "Pripravujem PDF…" : "Stiahnuť PDF"}</button>
-                    <button className="btn btn-ghost" onClick={exportDoc} disabled={wordLocked} title={wordLocked ? "Editovateľný Word bez vodoznaku odomknete kúpou balíka" : undefined} style={wordLocked ? { opacity: .55, cursor: "not-allowed" } : undefined}>Stiahnuť Word (.doc){wordLocked ? " 🔒" : ""}</button>
+                    <button className="btn btn-primary" onClick={stiahniPdf} disabled={pdfBusy} style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                      <svg width="15" height="18" viewBox="0 0 24 28" aria-hidden="true" style={{ flex: "0 0 auto" }}>
+                        <path d="M5 1 H15 L21 7 V25 a2 2 0 0 1-2 2 H5 a2 2 0 0 1-2-2 V3 a2 2 0 0 1 2-2 Z" fill="#E5342B" />
+                        <path d="M15 1 L21 7 H17 a2 2 0 0 1-2-2 Z" fill="#B71C1C" />
+                        <text x="11.5" y="22" fontSize="7" fontWeight="700" fill="#fff" textAnchor="middle" fontFamily="Arial, sans-serif">PDF</text>
+                      </svg>
+                      {pdfBusy ? "Pripravujem PDF…" : "Stiahnuť PDF"}
+                    </button>
+                    <button className="btn btn-ghost" onClick={exportDoc} disabled={wordLocked} title={wordLocked ? "Editovateľný Word bez vodoznaku odomknete kúpou balíka" : undefined} style={{ display: "inline-flex", alignItems: "center", gap: 8, ...(wordLocked ? { opacity: .55, cursor: "not-allowed" } : {}) }}>
+                      <svg width="15" height="18" viewBox="0 0 24 28" aria-hidden="true" style={{ flex: "0 0 auto" }}>
+                        <path d="M5 1 H15 L21 7 V25 a2 2 0 0 1-2 2 H5 a2 2 0 0 1-2-2 V3 a2 2 0 0 1 2-2 Z" fill="#2B579A" />
+                        <path d="M15 1 L21 7 H17 a2 2 0 0 1-2-2 Z" fill="#1F3F70" />
+                        <text x="11.5" y="23" fontSize="11" fontWeight="700" fill="#fff" textAnchor="middle" fontFamily="Arial, sans-serif">W</text>
+                      </svg>
+                      Stiahnuť Word (.doc){wordLocked ? " 🔒" : ""}
+                    </button>
                   </div>
                 </div>
                 <div className="legend">
@@ -517,7 +533,10 @@ export default function Generator({ email, plan, mode, maxCinnosti, justPaid, ha
             <div className="card">
               <div className="section-label">Účet</div>
               <div className="field"><label>E-mailová adresa</label><input value={email} disabled style={{ opacity: .7, cursor: "not-allowed" }} /></div>
-              <p style={{ fontSize: 14, margin: "12px 0 0" }}><strong>Stav balíka:</strong> {plan}</p>
+              <div style={{ margin: "14px 0 0", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                <span style={{ fontSize: 14, fontWeight: 600 }}>Stav balíka:</span>
+                <span className={"stav-balik " + (mode === "none" ? "is-none" : mode === "free" ? "is-free" : "is-active")}>{plan}</span>
+              </div>
             </div>
 
             <div className="card" style={{ marginTop: 18 }}>
