@@ -127,6 +127,34 @@ export const LANDING_HTML = `
   </div>
 </section>
 
+<section id="preco" style="padding-top:0">
+  <div class="wrap">
+    <div class="mono eyebrow">Porovnanie</div>
+    <h2 class="sec">Prestaňte bojovať s Excelom.</h2>
+    <div class="compare">
+      <div class="cmp-card cmp-bad">
+        <div class="cmp-head"><span class="cmp-ic">✕</span><div><b>Bez e-rizika</b><span>ručne v Exceli a Worde</span></div></div>
+        <ul>
+          <li>Hodiny v Exceli a Worde</li>
+          <li>Ručné prepisovanie rizík</li>
+          <li>Boj s formátovaním a vzhľadom</li>
+          <li>Riziko chýb a nekompletnosti</li>
+        </ul>
+      </div>
+      <div class="cmp-card cmp-good">
+        <span class="cmp-badge">Lepšia cesta</span>
+        <div class="cmp-head"><span class="cmp-ic">✓</span><div><b>S e-rizika</b><span>za pár minút, online</span></div></div>
+        <ul>
+          <li>Hotový dokument za pár minút</li>
+          <li>Databáza overených rizík z praxe</li>
+          <li>Profesionálny Word a PDF bez formátovania</li>
+          <li>Matica, opatrenia, OOPP aj zostatkové riziko</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="ukazka" class="ukazka">
   <div class="wrap">
     <div class="mono eyebrow">Ukážka výstupu</div>
