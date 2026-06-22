@@ -21,7 +21,7 @@ export const LANDING_HTML = `
     <div>
       <div class="mono eyebrow">V súlade s legislatívnymi požiadavkami</div>
       <h1>Hodnotenie rizík už nemusí trvať dni a týždne.<br>Urobte ho s nami v priebehu <span class="plate">pár minút</span>.</h1>
-      <p class="lead">Naša platforma vám k zadaným pracovným činnostiam pripraví <b>kompletný dokument o posúdení rizika</b> — nebezpečenstvá, ohrozenia, opatrenia, požadované OOPP aj zostatkové riziko. Export do Wordu <span class="hl">jednoducho a bez skrytých poplatkov</span>.</p>
+      <p class="lead"><b>Zabudnite na hodiny v Exceli a prepisovanie rizík.</b> Naša platforma vám k zadaným pracovným činnostiam pripraví kompletný dokument o posúdení rizika — nebezpečenstvá, ohrozenia, opatrenia, požadované OOPP aj zostatkové riziko. Export do Wordu a PDF <span class="hl">jednoducho a bez skrytých poplatkov</span>.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#cennik">Vytvoriť prvé hodnotenie zadarmo</a>
         <a class="btn btn-ghost" href="#ukazka">Pozrieť ukážku výstupu</a>
