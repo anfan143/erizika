@@ -112,12 +112,13 @@ function RizikoDoc({ ctx, vysledky, watermark }: { ctx: any; vysledky: any[]; wa
             );
           });
           return (
-            <View key={idx}>
-              <View style={st.act} wrap={false}>
-                <Text style={st.actNum}>{idx + 1}</Text>
-                <Text style={st.actName}>{item.cinnost}</Text>
-              </View>
-              <View style={st.thRow}>
+            <View key={idx} break={idx > 0}>
+              <View wrap={false}>
+                <View style={st.act}>
+                  <Text style={st.actNum}>{idx + 1}</Text>
+                  <Text style={st.actName}>{item.cinnost}</Text>
+                </View>
+                <View style={st.thRow}>
                 <Text style={[st.th, { width: `${W[0]}%` }]}>Nebezpečenstvo</Text>
                 <Text style={[st.th, { width: `${W[1]}%` }]}>Ohrozenie</Text>
                 <Text style={[st.th, { width: `${W[2]}%`, textAlign: "center" }]}>P</Text>
@@ -131,6 +132,7 @@ function RizikoDoc({ ctx, vysledky, watermark }: { ctx: any; vysledky: any[]; wa
                 <Text style={[st.th, { width: `${W[10]}%`, textAlign: "center" }]}>R2</Text>
                 <Text style={[st.th, { width: `${W[11]}%` }]}>Zostatkové riziko</Text>
                 <Text style={[st.th, { width: `${W[12]}%` }]}>Predpisy</Text>
+                </View>
               </View>
               {rows}
               <Text style={st.konanie}><Text style={{ color: hex(maxR2), fontWeight: "bold" }}>Požadované konanie</Text> (podľa najvyššieho zostatkového rizika R {maxR2}): {konanie(maxR2)}</Text>
