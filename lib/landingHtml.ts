@@ -147,7 +147,7 @@ export const LANDING_HTML = `
         <ul>
           <li>Hotový dokument za pár minút</li>
           <li>Databáza overených rizík z praxe</li>
-          <li>Profesionálny Word a PDF bez formátovania</li>
+          <li>Profesionálny výstup vo Word a PDF</li>
           <li>Matica, opatrenia, OOPP aj zostatkové riziko</li>
         </ul>
       </div>
